@@ -33,9 +33,10 @@ class WelcomeHandler extends AbstractHandler
         require_once $basePathZendStdlib . 'StringUtils.php';
         require_once $basePathZendStdlib . 'StringWrapper/StringWrapperInterface.php';
         require_once $basePathZendStdlib . 'StringWrapper/AbstractStringWrapper.php';
-        require_once $basePathZendStdlib . 'StringWrapper/Intl.php';
         require_once $basePathZendStdlib . 'StringWrapper/Iconv.php';
         require_once $basePathZendStdlib . 'StringWrapper/Intl.php';
+        require_once $basePathZendStdlib . 'StringWrapper/MbString.php';
+        require_once $basePathZendStdlib . 'StringWrapper/Native.php';
 
         return $figlet = new Figlet(['font' => __DIR__ . '/../Resources/fonts/small.flf']);
     }
