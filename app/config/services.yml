@@ -1,0 +1,22 @@
+services:
+    zend.crypt.symmetric_encrypter:
+        class: Zend\Crypt\Symmetric\Mcrypt
+        lazy: true
+        calls:
+            - [setKey, [%encryption_key%]]
+
+    mediamonks.doctrine.transformable.transformer.zend_crypt_symmetric:
+        class: MediaMonks\Doctrine\Transformable\Transformer\ZendCryptSymmetricTransformer
+        lazy: true
+        arguments: [@zend.crypt.symmetric_encrypter]
+
+    mediamonks.doctrine.transformable.transformer_pool:
+        class: MediaMonks\Doctrine\Transformable\Transformer\TransformerPool
+        calls:
+            - [set, ['encrypt_symmetric', @mediamonks.doctrine.transformable.transformer.zend_crypt_symmetric]]
+
+    doctrine.transformable.subscriber:
+        class: MediaMonks\Doctrine\Transformable\TransformableSubscriber
+        arguments: [@mediamonks.doctrine.transformable.transformer_pool]
+        tags:
+         - { name: doctrine.event_subscriber, priority: 100}

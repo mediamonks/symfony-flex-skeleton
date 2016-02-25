@@ -1,0 +1,84 @@
+{
+    "name": "mediamonks/skeleton-symfony",
+    "description": "MediaMonks Symfony Skeleton Project",
+    "type": "project",
+    "license": "proprietary",
+    "homepage": "https://www.mediamonks.com/",
+    "authors": [
+        {
+            "name": "Robert Slootjes",
+            "email": "robert@mediamonks.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "": "src/",
+            "App\\": "src/",
+            "Installer\\": "installer/"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "^2.8",
+        "doctrine/orm": "^2.4.8",
+        "doctrine/doctrine-bundle": "~1.4",
+        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/monolog-bundle": "~2.4",
+        "sensio/distribution-bundle": "~5.0",
+        "sensio/framework-extra-bundle": "^3.0",
+        "mediamonks/rest-api-bundle": "~1.0@dev",
+        "nelmio/api-doc-bundle": "^2.11",
+        "doctrine/doctrine-cache-bundle": "^1.3",
+        "doctrine/doctrine-migrations-bundle": "^1.1",
+        "doctrine/data-fixtures": "^1.1",
+        "stof/doctrine-extensions-bundle": "^1.2",
+        "mediamonks/doctrine-extensions": "dev-master@dev",
+        "zendframework/zend-crypt": "^2.6",
+        "ocramius/proxy-manager": "~1.0",
+        "sonata-project/admin-bundle": "~2.4",
+        "sonata-project/user-bundle": "~2.3",
+        "sonata-project/doctrine-orm-admin-bundle": "~2.4@dev"
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "~3.0",
+        "symfony/phpunit-bridge": "~2.7"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ],
+        "post-update-cmd": [
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ],
+        "post-root-package-install": [
+            "Installer\\Scripts::postRootPackageInstall"
+        ],
+        "post-create-project-cmd": [
+            "Installer\\Scripts::postCreateProjectCmd"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
+        "symfony-web-dir": "htdocs",
+        "symfony-assets-install": "relative"
+    }
+}

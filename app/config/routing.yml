@@ -1,0 +1,14 @@
+# App Bundles
+_front_end:
+    resource: "@AppFrontEndBundle/Resources/config/routing.yml"
+
+_api:
+    resource: "@AppApiBundle/Resources/config/routing.yml"
+    prefix: /api
+    options:
+        expose: true
+
+# Other bundles
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc

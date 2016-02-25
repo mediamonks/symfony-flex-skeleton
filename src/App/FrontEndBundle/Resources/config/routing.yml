@@ -1,0 +1,3 @@
+_front_end_annotations:
+    resource: "@AppFrontEndBundle/Controller"
+    type:     annotation

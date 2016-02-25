@@ -1,0 +1,15 @@
+parameters:
+    secret: replace_with_secret
+
+    encryption_key: replace_encryption_key
+
+    locale: en
+
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+
+    admin_directory: admin
+
+    asset_version: src #[deploytool]
