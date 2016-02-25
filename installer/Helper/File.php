@@ -8,7 +8,7 @@ class File
 {
     const META = 'meta.json';
     const README = 'README.md';
-    const README_DIST = 'README.md.dist';
+    const README_DIST = 'installer/Resources/README.md';
     const PARAMETERS = 'app/config/parameters.yml';
     const PARAMETERS_DIST = 'app/config/parameters.yml.dist';
     const PARAMETERS_DEVELOPMENT = 'app/config/parameters_development.yml';

@@ -2,7 +2,6 @@
 /assembla.json
 /meta.json
 /build/
-/README.md
 /phpunit.xml
 /bin/*
 !/bin/console
