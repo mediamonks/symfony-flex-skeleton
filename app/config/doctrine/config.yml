@@ -24,8 +24,8 @@ doctrine:
                         dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
                         alias: GedmoLoggable
                         is_bundle: false
-                    AppCoreBundle: ~
-                    SonataUserBundle: ~
+                    #AppCoreBundle: ~
+                    #SonataUserBundle: ~
                 filters:
                     softdeleteable:
                         class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter

@@ -1,7 +1,7 @@
 parameters:
     secret: replace_with_secret
 
-    encryption_key: replace_encryption_key
+    encryption_key: replace_encryption_key__________
 
     locale: en
 

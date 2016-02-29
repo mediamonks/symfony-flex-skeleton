@@ -1,3 +1,6 @@
 sonata_admin:
+    title: "MediaMonks"
+    security:
+        handler: sonata.admin.security.handler.role
 
 sonata_user:
