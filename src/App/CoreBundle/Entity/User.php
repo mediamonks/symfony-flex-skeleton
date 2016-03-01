@@ -6,7 +6,6 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use MediaMonks\Doctrine\Mapping\Annotation as MediaMonks;
-use Zend\Crypt\Hash;
 
 /**
  * @ORM\Entity
@@ -23,12 +22,13 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @MediaMonks\Transformable(name="encrypt_symmetric")
+     * @MediaMonks\Transformable(name="encrypt")
      */
     protected $email;
 
     /**
      * @ORM\Column(type="string", nullable=true, unique=true)
+     * @MediaMonks\Transformable(name="hash")
      */
     protected $emailCanonical;
 
@@ -116,17 +116,6 @@ class User extends BaseUser
         $this->email = $email;
 
         $this->setEmailCanonical($email);
-
-        return $this;
-    }
-
-    /**
-     * @param string $emailCanonical
-     * @return $this
-     */
-    public function setEmailCanonical($emailCanonical)
-    {
-        $this->emailCanonical = Hash::compute('sha256', $emailCanonical);
 
         return $this;
     }

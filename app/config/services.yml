@@ -11,12 +11,18 @@ services:
     mediamonks.doctrine.transformable.transformer.zend_crypt_symmetric:
         class: MediaMonks\Doctrine\Transformable\Transformer\ZendCryptSymmetricTransformer
         lazy: true
-        arguments: ["@zend.crypt.symmetric_encrypter"]
+        arguments: ["@zend.crypt.symmetric_encrypter", {binary: false}]
+
+    mediamonks.doctrine.transformable.transformer.zend_crypt_hash:
+        class: MediaMonks\Doctrine\Transformable\Transformer\ZendCryptHashTransformer
+        lazy: true
+        arguments: [{method: sha512, binary: false}]
 
     mediamonks.doctrine.transformable.transformer_pool:
         class: MediaMonks\Doctrine\Transformable\Transformer\TransformerPool
         calls:
-            - [set, ['encrypt_symmetric', "@mediamonks.doctrine.transformable.transformer.zend_crypt_symmetric"]]
+            - [set, ['encrypt', "@mediamonks.doctrine.transformable.transformer.zend_crypt_symmetric"]]
+            - [set, ['hash', "@mediamonks.doctrine.transformable.transformer.zend_crypt_hash"]]
 
     doctrine.transformable.subscriber:
         class: MediaMonks\Doctrine\Transformable\TransformableSubscriber
