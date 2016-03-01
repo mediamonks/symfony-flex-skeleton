@@ -1,0 +1,6 @@
+_sonata_admin:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+
+_sonata_admin_resource:
+  resource: .
+  type: sonata_admin

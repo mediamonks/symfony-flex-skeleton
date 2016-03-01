@@ -8,19 +8,16 @@ _api:
     options:
         expose: true
 
+_admin:
+    resource: "@AppAdminBundle/Resources/config/routing.yml"
+    prefix: /%admin_directory%
+    options:
+        expose: true
+
 # Other bundles
 _nelmio_api_doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
-
-_sonata_admin:
-    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
-    prefix: /%admin_directory%
-
-_sonata_admin_resource:
-  resource: .
-  type: sonata_admin
-  prefix: /%admin_directory%
 
 _sonata_user:
     resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'

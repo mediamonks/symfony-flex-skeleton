@@ -39,6 +39,7 @@ class AppKernel extends Kernel
             new App\CoreBundle\AppCoreBundle(),
             new App\FrontEndBundle\AppFrontEndBundle(),
             new App\ApiBundle\AppApiBundle(),
+            new App\AdminBundle\AppAdminBundle(),
             // Overrides
         ];
 
