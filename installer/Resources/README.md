@@ -1,13 +1,12 @@
-{brand_name} {project_name}
-{brand_name_line}={project_name_line}
+# {brand_name} {project_name}
 
-Assembla
-========
+## Assembla
+
 Name: {assembla_space_name}
 URL: [{assembla_space_url}]({assembla_space_url})
 
-Build Information
-=================
+## Build Information
+
 Created: {build_created}
 Name: {build_name}
 Version: {build_version}

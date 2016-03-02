@@ -37,8 +37,8 @@ class ProjectHandler extends AbstractHandler
 
         $this->write(sprintf('Writing project details to <comment>%s</comment>', File::README));
         File::replaceInFile(
-            ['{brand_name}', '{brand_name_line}', '{project_name}', '{project_name_line}'],
-            [$brandName, str_repeat('=', strlen($brandName)), $projectName, str_repeat('=', strlen($projectName))],
+            ['{brand_name}', '{project_name}'],
+            [$brandName, $projectName],
             File::README
         );
 
