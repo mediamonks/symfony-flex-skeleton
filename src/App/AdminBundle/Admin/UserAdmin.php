@@ -72,10 +72,10 @@ class UserAdmin extends Admin
             'actions',
             [
                 'actions'  => [
-                    'edit'   => ['template' => 'MediaMonksAdminBundle:CRUD:list__action_edit.html.twig'],
-                    'delete' => ['template' => 'MediaMonksAdminBundle:CRUD:list__action_delete.html.twig']
+                    'edit'   => ['template' => 'SonataAdminBundle:CRUD:list__action_edit.html.twig'],
+                    'delete' => ['template' => 'SonataAdminBundle:CRUD:list__action_delete.html.twig']
                 ],
-                'template' => 'MediaMonksAdminBundle:CRUD:list__action.html.twig'
+                'template' => 'SonataAdminBundle:CRUD:list__action.html.twig'
             ]
         );
     }
@@ -149,23 +149,11 @@ class UserAdmin extends Admin
             )
             ->end()
             ->with('Profile')
-            ->add('avatar', 'moxiemanagerfile', ['label' => 'Avatar'])
-            ->add('dateOfBirth', 'birthday', ['required' => false])
+            ->add('avatar', null, ['required' => false, 'label' => 'Avatar'])
             ->add('firstname', null, ['required' => false])
             ->add('lastname', null, ['required' => false])
-            ->add('website', 'url', ['required' => false])
-            ->add('biography', 'text', ['required' => false])
-            ->add(
-                'gender',
-                'sonata_user_gender',
-                [
-                    'required'           => true,
-                    'translation_domain' => $this->getTranslationDomain()
-                ]
-            )
             ->add('locale', 'locale', ['required' => false])
             ->add('timezone', 'timezone', ['required' => false])
-            ->add('phone', null, ['required' => false])
             ->end()
             ->with('Social')
             ->add('facebookUid', null, ['required' => false])
