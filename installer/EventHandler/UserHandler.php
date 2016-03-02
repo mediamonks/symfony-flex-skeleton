@@ -81,7 +81,7 @@ class UserHandler extends AbstractHandler
             $this->write('(make sure to set the visibility to <comment>Private</comment> and the markup format to <comment>markdown</comment>)');
         }
         else {
-            $this->write('Copy the user table below to secure location:');
+            $this->write('Copy the user table below to a secure location:');
         }
 
         $this->writeEmpty();

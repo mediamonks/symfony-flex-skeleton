@@ -26,6 +26,8 @@ class DatabaseHandler extends AbstractHandler
         $this->createDatabase();
 
         $this->createSchema();
+
+        $this->createSessionTable();
     }
 
     protected function createDatabase()
@@ -48,11 +50,24 @@ class DatabaseHandler extends AbstractHandler
 
     protected function createSchema()
     {
-        $this->write('Creating schema');
+        $this->write('Creating database schema from entities');
 
         $this->executeSymfonyCommand('doctrine:schema:update --force');
 
         $this->writeEmpty();
+    }
+
+    protected function createSessionTable()
+    {
+        $this->write('Creating session table');
+
+        $this->getDbConnection()->exec('CREATE TABLE `sessions` (
+  `sess_id` varchar(128) COLLATE utf8_bin NOT NULL,
+  `sess_data` longtext COLLATE utf8_bin NOT NULL,
+  `sess_time` int(10) unsigned NOT NULL,
+  `sess_lifetime` mediumint(9) NOT NULL,
+  PRIMARY KEY (`sess_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;');
     }
 
     protected function getCredentials()
