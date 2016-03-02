@@ -7,7 +7,7 @@ use Installer\Helper\File;
 class DatabaseHandler extends AbstractHandler
 {
     const DB_DEFAULT_HOST = 'norbu.mediamonks.local';
-    const DB_DEFAULT_PORT = null;
+    const DB_DEFAULT_PORT = 3306;
     const DB_DEFAULT_USER = 'root';
     const DB_DEFAULT_PASS = null;
 
@@ -83,7 +83,7 @@ class DatabaseHandler extends AbstractHandler
             $this->testDbCredentials();
         } catch (\Exception $e) {
             $this->writeError($e->getMessage());
-            if (strpos('already exists') !== false) {
+            if (strpos($e->getMessage(), 'already exists') !== false) {
                 goto db_name;
             }
             goto db;
@@ -121,10 +121,7 @@ class DatabaseHandler extends AbstractHandler
     protected function getDbConnection()
     {
         try {
-            $dsn = sprintf('mysql:host=%s;charset=UTF8', $this->host);
-            if (!empty($this->port)) {
-                $dsn = sprintf('mysql:host=%s;port=%d;charset=UTF8', $this->host, $this->port);
-            }
+            $dsn = sprintf('mysql:host=%s;port=%d;charset=UTF8', $this->host, $this->port);
             $dbh = new \PDO($dsn, $this->user, $this->pass);
             $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\Exception $e) {

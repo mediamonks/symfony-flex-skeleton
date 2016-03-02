@@ -40,7 +40,6 @@ class AppKernel extends Kernel
             new App\FrontEndBundle\AppFrontEndBundle(),
             new App\ApiBundle\AppApiBundle(),
             new App\AdminBundle\AppAdminBundle(),
-            // Overrides
         ];
 
         if (in_array($this->getEnvironment(), [ENV_DEVELOPMENT, ENV_TEST], true)) {
