@@ -31,7 +31,6 @@ class AssemblaHandler extends AbstractHandler
             File::writeMetaData('assembla', ['name' => $name, 'url' => $url]);
 
             $this->write(sprintf('Writing Assembla details to <comment>%s</comment>', File::README));
-
             File::replaceInFile(
                 ['{assembla_space_name}', '{assembla_space_url}'],
                 [$name, $url],
@@ -40,12 +39,9 @@ class AssemblaHandler extends AbstractHandler
         }
         else {
             $this->write(sprintf('Removing Assembla details from <comment>%s</comment>', File::README));
-
             File::removeLinesFromFile(File::getFullPath(File::README), range(3, 7));
         }
 
         $this->writeEmpty();
     }
-
-
 }
