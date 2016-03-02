@@ -61,13 +61,15 @@ class DatabaseHandler extends AbstractHandler
     {
         $this->write('Creating session table');
 
-        $this->getDbConnection()->exec('CREATE TABLE `sessions` (
+        $this->getDbConnection(true)->exec('CREATE TABLE `sessions` (
   `sess_id` varchar(128) COLLATE utf8_bin NOT NULL,
   `sess_data` longtext COLLATE utf8_bin NOT NULL,
   `sess_time` int(10) unsigned NOT NULL,
   `sess_lifetime` mediumint(9) NOT NULL,
   PRIMARY KEY (`sess_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;');
+
+        $this->writeEmpty();
     }
 
     protected function getCredentials()
@@ -130,15 +132,19 @@ class DatabaseHandler extends AbstractHandler
     }
 
     /**
+     * @param bool $useDb
      * @return \PDO
      * @throws \Exception
      */
-    protected function getDbConnection()
+    protected function getDbConnection($useDb = false)
     {
         try {
             $dsn = sprintf('mysql:host=%s;port=%d;charset=UTF8', $this->host, $this->port);
             $dbh = new \PDO($dsn, $this->user, $this->pass);
             $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            if($useDb) {
+                $dbh->exec(sprintf('USE %s', $this->name));
+            }
         } catch (\Exception $e) {
             throw new \Exception(sprintf('Could not connect to database server %s: %s', $this->host, $e->getMessage()));
         }
