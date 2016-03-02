@@ -143,7 +143,7 @@ class DatabaseHandler extends AbstractHandler
             $dbh = new \PDO($dsn, $this->user, $this->pass);
             $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             if($useDb) {
-                $dbh->exec(sprintf('USE %s', $this->name));
+                $dbh->exec(sprintf('USE `%s`', $this->name));
             }
         } catch (\Exception $e) {
             throw new \Exception(sprintf('Could not connect to database server %s: %s', $this->host, $e->getMessage()));
