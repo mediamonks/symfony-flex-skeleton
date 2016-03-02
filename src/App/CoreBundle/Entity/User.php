@@ -4,7 +4,6 @@ namespace App\CoreBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-use Sonata\UserBundle\Model\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use MediaMonks\Doctrine\Mapping\Annotation as MediaMonks;
 
