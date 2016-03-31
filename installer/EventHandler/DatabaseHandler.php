@@ -94,13 +94,19 @@ class DatabaseHandler extends AbstractHandler
         }
 
         db_name:
-        $this->name = $this->ask('Please enter the database name: ', $this->name);
+        $this->name = $this->askAndValidate('Please enter the database name: ', function($value) {
+            if(empty($value)) {
+                throw new \Exception('Database name can not be empty');
+            }
+            return $value;
+        }, null, $this->name);
 
         try {
             $this->testDbCredentials();
         } catch (\Exception $e) {
             $this->writeError($e->getMessage());
             if (strpos($e->getMessage(), 'already exists') !== false) {
+                $this->io->write(sprintf('Database with name "%s" already exists', $this->name));
                 goto db_name;
             }
             goto db;

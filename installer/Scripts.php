@@ -5,6 +5,9 @@ namespace Installer;
 use Composer\Script\Event;
 use Installer\EventHandler as Handler;
 
+/**
+ * @author Robert Slootjes <robert@mediamonks.com>
+ */
 class Scripts
 {
     /**

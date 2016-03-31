@@ -14,6 +14,7 @@ class File
     const PARAMETERS_DEVELOPMENT = 'app/config/parameters_development.yml';
     const GITIGNORE = '.gitignore';
     const DEV = 'DEV';
+    const COMPOSER_JSON = 'composer.json';
 
     const INSTALLER = 'installer';
 
