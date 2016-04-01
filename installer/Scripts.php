@@ -41,7 +41,7 @@ class Scripts
         self::executeHandler($event, new Handler\ParameterHandler());
         self::executeHandler($event, new Handler\DatabaseHandler());
         self::executeHandler($event, new Handler\UserHandler());
-        self::executeHandler($event, new Handler\AssetsHandler());
+        //self::executeHandler($event, new Handler\AssetsHandler());
         self::executeHandler($event, new Handler\CleanHandler());
 
         $message = 'MediaMonks Symfony Skeleton was successfully installed, happy coding!';
