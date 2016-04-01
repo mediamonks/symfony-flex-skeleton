@@ -26,14 +26,4 @@ class ScriptsDummy
      */
     public static function installAssets(Event $event) {}
 
-    /**
-     * @param Event $event
-     */
-    public static function installRequirementsFile(Event $event) {}
-
-    /**
-     * @param Event $event
-     */
-    public static function prepareDeploymentTarget(Event $event) {}
-
 }

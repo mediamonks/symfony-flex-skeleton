@@ -12,7 +12,7 @@ class AssemblaHandler extends AbstractHandler
 
         if($this->askConfirmation('Is there an Assembla space for this project? ')) {
             $url = $this->askAndValidate('Please enter your Assembla space url: ', function($value) {
-                if(!preg_match('~^https://www\.assembla\.com/spaces/.+/$~', $value)) {
+                if(!preg_match('~^https://(www|mediamonks)\.assembla\.com/spaces/.+/$~', $value)) {
                     throw new \Exception('Assembla space url should look like https://www.assembla.com/spaces/<project_space_name>/');
                 }
                 return $value;
