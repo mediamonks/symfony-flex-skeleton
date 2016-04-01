@@ -17,9 +17,9 @@ class CleanHandler extends AbstractHandler
 
         // make sure after installation the regular cache clear from symfony will be used after installing a package
         File::replaceInFile(
-            File::COMPOSER_JSON,
             'Installer\\ScriptsDummy',
-            'Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler'
+            'Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler',
+            File::COMPOSER_JSON
         );
 
         // remove files which identify the as being a development clone
