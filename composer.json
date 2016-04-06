@@ -66,8 +66,7 @@
             "Installer\\Scripts::postRootPackageInstall"
         ],
         "post-create-project-cmd": [
-            "Installer\\Scripts::postCreateProjectCmd",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+            "Installer\\Scripts::postCreateProjectCmd"
         ]
     },
     "config": {

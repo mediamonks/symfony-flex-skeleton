@@ -2,7 +2,7 @@
 
 namespace Installer;
 
-use Composer\Script\Event;
+use Composer\Script\CommandEvent;
 use Installer\EventHandler as Handler;
 
 /**
@@ -11,9 +11,9 @@ use Installer\EventHandler as Handler;
 class Scripts
 {
     /**
-     * @param Event $event
+     * @param CommandEvent $event
      */
-    public static function postRootPackageInstall(Event $event)
+    public static function postRootPackageInstall(CommandEvent $event)
     {
         $event->getIO()->write('');
 
@@ -28,9 +28,9 @@ class Scripts
     }
 
     /**
-     * @param Event $event
+     * @param CommandEvent $event
      */
-    public static function postCreateProjectCmd(Event $event)
+    public static function postCreateProjectCmd(CommandEvent $event)
     {
         $event->getIO()->write('');
 
@@ -41,7 +41,7 @@ class Scripts
         self::executeHandler($event, new Handler\ParameterHandler());
         self::executeHandler($event, new Handler\DatabaseHandler());
         self::executeHandler($event, new Handler\UserHandler());
-        //self::executeHandler($event, new Handler\AssetsHandler());
+        self::executeHandler($event, new Handler\AssetsHandler());
         self::executeHandler($event, new Handler\CleanHandler());
 
         $message = 'MediaMonks Symfony Skeleton was successfully installed, happy coding!';
@@ -55,10 +55,10 @@ class Scripts
     }
 
     /**
-     * @param Event $event
+     * @param CommandEvent $event
      * @param Handler\HandlerInterface $handler
      */
-    protected static function executeHandler(Event $event, Handler\HandlerInterface $handler)
+    protected static function executeHandler(CommandEvent $event, Handler\HandlerInterface $handler)
     {
         $handler->setEvent($event)->execute();
     }

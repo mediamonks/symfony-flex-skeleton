@@ -3,13 +3,13 @@
 namespace Installer\EventHandler;
 
 use Installer\Helper\File;
-use Composer\Script\Event;
+use Composer\Script\CommandEvent;
 use Composer\IO\IOInterface;
 
 abstract class AbstractHandler implements HandlerInterface
 {
     /**
-     * @var Event
+     * @var CommandEvent
      */
     protected $event;
 
@@ -19,10 +19,10 @@ abstract class AbstractHandler implements HandlerInterface
     protected $io;
 
     /**
-     * @param Event $event
+     * @param CommandEvent $event
      * @return $this
      */
-    public function setEvent(Event $event)
+    public function setEvent(CommandEvent $event)
     {
         $this->event = $event;
         $this->io = $event->getIO();
