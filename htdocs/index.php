@@ -12,6 +12,8 @@ if(ENVIRONMENT !== ENV_PRODUCTION) {
     Debug::enable();
 }
 
+Request::enableHttpMethodParameterOverride();
+
 $kernel = new AppKernel(ENVIRONMENT, $debug);
 $kernel->loadClassCache();
 
