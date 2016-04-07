@@ -24,6 +24,8 @@ class ProjectHandler extends AbstractHandler
             return $value;
         });
 
+        $this->writeEmpty();
+
         // replace page titles
         $this->write('Writing project title to templates');
 
@@ -32,6 +34,8 @@ class ProjectHandler extends AbstractHandler
 
         $this->replaceParameter($titleCurrent, $titleNew, File::SONATA_ADMIN_CONFIG);
         $this->replaceParameter($titleCurrent, $titleNew, File::FRONT_END_LAYOUT);
+
+        $this->writeEmpty();
 
         // put in meta data so it can be used in other scripts
         $this->write(sprintf('Writing project details to <comment>%s</comment>', File::META));
