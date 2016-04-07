@@ -15,6 +15,8 @@ class File
     const GITIGNORE = '.gitignore';
     const DEV = 'DEV';
     const COMPOSER_JSON = 'composer.json';
+    const SONATA_ADMIN_CONFIG = 'app/config/sonata/admin.yml';
+    const FRONT_END_LAYOUT = 'src/App/FrontEndBundle/Resources/views/layout.html.twig';
 
     const INSTALLER = 'installer';
 

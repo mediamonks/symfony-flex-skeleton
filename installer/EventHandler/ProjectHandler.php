@@ -24,6 +24,15 @@ class ProjectHandler extends AbstractHandler
             return $value;
         });
 
+        // replace page titles
+        $this->write('Writing project title to templates');
+
+        $titleCurrent = 'MediaMonks Symfony Skeleton';
+        $titleNew = sprintf('%s %s', $brandName, $projectName);
+
+        $this->replaceParameter($titleCurrent, $titleNew, File::SONATA_ADMIN_CONFIG);
+        $this->replaceParameter($titleCurrent, $titleNew, File::FRONT_END_LAYOUT);
+
         // put in meta data so it can be used in other scripts
         $this->write(sprintf('Writing project details to <comment>%s</comment>', File::META));
         File::writeMetaData('brand', [
