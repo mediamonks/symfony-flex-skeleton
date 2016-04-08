@@ -1,0 +1,20 @@
+default:
+    extensions:
+        Behat\Symfony2Extension:
+        Behat\MinkExtension:
+            base_url: http://localhost/skeleton-symfony/htdocs/
+            browser_name: firefox
+            default_session: goutte
+            sessions:
+                goutte:
+                    goutte: ~
+                selenium2:
+                    selenium2: ~
+                symfony2:
+                    symfony2: ~
+    suites:
+        front_end:
+            type: symfony_bundle
+            bundle: AppFrontEndBundle
+            contexts:
+                - App\FrontEndBundle\Features\Context\FeatureContext:
