@@ -7,3 +7,5 @@ sonata_user:
     admin:
         user:
             class: App\AdminBundle\Admin\UserAdmin
+        group:
+            class: App\AdminBundle\Admin\GroupAdmin

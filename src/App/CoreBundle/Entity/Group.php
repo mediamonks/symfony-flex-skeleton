@@ -22,4 +22,27 @@ class Group extends BaseGroup
      * @ORM\Column(type="string")
      */
     protected $name;
+
+    /**
+     * @ORM\Column(type="json_array")
+     */
+    protected $roles = [];
+
+    /**
+     * Represents a string representation.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName() ?: '';
+    }
+
+    /**
+     * @return string
+     */
+    public function rolesAsString()
+    {
+        return implode(',', $this->roles);
+    }
 }
