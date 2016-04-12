@@ -87,6 +87,6 @@
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
         "symfony-web-dir": "htdocs",
-        "symfony-assets-install": "relative"
+        "symfony-assets-install": "hard-copy"
     }
 }

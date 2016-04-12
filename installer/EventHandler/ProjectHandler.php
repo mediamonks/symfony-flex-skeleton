@@ -32,8 +32,8 @@ class ProjectHandler extends AbstractHandler
         $titleCurrent = 'MediaMonks Symfony Skeleton';
         $titleNew = sprintf('%s %s', $brandName, $projectName);
 
-        $this->replaceParameter($titleCurrent, $titleNew, File::SONATA_ADMIN_CONFIG);
-        $this->replaceParameter($titleCurrent, $titleNew, File::FRONT_END_LAYOUT);
+        File::replaceInFile($titleCurrent, $titleNew, File::SONATA_ADMIN_CONFIG);
+        File::replaceInFile($titleCurrent, $titleNew, File::FRONT_END_LAYOUT);
 
         $this->writeEmpty();
 
