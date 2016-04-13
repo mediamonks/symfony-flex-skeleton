@@ -19,6 +19,7 @@
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 /vendor/
-/htdocs/bundles/
+!/htdocs/bundles/
+/htdocs/bundles/*
 !/htdocs/bundles/.htaccess
 /DEV
