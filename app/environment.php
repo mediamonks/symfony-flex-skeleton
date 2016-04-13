@@ -5,10 +5,6 @@ define('ENV_TEST', 'test');
 define('ENV_UAT', 'uat');
 define('ENV_PRODUCTION', 'production');
 
-if (empty(@date_default_timezone_get())) {
-    date_default_timezone_set('UTC');
-}
-
 if (!defined('ENVIRONMENT')) {
     if (($environment = getenv('ENVIRONMENT')) == false || getenv('ENVIRONMENT') == ENV_PRODUCTION) {
         if (php_sapi_name() == 'cli') {
