@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CoreBundle\Entity;
+namespace App\CoreBundle\Manager;
 
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use FOS\UserBundle\Model\UserInterface;
