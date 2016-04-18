@@ -1,5 +1,5 @@
 parameters:
-    fos_user.user_manager.class: App\CoreBundle\Entity\UserManager
+    fos_user.user_manager.class: App\CoreBundle\Manager\UserManager
 
 services:
 
