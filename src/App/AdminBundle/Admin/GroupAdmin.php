@@ -13,7 +13,6 @@ class GroupAdmin extends BaseGroupAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
-        ;
+            ->addIdentifier('name');
     }
 }
