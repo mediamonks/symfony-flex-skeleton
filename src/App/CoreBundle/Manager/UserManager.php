@@ -17,7 +17,7 @@ class UserManager extends BaseUserManager
      */
     public function findUserByEmail($email)
     {
-        return $this->findUserBy(['emailCanonical' => Hash::compute('sha256',$email)]);
+        return $this->findUserBy(['emailCanonical' => Hash::compute('sha256', $email)]);
     }
 
     /**

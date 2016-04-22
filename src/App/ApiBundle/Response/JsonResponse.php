@@ -29,8 +29,8 @@ class JsonResponse extends BaseJsonResponse
 
         $this->setData($content);
 
-        $ret = sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText)."\r\n".
-            $this->headers."\r\n".
+        $ret = sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText) . "\r\n" .
+            $this->headers . "\r\n" .
             $this->getContent();
 
         $this->setContent($content);
