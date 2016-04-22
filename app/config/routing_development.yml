@@ -10,9 +10,9 @@ _errors:
     resource: "@TwigBundle/Resources/config/routing/errors.xml"
     prefix:   /_error
 
-_main:
-    resource: routing.yml
-
 _nelmio_api_doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
+
+_main:
+    resource: routing.yml
