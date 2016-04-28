@@ -37,3 +37,12 @@ _sonata_user_register:
 _sonata_user_change_password:
     resource: "@SonataUserBundle/Resources/config/routing/sonata_change_password_1.xml"
     prefix: /profile
+
+# Always keep default route as a last one
+# Default route for Front-end, prevents 404 Not found for Front-end routes.
+# Ignores admin and api directories
+default:
+    path:     /{path}
+    defaults: { _controller: AppFrontEndBundle:Index:index }
+    requirements:
+        path: "^(?!%admin_directory%|api).+"
