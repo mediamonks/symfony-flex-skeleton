@@ -2,11 +2,11 @@
 
 namespace Installer\EventHandler;
 
-use Composer\Script\CommandEvent;
+use Composer\Script\Event;
 
 interface HandlerInterface
 {
-    public function setEvent(CommandEvent $event);
+    public function setEvent(Event $event);
 
     public function execute();
 }

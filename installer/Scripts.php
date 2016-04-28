@@ -2,7 +2,7 @@
 
 namespace Installer;
 
-use Composer\Script\CommandEvent;
+use Composer\Script\Event;
 use Installer\EventHandler as Handler;
 
 /**
@@ -11,9 +11,9 @@ use Installer\EventHandler as Handler;
 class Scripts
 {
     /**
-     * @param CommandEvent $event
+     * @param Event $event
      */
-    public static function postRootPackageInstall(CommandEvent $event)
+    public static function postRootPackageInstall(Event $event)
     {
         $event->getIO()->write('');
 
@@ -28,9 +28,9 @@ class Scripts
     }
 
     /**
-     * @param CommandEvent $event
+     * @param Event $event
      */
-    public static function postCreateProjectCmd(CommandEvent $event)
+    public static function postCreateProjectCmd(Event $event)
     {
         $event->getIO()->write('');
 
@@ -55,10 +55,10 @@ class Scripts
     }
 
     /**
-     * @param CommandEvent $event
+     * @param Event $event
      * @param Handler\HandlerInterface $handler
      */
-    protected static function executeHandler(CommandEvent $event, Handler\HandlerInterface $handler)
+    protected static function executeHandler(Event $event, Handler\HandlerInterface $handler)
     {
         $handler->setEvent($event)->execute();
     }
