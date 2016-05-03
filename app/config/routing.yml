@@ -19,24 +19,25 @@ _sonata_user:
     resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
     prefix: /%admin_directory%
 
-_sonata_user_security:
-    resource: "@SonataUserBundle/Resources/config/routing/sonata_security_1.xml"
+#_sonata_user_security:
+#    resource: "@SonataUserBundle/Resources/config/routing/sonata_security_1.xml"
+#    prefix: /%admin_directory%
 
 _sonata_user_resetting:
     resource: "@SonataUserBundle/Resources/config/routing/sonata_resetting_1.xml"
-    prefix: /resetting
+    prefix: /%admin_directory%/resetting
 
-_sonata_user_profile:
-    resource: "@SonataUserBundle/Resources/config/routing/sonata_profile_1.xml"
-    prefix: /profile
+#_sonata_user_profile:
+#    resource: "@SonataUserBundle/Resources/config/routing/sonata_profile_1.xml"
+#    prefix: /%admin_directory%/profile
 
-_sonata_user_register:
-    resource: "@SonataUserBundle/Resources/config/routing/sonata_registration_1.xml"
-    prefix: /register
+#_sonata_user_register:
+#    resource: "@SonataUserBundle/Resources/config/routing/sonata_registration_1.xml"
+#    prefix: /%admin_directory%/register
 
-_sonata_user_change_password:
-    resource: "@SonataUserBundle/Resources/config/routing/sonata_change_password_1.xml"
-    prefix: /profile
+#_sonata_user_change_password:
+#    resource: "@SonataUserBundle/Resources/config/routing/sonata_change_password_1.xml"
+#    prefix: /%admin_directory%/profile
 
 # Always keep default route as a last one
 # Default route for Front-end, prevents 404 Not found for Front-end routes.
