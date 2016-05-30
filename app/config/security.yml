@@ -33,6 +33,14 @@ security:
                 path:           /%admin_directory%/logout
             anonymous:          ~
 
+        api:
+            pattern: ^/api(.*)
+            stateless: ~
+            #anonymous: ~
+            guard:
+                authenticators:
+                    - api.security.jwt_authenticator
+
     access_control:
         - { path: ^/%admin_directory%/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%admin_directory%/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
