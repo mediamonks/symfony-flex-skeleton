@@ -3,7 +3,7 @@
 namespace App\ApiBundle\Security\Authenticator;
 
 use App\CoreBundle\Security\JWT\JWTManagerInterface;
-use Doctrine\ORM\EntityManager;
+use FOS\UserBundle\Model\UserManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -24,18 +24,18 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
     private $jwtManager;
 
     /**
-     * @var EntityManager
+     * @var UserManager
      */
-    private $entityManager;
+    private $userManager;
 
     /**
      * @param JWTManagerInterface $jwtManager
-     * @param EntityManager $entityManager
+     * @param UserManager $userManager
      */
-    public function __construct(JWTManagerInterface $jwtManager, EntityManager $entityManager)
+    public function __construct(JWTManagerInterface $jwtManager, UserManager $userManager)
     {
-        $this->jwtManager    = $jwtManager;
-        $this->entityManager = $entityManager;
+        $this->jwtManager  = $jwtManager;
+        $this->userManager = $userManager;
     }
 
     /**
@@ -68,7 +68,7 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
         if (empty($payload['id'])) {
             return null;
         }
-        return $this->entityManager->getRepository('AppCoreBundle:User')->find($payload['id']);
+        return $this->userManager->findUserBy(['id' => $payload['id']]);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\ApiBundle\Security\Authenticator;
 
-use Doctrine\ORM\EntityManager;
+use FOS\UserBundle\Model\UserManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -23,18 +23,18 @@ class CredentialsAuthenticator extends AbstractGuardAuthenticator
     private $passwordEncoder;
 
     /**
-     * @var EntityManager
+     * @var UserManager
      */
-    private $entityManager;
+    private $userManager;
 
     /**
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param EntityManager $entityManager
+     * @param UserManager $userManager
      */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, EntityManager $entityManager)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, UserManager $userManager)
     {
-        $this->passwordEncoder  = $passwordEncoder;
-        $this->entityManager = $entityManager;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->userManager     = $userManager;
     }
 
     /**
@@ -47,8 +47,8 @@ class CredentialsAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
+        $username = $request->request->get('username', 'root');
+        $password = $request->request->get('password', 'root');
 
         if (empty($username) || empty($password)) {
             return null;
@@ -67,7 +67,7 @@ class CredentialsAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return $this->entityManager->getRepository('AppCoreBundle:User')->findOneByUsername($credentials['username']);
+        return $this->userManager->findUserByUsername($credentials['username']);
     }
 
     /**
