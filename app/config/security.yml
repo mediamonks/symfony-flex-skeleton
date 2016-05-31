@@ -48,5 +48,3 @@ security:
         - { path: ^/%admin_directory%/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%admin_directory%/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%admin_directory%/(.*), role: ROLE_ADMIN }
-        #- { path: ^/api/security/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/(.*), role: ROLE_ADMIN }
