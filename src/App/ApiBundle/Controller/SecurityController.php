@@ -48,15 +48,6 @@ class SecurityController
     {
         $user = $this->getCurrentUser();
 
-        if(is_null($user->getToken())) {
-            $user->updateToken();
-        }
-        if(is_null($user->getJwtVerifier())) {
-            $user->updateJwtVerifier();
-        }
-
-        $this->entityManager->flush($user);
-
         return $this->jwtManager->sign([
             'id' => $user->getId(),
             'token' => $user->getToken(),
