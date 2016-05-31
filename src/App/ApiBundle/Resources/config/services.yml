@@ -16,3 +16,4 @@ services:
         arguments:
             - '@security.token_storage'
             - '@core.security.jwt_manager'
+            - '@doctrine.orm.entity_manager'

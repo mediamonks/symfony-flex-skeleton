@@ -93,6 +93,11 @@ class User extends BaseUser
     protected $passwordRequestedAt;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $jwtVerifier;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Group")
      * @ORM\JoinTable(name="users_groups",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
@@ -190,6 +195,23 @@ class User extends BaseUser
      * @ORM\Column(type="string", nullable=true)
      */
     protected $avatar;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->updateToken();
+    }
+
+    public function updateToken($length = 20)
+    {
+        $this->token = sha1(random_bytes($length));
+    }
+
+    public function updateJwtVerifier()
+    {
+        $this->jwtVerifier = time();
+    }
 
     /**
      * @param string $email
@@ -589,6 +611,24 @@ class User extends BaseUser
     {
         $this->setRoles($roles);
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJwtVerifier()
+    {
+        return $this->jwtVerifier;
+    }
+
+    /**
+     * @param mixed $jwtVerifier
+     * @return User
+     */
+    public function setJwtVerifier($jwtVerifier)
+    {
+        $this->jwtVerifier = $jwtVerifier;
         return $this;
     }
 }

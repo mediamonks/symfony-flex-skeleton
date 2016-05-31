@@ -51,10 +51,16 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
         } elseif ($request->headers->has(self::KEY_ACCESS_TOKEN_HEADER)) {
             $accessToken = $request->headers->get(self::KEY_ACCESS_TOKEN_HEADER);
         } else {
-            return;
+            return null;
         }
 
-        return $accessToken;
+        $payload = $this->jwtManager->parse($accessToken);
+
+        if (empty($payload['id']) || empty($payload['token']) || empty($payload['verifier'])) {
+            return null;
+        }
+
+        return $payload;
     }
 
     /**
@@ -64,11 +70,7 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $payload = $this->jwtManager->parse($credentials);
-        if (empty($payload['id'])) {
-            return null;
-        }
-        return $this->userManager->findUserBy(['id' => $payload['id']]);
+        return $this->userManager->findUserBy(['id' => $credentials['id']]);
     }
 
     /**
@@ -78,6 +80,12 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
+        if(!hash_equals($user->getToken(), $credentials['token'])) {
+            return false;
+        }
+        if($user->getJwtVerifier() > $credentials['verifier']) {
+            return false;
+        }
         return true;
     }
 

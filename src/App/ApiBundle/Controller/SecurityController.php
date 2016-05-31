@@ -2,7 +2,9 @@
 
 namespace App\ApiBundle\Controller;
 
+use App\CoreBundle\Entity\User;
 use App\CoreBundle\Security\JWT\JWTManagerInterface;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Sensio;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -22,23 +24,44 @@ class SecurityController
     protected $jwtManager;
 
     /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
      * @param TokenStorage $tokenStorage
      * @param JWTManagerInterface $jwtManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(TokenStorage $tokenStorage, JWTManagerInterface $jwtManager)
+    public function __construct(TokenStorage $tokenStorage, JWTManagerInterface $jwtManager, EntityManager $entityManager)
     {
         $this->tokenStorage = $tokenStorage;
         $this->jwtManager   = $jwtManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @Sensio\Route("/login", name="api_security_login")
-     *
+     * @Sensio\Method({"POST"})
      */
     public function loginAction()
     {
+        $user = $this->getCurrentUser();
+
+        if(is_null($user->getToken())) {
+            $user->updateToken();
+        }
+        if(is_null($user->getJwtVerifier())) {
+            $user->updateJwtVerifier();
+        }
+
+        $this->entityManager->flush($user);
+
         return $this->jwtManager->sign([
-            'id' => $this->tokenStorage->getToken()->getUser()->getId()
+            'id' => $user->getId(),
+            'token' => $user->getToken(),
+            'verifier' => $user->getJwtVerifier(),
+            'username' => $user->getUsername()
         ]);
     }
 
@@ -48,6 +71,16 @@ class SecurityController
      */
     public function logoutAction()
     {
-        // @todo invalidate all previous tokens by changing the token verifier
+        $user = $this->getCurrentUser();
+        $user->updateJwtVerifier();
+        $this->entityManager->flush($user);
+    }
+
+    /**
+     * @return User
+     */
+    protected function getCurrentUser()
+    {
+        return $this->tokenStorage->getToken()->getUser();
     }
 }

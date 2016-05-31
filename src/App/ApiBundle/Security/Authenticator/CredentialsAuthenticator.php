@@ -47,8 +47,8 @@ class CredentialsAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
-        $username = $request->request->get('username', 'root');
-        $password = $request->request->get('password', 'root');
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
 
         if (empty($username) || empty($password)) {
             return null;
