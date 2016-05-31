@@ -20,6 +20,6 @@ class Controller extends BaseController
      */
     protected function getEntityManager()
     {
-        return $this->get('doctrine')->getEntityManager();
+        return $this->get('doctrine')->getManager();
     }
 }
