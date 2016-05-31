@@ -1,11 +1,11 @@
 <?php
 
-namespace App\ApiBundle\Security;
+namespace App\ApiBundle\Security\Authenticator;
 
-use App\CoreBundle\Security\TokenManagerInterface;
+use App\CoreBundle\Security\JWT\JWTManagerInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -19,22 +19,22 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
     const KEY_ACCESS_TOKEN_HEADER = 'X-AccessToken';
 
     /**
-     * @var TokenManagerInterface
+     * @var JWTManagerInterface
      */
-    private $tokenManager;
+    private $jwtManager;
 
     /**
      * @var EntityManager
      */
-    private $entityManager; // @todo switch to user repository here
+    private $entityManager;
 
     /**
-     * @param TokenManagerInterface $tokenManager
+     * @param JWTManagerInterface $jwtManager
      * @param EntityManager $entityManager
      */
-    public function __construct(TokenManagerInterface $tokenManager, EntityManager $entityManager)
+    public function __construct(JWTManagerInterface $jwtManager, EntityManager $entityManager)
     {
-        $this->tokenManager = $tokenManager;
+        $this->jwtManager    = $jwtManager;
         $this->entityManager = $entityManager;
     }
 
@@ -44,17 +44,14 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        if($request->request->has(self::KEY_ACCESS_TOKEN)) {
+        if ($request->request->has(self::KEY_ACCESS_TOKEN)) {
             $accessToken = $request->request->get(self::KEY_ACCESS_TOKEN);
-        }
-        elseif($request->query->has(self::KEY_ACCESS_TOKEN)) {
+        } elseif ($request->query->has(self::KEY_ACCESS_TOKEN)) {
             $accessToken = $request->query->get(self::KEY_ACCESS_TOKEN);
-        }
-        elseif($request->headers->has(self::KEY_ACCESS_TOKEN_HEADER)) {
+        } elseif ($request->headers->has(self::KEY_ACCESS_TOKEN_HEADER)) {
             $accessToken = $request->headers->get(self::KEY_ACCESS_TOKEN_HEADER);
-        }
-        else {
-            return null;
+        } else {
+            return;
         }
 
         return $accessToken;
@@ -67,8 +64,11 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        // @todo extract token
-        return $this->entityManager->getRepository('AppCoreBundle:User')->findOneByUsername('root');
+        $payload = $this->jwtManager->parse($credentials);
+        if (empty($payload['id'])) {
+            return null;
+        }
+        return $this->entityManager->getRepository('AppCoreBundle:User')->find($payload['id']);
     }
 
     /**
@@ -88,8 +88,10 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        // the exception is picked up by the rest api bundle so we don't have to do anything in here
-        return null;
+        throw new AccessDeniedHttpException(
+            strtr($exception->getMessageKey(), $exception->getMessageData()),
+            $exception
+        );
     }
 
     /**
@@ -100,7 +102,7 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return null;
+        return;
     }
 
     /**
@@ -111,8 +113,7 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        // @todo throw exception so rest api bundle will pick it up?
-        throw new UnauthorizedHttpException('A valid access token is required');
+        throw new UnauthorizedHttpException(null, 'A valid access token is required');
     }
 
     /**

@@ -35,14 +35,18 @@ security:
 
         api:
             pattern: ^/api(.*)
+            anonymous: ~
             stateless: ~
-            #anonymous: ~
             guard:
                 authenticators:
-                    - api.security.jwt_authenticator
+                    - api.security.authenticator.credentials_authenticator
+                    - api.security.authenticator.jwt_authenticator
+                entry_point: 'api.security.authenticator.jwt_authenticator'
 
     access_control:
         - { path: ^/%admin_directory%/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%admin_directory%/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%admin_directory%/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%admin_directory%/(.*), role: ROLE_ADMIN }
+        #- { path: ^/api/security/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/(.*), role: ROLE_ADMIN }

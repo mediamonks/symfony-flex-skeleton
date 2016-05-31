@@ -1,6 +1,18 @@
 services:
-    api.security.jwt_authenticator:
-        class: App\ApiBundle\Security\JWTAuthenticator
+    api.security.authenticator.credentials_authenticator:
+        class: App\ApiBundle\Security\Authenticator\CredentialsAuthenticator
+        arguments:
+            - '@security.user_password_encoder.generic'
+            - '@doctrine.orm.entity_manager'
+
+    api.security.authenticator.jwt_authenticator:
+        class: App\ApiBundle\Security\Authenticator\JWTAuthenticator
         arguments:
             - '@core.security.jwt_manager'
             - '@doctrine.orm.entity_manager'
+
+    api.controller.security:
+        class: App\ApiBundle\Controller\SecurityController
+        arguments:
+            - '@security.token_storage'
+            - '@core.security.jwt_manager'
