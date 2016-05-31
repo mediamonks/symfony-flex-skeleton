@@ -3,19 +3,12 @@ parameters:
 
 services:
 
-    pdo:
-        class: PDO
-        arguments:
-            dsn: "mysql:host=%database_host%;port=%database_port%;dbname=%database_name%"
-            user: "%database_user%"
-            password: "%database_password%"
-        calls:
-            - [setAttribute, [3, 2]] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
-
     session.handler.pdo:
         class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         public:    false
-        arguments: ["@pdo"]
+        arguments:
+            - 'mysql:host=%database_host%;port=%database_port%;dbname=%database_name%'
+            - { db_username: %database_user%, db_password: %database_password% }
 
     zend.crypt.symmetric_encrypter:
         class: Zend\Crypt\Symmetric\Mcrypt
