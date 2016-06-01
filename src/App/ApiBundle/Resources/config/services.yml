@@ -11,8 +11,8 @@ services:
             - '@core.security.jwt_manager'
             - '@fos_user.user_manager'
 
-    api.controller.security:
-        class: App\ApiBundle\Controller\SecurityController
+    api.controller.auth:
+        class: App\ApiBundle\Controller\AuthController
         arguments:
             - '@security.token_storage'
             - '@core.security.jwt_manager'
