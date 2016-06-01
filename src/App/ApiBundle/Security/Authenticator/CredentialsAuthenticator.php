@@ -15,7 +15,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class CredentialsAuthenticator extends AbstractGuardAuthenticator
 {
-    const ROUTE_NAME = 'api_security_login';
+    const ROUTE_NAME = 'api_auth_authenticate';
 
     /**
      * @var UserPasswordEncoderInterface

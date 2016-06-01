@@ -16,7 +16,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 class JWTAuthenticator extends AbstractGuardAuthenticator
 {
     const KEY_ACCESS_TOKEN = 'accessToken';
-    const KEY_ACCESS_TOKEN_HEADER = 'X-AccessToken';
+    const KEY_ACCESS_TOKEN_HEADER = 'Authorization';
 
     /**
      * @var JWTManagerInterface
@@ -49,7 +49,7 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
         } elseif ($request->query->has(self::KEY_ACCESS_TOKEN)) {
             $accessToken = $request->query->get(self::KEY_ACCESS_TOKEN);
         } elseif ($request->headers->has(self::KEY_ACCESS_TOKEN_HEADER)) {
-            $accessToken = $request->headers->get(self::KEY_ACCESS_TOKEN_HEADER);
+            $accessToken = preg_replace('/^Bearer: /', '', $request->headers->get(self::KEY_ACCESS_TOKEN_HEADER));
         } else {
             return null;
         }

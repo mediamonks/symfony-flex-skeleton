@@ -2,4 +2,4 @@ services:
     core.security.jwt_manager:
         class: App\CoreBundle\Security\JWT\FirebaseJWTManager
         arguments:
-            - 'testing'
+            - '%secret%'
