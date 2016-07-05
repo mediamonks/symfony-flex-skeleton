@@ -6,6 +6,8 @@ use \Firebase\JWT\JWT;
 
 class FirebaseJWTManager implements JWTManagerInterface
 {
+    const DEFAULT_ALGORITHM = 'HS256';
+
     /**
      * @var string
      */
@@ -18,8 +20,9 @@ class FirebaseJWTManager implements JWTManagerInterface
 
     /**
      * @param $key
+     * @param string $algorithm
      */
-    public function __construct($key, $algorithm = 'HS256')
+    public function __construct($key, $algorithm = self::DEFAULT_ALGORITHM)
     {
         $this->key       = $key;
         $this->algorithm = $algorithm;

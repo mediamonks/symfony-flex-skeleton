@@ -196,6 +196,22 @@ class UserAdmin extends Admin
      */
     public function preUpdate($user)
     {
+        $this->updatePassword($user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prePersist($user)
+    {
+        $this->updatePassword($user);
+    }
+
+    /**
+     * @param $user
+     */
+    protected function updatePassword($user)
+    {
         $this->getUserManager()->updateCanonicalFields($user);
         $this->getUserManager()->updatePassword($user);
     }

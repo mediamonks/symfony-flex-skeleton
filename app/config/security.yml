@@ -28,6 +28,8 @@ security:
                 use_forward:    false
                 check_path:     /%admin_directory%/login_check
                 failure_path:   null
+                always_use_default_target_path: true
+                default_target_path: /%admin_directory%/dashboard
             logout:
                 path:           /%admin_directory%/logout
             anonymous:          ~

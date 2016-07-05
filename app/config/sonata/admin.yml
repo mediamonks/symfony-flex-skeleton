@@ -1,6 +1,6 @@
 sonata_admin:
     title: "MediaMonks Symfony Skeleton"
     security:
-        handler: sonata.admin.security.handler.noop
+        handler: sonata.admin.security.handler.role
 
 sonata_user:
