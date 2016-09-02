@@ -17,7 +17,7 @@ set_time_limit(0);
 $loader = require __DIR__ . '/../app/autoload.php';
 
 $input = new ArgvInput();
-$env   = $input->getParameterOption(['--env', '-e'], getenv('SYMFONY_ENV') ?: ENV_DEVELOPMENT);
+$env   = $input->getParameterOption(['--env', '-e'], getenv('ENVIRONMENT') ?: ENV_DEVELOPMENT);
 $debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']) && $env !== ENV_PRODUCTION;
 
 if ($debug) {
