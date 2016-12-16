@@ -8,9 +8,9 @@ framework:
         strict_requirements: true
     profiler: { only_exceptions: false }
     validation:
-        cache: framework.cache.apcu
+        cache: ~
     serializer:
-        cache: framework.cache.apcu
+        cache: ~
 
 web_profiler:
     toolbar: true
