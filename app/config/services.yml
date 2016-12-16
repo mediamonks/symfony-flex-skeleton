@@ -2,6 +2,13 @@ parameters:
     fos_user.user_manager.class: App\CoreBundle\Manager\UserManager
 
 services:
+    framework.cache.apcu:
+        class: Symfony\Component\Validator\Mapping\Cache\DoctrineCache
+        arguments:
+            - "@doctrine_cache.apcu"
+
+    doctrine_cache.apcu:
+        class: Doctrine\Common\Cache\ApcuCache
 
     session.handler.pdo:
         class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler

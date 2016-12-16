@@ -1,5 +1,5 @@
 imports:
-    - { resource: config_development.yml }
+    - { resource: config_local.yml }
 
 framework:
     test: ~
