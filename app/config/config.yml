@@ -14,8 +14,12 @@ framework:
         strict_requirements: ~
     form:            ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
-    serializer:      { enable_annotations: true }
+    validation:
+        enable_annotations: true
+        cache: validator.mapping.cache.apcu
+    serializer:
+        enable_annotations: true
+        cache: serializer.mapping.cache.apcu
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
@@ -25,6 +29,19 @@ framework:
         handler_id:  session.handler.pdo
     fragments:       ~
     http_method_override: true
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        console:
+            type:  console
 
 twig:
     debug:            "%kernel.debug%"

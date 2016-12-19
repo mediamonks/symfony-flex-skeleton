@@ -23,14 +23,14 @@ class UserHandler extends AbstractHandler
 
         $this->users[] = $this->createUser(
             $project['sanatized'] . 'SuperAdmin',
-            sprintf('super-admin@%s.dev', strtolower($brand['sanatized'])),
+            sprintf('super-admin@%s.local', strtolower($brand['sanatized'])),
             'super admin',
             ['ROLE_SUPER_ADMIN']
         );
 
         $this->users[] = $this->createUser(
             $project['sanatized'] . 'Admin',
-            sprintf('admin@%s.dev', strtolower($brand['sanatized'])),
+            sprintf('admin@%s.local', strtolower($brand['sanatized'])),
             'admin'
         );
 

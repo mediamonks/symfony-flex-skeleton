@@ -114,11 +114,11 @@ class DatabaseHandler extends AbstractHandler
 
         $this->writeEmpty();
 
-        $this->replaceParameter('database_host', $this->host, File::PARAMETERS_DEVELOPMENT);
-        $this->replaceParameter('database_port', $this->port, File::PARAMETERS_DEVELOPMENT);
-        $this->replaceParameter('database_user', $this->user, File::PARAMETERS_DEVELOPMENT);
-        $this->replaceParameter('database_password', $this->pass, File::PARAMETERS_DEVELOPMENT);
-        $this->replaceParameter('database_name', $this->name, File::PARAMETERS_DEVELOPMENT);
+        $this->replaceParameter('database_host', $this->host, File::PARAMETERS_LOCAL);
+        $this->replaceParameter('database_port', $this->port, File::PARAMETERS_LOCAL);
+        $this->replaceParameter('database_user', $this->user, File::PARAMETERS_LOCAL);
+        $this->replaceParameter('database_password', $this->pass, File::PARAMETERS_LOCAL);
+        $this->replaceParameter('database_name', $this->name, File::PARAMETERS_LOCAL);
 
         $this->writeEmpty();
     }

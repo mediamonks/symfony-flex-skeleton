@@ -1,18 +1,26 @@
 imports:
     - { resource: config.yml }
-    - { resource: parameters_uat.yml }
+    - { resource: parameters_local.yml }
 
 framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_local.yml"
+        strict_requirements: true
+    profiler: { only_exceptions: false }
     validation:
-        cache: validator.mapping.cache.apc
+        cache: ~
     serializer:
-        cache: serializer.mapping.cache.apc
+        cache: ~
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
 
 doctrine:
     orm:
-        metadata_cache_driver: apc
-        result_cache_driver: apc
-        query_cache_driver: apc
+        metadata_cache_driver: array
+        result_cache_driver: array
+        query_cache_driver: array
 
 monolog:
     handlers:

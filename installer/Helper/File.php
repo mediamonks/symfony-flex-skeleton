@@ -11,7 +11,7 @@ class File
     const README_DIST = 'installer/Resources/README.md';
     const PARAMETERS = 'app/config/parameters.yml';
     const PARAMETERS_DIST = 'app/config/parameters.yml.dist';
-    const PARAMETERS_DEVELOPMENT = 'app/config/parameters_development.yml';
+    const PARAMETERS_LOCAL = 'app/config/parameters_local.yml';
     const GITIGNORE = '.gitignore';
     const DEV = 'DEV';
     const COMPOSER_JSON = 'composer.json';
