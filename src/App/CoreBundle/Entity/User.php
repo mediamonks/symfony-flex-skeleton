@@ -27,18 +27,18 @@ class User extends BaseUser
     protected $email;
 
     /**
-     * @ORM\Column(type="string", nullable=true, unique=true)
+     * @ORM\Column(type="string", nullable=true, unique=true, length="180")
      * @MediaMonks\Transformable(name="hash")
      */
     protected $emailCanonical;
 
     /**
-     * @ORM\Column(type="string", nullable=true, unique=true)
+     * @ORM\Column(type="string", nullable=true, unique=true, length="180")
      */
     protected $username;
 
     /**
-     * @ORM\Column(type="string", nullable=true, unique=true)
+     * @ORM\Column(type="string", nullable=true, unique=true, length="180")
      */
     protected $usernameCanonical;
 
@@ -83,7 +83,7 @@ class User extends BaseUser
     protected $lastLogin;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, length="180")
      */
     protected $confirmationToken;
 
