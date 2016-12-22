@@ -9,7 +9,7 @@ use MediaMonks\Doctrine\Mapping\Annotation as MediaMonks;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="users")
+ * @ORM\Table(name="users", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
 class User extends BaseUser
 {
