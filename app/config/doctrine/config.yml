@@ -24,12 +24,10 @@ doctrine:
         mappings:
             gedmo_loggable:
                 type: annotation
-                prefix: Gedmo\Loggable\Entity
-                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+                prefix: App\CoreBundle\Entity
+                dir: "%kernel.root_dir%/../src/App/CoreBundle/Entity"
                 alias: GedmoLoggable
                 is_bundle: false
-            #AppCoreBundle: ~
-            #SonataUserBundle: ~
         filters:
             softdeleteable:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
