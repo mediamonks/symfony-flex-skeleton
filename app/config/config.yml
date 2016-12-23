@@ -16,10 +16,10 @@ framework:
     csrf_protection: ~
     validation:
         enable_annotations: true
-        cache: validator.mapping.cache.apcu
+        cache: framework.cache.apcu
     serializer:
         enable_annotations: true
-        cache: serializer.mapping.cache.apcu
+        cache: framework.cache.apcu
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
