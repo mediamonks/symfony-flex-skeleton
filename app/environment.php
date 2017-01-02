@@ -37,5 +37,8 @@ if (!defined('ENVIRONMENT')) {
             $environment = ENV_PRODUCTION;
         }
     }
+    if ($environment === 'uat') {
+        $environment = 'testing';
+    }
     define('ENVIRONMENT', $environment);
 }
