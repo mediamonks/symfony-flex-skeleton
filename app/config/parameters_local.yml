@@ -2,6 +2,6 @@ parameters:
     database_driver: pdo_mysql
     database_host: norbu.mediamonks.local
     database_port: 3306
-    database_name: skeleton-symfony
+    database_name: skeleton-symfony-feature-symfony-3
     database_user: root
     database_password: null

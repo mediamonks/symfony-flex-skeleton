@@ -2,14 +2,13 @@
 
 namespace App\CoreBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use MediaMonks\Doctrine\Mapping\Annotation as MediaMonks;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\CoreBundle\Repository\UserRepository")
  * @ORM\Table(name="users")
  */
 class User implements UserInterface, \Serializable
@@ -37,11 +36,6 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", nullable=true, unique=true, length=180)
      */
     protected $username;
-
-    /**
-     * @ORM\Column(type="string", nullable=true, unique=true, length=180)
-     */
-    protected $usernameCanonical;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -84,28 +78,9 @@ class User implements UserInterface, \Serializable
     protected $lastLogin;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=180)
-     */
-    protected $confirmationToken;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $passwordRequestedAt;
-
-    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $jwtVerifier;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Group")
-     * @ORM\JoinTable(name="users_groups",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     * )
-     */
-    protected $groups;
 
     /**
      * @ORM\Column(type="boolean")
@@ -197,32 +172,59 @@ class User implements UserInterface, \Serializable
      */
     protected $avatar;
 
-    public function __construct()
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
-        parent::__construct();
-
-        $this->updateToken();
-    }
-
-    public function updateToken($length = 20)
-    {
-        $this->token = sha1(random_bytes($length));
-    }
-
-    public function updateJwtVerifier()
-    {
-        $this->jwtVerifier = time();
+        return $this->id;
     }
 
     /**
-     * @param string $email
-     * @return $this
+     * @param mixed $id
+     * @return User
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     * @return User
      */
     public function setEmail($email)
     {
         $this->email = $email;
 
-        $this->setEmailCanonical($email);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmailCanonical()
+    {
+        return $this->emailCanonical;
+    }
+
+    /**
+     * @param mixed $emailCanonical
+     * @return User
+     */
+    public function setEmailCanonical($emailCanonical)
+    {
+        $this->emailCanonical = $emailCanonical;
 
         return $this;
     }
@@ -230,18 +232,18 @@ class User implements UserInterface, \Serializable
     /**
      * @return mixed
      */
-    public function getConfirmationToken()
+    public function getUsername()
     {
-        return $this->confirmationToken;
+        return $this->username;
     }
 
     /**
-     * @param mixed $confirmationToken
+     * @param mixed $username
      * @return User
      */
-    public function setConfirmationToken($confirmationToken)
+    public function setUsername($username)
     {
-        $this->confirmationToken = $confirmationToken;
+        $this->username = $username;
 
         return $this;
     }
@@ -249,75 +251,18 @@ class User implements UserInterface, \Serializable
     /**
      * @return mixed
      */
-    public function getExpired()
+    public function getUsernameCanonical()
     {
-        return $this->expired;
+        return $this->usernameCanonical;
     }
 
     /**
-     * @param mixed $expired
+     * @param mixed $usernameCanonical
      * @return User
      */
-    public function setExpired($expired)
+    public function setUsernameCanonical($usernameCanonical)
     {
-        $this->expired = $expired;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFacebookData()
-    {
-        return $this->facebookData;
-    }
-
-    /**
-     * @param mixed $facebookData
-     * @return User
-     */
-    public function setFacebookData($facebookData)
-    {
-        $this->facebookData = $facebookData;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFacebookName()
-    {
-        return $this->facebookName;
-    }
-
-    /**
-     * @param mixed $facebookName
-     * @return User
-     */
-    public function setFacebookName($facebookName)
-    {
-        $this->facebookName = $facebookName;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFacebookUid()
-    {
-        return $this->facebookUid;
-    }
-
-    /**
-     * @param mixed $facebookUid
-     * @return User
-     */
-    public function setFacebookUid($facebookUid)
-    {
-        $this->facebookUid = $facebookUid;
+        $this->usernameCanonical = $usernameCanonical;
 
         return $this;
     }
@@ -337,63 +282,6 @@ class User implements UserInterface, \Serializable
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGplusData()
-    {
-        return $this->gplusData;
-    }
-
-    /**
-     * @param mixed $gplusData
-     * @return User
-     */
-    public function setGplusData($gplusData)
-    {
-        $this->gplusData = $gplusData;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGplusName()
-    {
-        return $this->gplusName;
-    }
-
-    /**
-     * @param mixed $gplusName
-     * @return User
-     */
-    public function setGplusName($gplusName)
-    {
-        $this->gplusName = $gplusName;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGplusUid()
-    {
-        return $this->gplusUid;
-    }
-
-    /**
-     * @param mixed $gplusUid
-     * @return User
-     */
-    public function setGplusUid($gplusUid)
-    {
-        $this->gplusUid = $gplusUid;
 
         return $this;
     }
@@ -458,18 +346,18 @@ class User implements UserInterface, \Serializable
     /**
      * @return mixed
      */
-    public function getToken()
+    public function getEnabled()
     {
-        return $this->token;
+        return $this->enabled;
     }
 
     /**
-     * @param mixed $token
+     * @param mixed $enabled
      * @return User
      */
-    public function setToken($token)
+    public function setEnabled($enabled)
     {
-        $this->token = $token;
+        $this->enabled = $enabled;
 
         return $this;
     }
@@ -477,18 +365,18 @@ class User implements UserInterface, \Serializable
     /**
      * @return mixed
      */
-    public function getTwitterData()
+    public function getLastLogin()
     {
-        return $this->twitterData;
+        return $this->lastLogin;
     }
 
     /**
-     * @param mixed $twitterData
+     * @param mixed $lastLogin
      * @return User
      */
-    public function setTwitterData($twitterData)
+    public function setLastLogin($lastLogin)
     {
-        $this->twitterData = $twitterData;
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }
@@ -496,18 +384,18 @@ class User implements UserInterface, \Serializable
     /**
      * @return mixed
      */
-    public function getTwitterName()
+    public function getJwtVerifier()
     {
-        return $this->twitterName;
+        return $this->jwtVerifier;
     }
 
     /**
-     * @param mixed $twitterName
+     * @param mixed $jwtVerifier
      * @return User
      */
-    public function setTwitterName($twitterName)
+    public function setJwtVerifier($jwtVerifier)
     {
-        $this->twitterName = $twitterName;
+        $this->jwtVerifier = $jwtVerifier;
 
         return $this;
     }
@@ -515,18 +403,94 @@ class User implements UserInterface, \Serializable
     /**
      * @return mixed
      */
-    public function getTwitterUid()
+    public function getLocked()
     {
-        return $this->twitterUid;
+        return $this->locked;
     }
 
     /**
-     * @param mixed $twitterUid
+     * @param mixed $locked
      * @return User
      */
-    public function setTwitterUid($twitterUid)
+    public function setLocked($locked)
     {
-        $this->twitterUid = $twitterUid;
+        $this->locked = $locked;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExpired()
+    {
+        return $this->expired;
+    }
+
+    /**
+     * @param mixed $expired
+     * @return User
+     */
+    public function setExpired($expired)
+    {
+        $this->expired = $expired;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * @param mixed $expiresAt
+     * @return User
+     */
+    public function setExpiresAt($expiresAt)
+    {
+        $this->expiresAt = $expiresAt;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCredentialsExpired()
+    {
+        return $this->credentialsExpired;
+    }
+
+    /**
+     * @param mixed $credentialsExpired
+     * @return User
+     */
+    public function setCredentialsExpired($credentialsExpired)
+    {
+        $this->credentialsExpired = $credentialsExpired;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCredentialsExpireAt()
+    {
+        return $this->credentialsExpireAt;
+    }
+
+    /**
+     * @param mixed $credentialsExpireAt
+     * @return User
+     */
+    public function setCredentialsExpireAt($credentialsExpireAt)
+    {
+        $this->credentialsExpireAt = $credentialsExpireAt;
 
         return $this;
     }
@@ -553,18 +517,18 @@ class User implements UserInterface, \Serializable
     /**
      * @return mixed
      */
-    public function getUsername()
+    public function getFacebookUid()
     {
-        return $this->username;
+        return $this->facebookUid;
     }
 
     /**
-     * @param mixed $username
+     * @param mixed $facebookUid
      * @return User
      */
-    public function setUsername($username)
+    public function setFacebookUid($facebookUid)
     {
-        $this->username = $username;
+        $this->facebookUid = $facebookUid;
 
         return $this;
     }
@@ -572,18 +536,170 @@ class User implements UserInterface, \Serializable
     /**
      * @return mixed
      */
-    public function getUsernameCanonical()
+    public function getFacebookName()
     {
-        return $this->usernameCanonical;
+        return $this->facebookName;
     }
 
     /**
-     * @param mixed $usernameCanonical
+     * @param mixed $facebookName
      * @return User
      */
-    public function setUsernameCanonical($usernameCanonical)
+    public function setFacebookName($facebookName)
     {
-        $this->usernameCanonical = $usernameCanonical;
+        $this->facebookName = $facebookName;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookData()
+    {
+        return $this->facebookData;
+    }
+
+    /**
+     * @param mixed $facebookData
+     * @return User
+     */
+    public function setFacebookData($facebookData)
+    {
+        $this->facebookData = $facebookData;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTwitterUid()
+    {
+        return $this->twitterUid;
+    }
+
+    /**
+     * @param mixed $twitterUid
+     * @return User
+     */
+    public function setTwitterUid($twitterUid)
+    {
+        $this->twitterUid = $twitterUid;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTwitterName()
+    {
+        return $this->twitterName;
+    }
+
+    /**
+     * @param mixed $twitterName
+     * @return User
+     */
+    public function setTwitterName($twitterName)
+    {
+        $this->twitterName = $twitterName;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTwitterData()
+    {
+        return $this->twitterData;
+    }
+
+    /**
+     * @param mixed $twitterData
+     * @return User
+     */
+    public function setTwitterData($twitterData)
+    {
+        $this->twitterData = $twitterData;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGplusUid()
+    {
+        return $this->gplusUid;
+    }
+
+    /**
+     * @param mixed $gplusUid
+     * @return User
+     */
+    public function setGplusUid($gplusUid)
+    {
+        $this->gplusUid = $gplusUid;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGplusName()
+    {
+        return $this->gplusName;
+    }
+
+    /**
+     * @param mixed $gplusName
+     * @return User
+     */
+    public function setGplusName($gplusName)
+    {
+        $this->gplusName = $gplusName;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGplusData()
+    {
+        return $this->gplusData;
+    }
+
+    /**
+     * @param mixed $gplusData
+     * @return User
+     */
+    public function setGplusData($gplusData)
+    {
+        $this->gplusData = $gplusData;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     * @return User
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
 
         return $this;
     }
@@ -603,53 +719,6 @@ class User implements UserInterface, \Serializable
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFullName()
-    {
-        return sprintf('%s %s', $this->getFirstname(), $this->getLastname());
-    }
-
-    /**
-     * @return array
-     */
-    public function getRealRoles()
-    {
-        return $this->roles;
-    }
-
-    /**
-     * @param array $roles
-     *
-     * @return User
-     */
-    public function setRealRoles(array $roles)
-    {
-        $this->setRoles($roles);
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getJwtVerifier()
-    {
-        return $this->jwtVerifier;
-    }
-
-    /**
-     * @param mixed $jwtVerifier
-     * @return User
-     */
-    public function setJwtVerifier($jwtVerifier)
-    {
-        $this->jwtVerifier = $jwtVerifier;
 
         return $this;
     }

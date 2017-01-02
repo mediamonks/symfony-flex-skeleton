@@ -6,14 +6,11 @@ security:
             - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT
 
     encoders:
-        FOS\UserBundle\Model\UserInterface:
+        AppBundle\Entity\User:
             algorithm: bcrypt
-            cost: 13
 
     providers:
-    #    fos_userbundle:
-    #        id: fos_user.user_manager
-        our_db_provider:
+        default_user_provider:
             entity:
                 class: AppCoreBundle:User
                 property: username
@@ -27,35 +24,35 @@ security:
             pattern: ^/
             anonymous: ~
 
-        #admin:
-        #    pattern:            ^/%admin_directory%(.*)
-        #    context:            user
-        #    form_login:
-        #        provider:       fos_userbundle
-        #        login_path:     /%admin_directory%/login
-        #        use_forward:    false
-        #        check_path:     /%admin_directory%/login_check
-        #        failure_path:   null
-        #        always_use_default_target_path: true
-        #        default_target_path: /%admin_directory%/dashboard
-        #    logout:
-        #        path:           /%admin_directory%/logout
-        #    anonymous:          ~
+        admin:
+            pattern:            ^/%admin_directory%(.*)
+            context:            user
+            form_login:
+                provider:       default_user_provider
+                login_path:     /%admin_directory%/login
+                use_forward:    false
+                check_path:     /%admin_directory%/login_check
+                failure_path:   null
+                always_use_default_target_path: true
+                default_target_path: /%admin_directory%/dashboard
+            logout:
+                path:           /%admin_directory%/logout
+            anonymous:          ~
 
-        #api:
-        #    pattern: ^/api(.*)
-        #    anonymous: ~
-        #    stateless: ~
-        #    guard:
-        #        authenticators:
-        #            - api.security.authenticator.credentials_authenticator
-        #            - api.security.authenticator.jwt_authenticator
-        #        entry_point: 'api.security.authenticator.jwt_authenticator'
+        api:
+            pattern: ^/api(.*)
+            anonymous: ~
+            stateless: ~
+            guard:
+                authenticators:
+                    - api.security.authenticator.credentials_authenticator
+                    - api.security.authenticator.jwt_authenticator
+                entry_point: 'api.security.authenticator.jwt_authenticator'
 
     access_control:
-        #- { path: ^/%admin_directory%/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/%admin_directory%/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/%admin_directory%/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/%admin_directory%/(.*), role: ROLE_ADMIN }
-        #- { path: ^/api/doc, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/api/auth/(.*), role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/%admin_directory%/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%admin_directory%/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%admin_directory%/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%admin_directory%/(.*), role: ROLE_ADMIN }
+        - { path: ^/api/doc, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/auth/(.*), role: IS_AUTHENTICATED_FULLY }
