@@ -2,11 +2,11 @@
 _front_end:
     resource: "@AppFrontEndBundle/Resources/config/routing.yml"
 
-#_api:
-#    resource: "@AppApiBundle/Resources/config/routing.yml"
-#    prefix: /api
-#    options:
-#        expose: true
+_api:
+    resource: "@AppApiBundle/Resources/config/routing.yml"
+    prefix: /api
+    options:
+        expose: true
 
 _admin:
     resource: "@AppAdminBundle/Resources/config/routing.yml"

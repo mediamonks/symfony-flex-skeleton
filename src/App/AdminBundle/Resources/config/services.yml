@@ -1,1 +1,6 @@
 services:
+    admin.controller.security:
+        class: App\AdminBundle\Controller\SecurityController
+        arguments:
+            - '@security.authentication_utils'
+            - '@templating'

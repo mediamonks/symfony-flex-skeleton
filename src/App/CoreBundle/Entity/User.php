@@ -98,7 +98,7 @@ class User implements UserInterface, \Serializable
     protected $expiresAt;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
     protected $roles;
 
@@ -751,7 +751,7 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        return ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     public function getPassword()
@@ -766,5 +766,12 @@ class User implements UserInterface, \Serializable
 
     public function eraseCredentials()
     {
+    }
+
+
+
+    public function updateJwtVerifier()
+    {
+        $this->jwtVerifier = time();
     }
 }

@@ -70,7 +70,7 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return $this->userRepository->findUserBy(['id' => $credentials['id']]);
+        return $this->userRepository->find($credentials['id']);
     }
 
     /**
