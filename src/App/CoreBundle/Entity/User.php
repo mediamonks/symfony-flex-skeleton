@@ -4,6 +4,7 @@ namespace App\CoreBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use MediaMonks\Doctrine\Mapping\Annotation as MediaMonks;
 
@@ -11,7 +12,7 @@ use MediaMonks\Doctrine\Mapping\Annotation as MediaMonks;
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
-class User extends BaseUser
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -241,6 +242,7 @@ class User extends BaseUser
     public function setConfirmationToken($confirmationToken)
     {
         $this->confirmationToken = $confirmationToken;
+
         return $this;
     }
 
@@ -259,6 +261,7 @@ class User extends BaseUser
     public function setExpired($expired)
     {
         $this->expired = $expired;
+
         return $this;
     }
 
@@ -277,6 +280,7 @@ class User extends BaseUser
     public function setFacebookData($facebookData)
     {
         $this->facebookData = $facebookData;
+
         return $this;
     }
 
@@ -295,6 +299,7 @@ class User extends BaseUser
     public function setFacebookName($facebookName)
     {
         $this->facebookName = $facebookName;
+
         return $this;
     }
 
@@ -313,6 +318,7 @@ class User extends BaseUser
     public function setFacebookUid($facebookUid)
     {
         $this->facebookUid = $facebookUid;
+
         return $this;
     }
 
@@ -331,6 +337,7 @@ class User extends BaseUser
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
+
         return $this;
     }
 
@@ -349,6 +356,7 @@ class User extends BaseUser
     public function setGplusData($gplusData)
     {
         $this->gplusData = $gplusData;
+
         return $this;
     }
 
@@ -367,6 +375,7 @@ class User extends BaseUser
     public function setGplusName($gplusName)
     {
         $this->gplusName = $gplusName;
+
         return $this;
     }
 
@@ -385,6 +394,7 @@ class User extends BaseUser
     public function setGplusUid($gplusUid)
     {
         $this->gplusUid = $gplusUid;
+
         return $this;
     }
 
@@ -403,6 +413,7 @@ class User extends BaseUser
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
+
         return $this;
     }
 
@@ -421,6 +432,7 @@ class User extends BaseUser
     public function setLocale($locale)
     {
         $this->locale = $locale;
+
         return $this;
     }
 
@@ -439,6 +451,7 @@ class User extends BaseUser
     public function setTimezone($timezone)
     {
         $this->timezone = $timezone;
+
         return $this;
     }
 
@@ -457,6 +470,7 @@ class User extends BaseUser
     public function setToken($token)
     {
         $this->token = $token;
+
         return $this;
     }
 
@@ -475,6 +489,7 @@ class User extends BaseUser
     public function setTwitterData($twitterData)
     {
         $this->twitterData = $twitterData;
+
         return $this;
     }
 
@@ -493,6 +508,7 @@ class User extends BaseUser
     public function setTwitterName($twitterName)
     {
         $this->twitterName = $twitterName;
+
         return $this;
     }
 
@@ -511,6 +527,7 @@ class User extends BaseUser
     public function setTwitterUid($twitterUid)
     {
         $this->twitterUid = $twitterUid;
+
         return $this;
     }
 
@@ -529,6 +546,7 @@ class User extends BaseUser
     public function setTwoStepVerificationCode($twoStepVerificationCode)
     {
         $this->twoStepVerificationCode = $twoStepVerificationCode;
+
         return $this;
     }
 
@@ -547,6 +565,7 @@ class User extends BaseUser
     public function setUsername($username)
     {
         $this->username = $username;
+
         return $this;
     }
 
@@ -565,6 +584,7 @@ class User extends BaseUser
     public function setUsernameCanonical($usernameCanonical)
     {
         $this->usernameCanonical = $usernameCanonical;
+
         return $this;
     }
 
@@ -583,6 +603,7 @@ class User extends BaseUser
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
+
         return $this;
     }
 
@@ -629,6 +650,52 @@ class User extends BaseUser
     public function setJwtVerifier($jwtVerifier)
     {
         $this->jwtVerifier = $jwtVerifier;
+
         return $this;
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(
+            [
+                $this->id,
+                $this->username,
+                $this->password,
+                // see section on salt below
+                // $this->salt,
+            ]
+        );
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
     }
 }
