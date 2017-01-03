@@ -45,7 +45,7 @@ class UserHandler extends AbstractHandler
      */
     protected function createUser($username, $type, array $roles =[])
     {
-        $roles[] = 'ROLE_SONATA_ADMIN';
+        $roles[] = 'ROLE_ADMIN';
 
         $this->write(sprintf('Creating <comment>%s</comment> user', $type));
 
