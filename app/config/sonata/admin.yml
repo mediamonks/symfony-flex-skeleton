@@ -2,3 +2,5 @@ sonata_admin:
     title: "MediaMonks Symfony Skeleton"
     security:
         handler: sonata.admin.security.handler.role
+    templates:
+        user_block: 'AppAdminBundle::user_block.html.twig'

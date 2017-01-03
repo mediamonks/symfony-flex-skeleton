@@ -1,0 +1,17 @@
+{% block user_block %}
+    {% if app.user %}
+        {% set _bg_class          = "bg-light-blue" %}
+        {% set _logout_uri        = url('admin_logout') %}
+        {% set _logout_text       = 'logout'|trans({}, 'AppAdminBundle') %}
+
+        <li class="user-header {{ _bg_class }}">
+            <p>{{ app.user.username }}</p>
+        </li>
+
+        <li class="user-footer">
+            <div class="pull-right">
+                <a href="{{ _logout_uri }}" class="btn btn-default btn-flat"><i class="fa fa-sign-out fa-fw"></i> {{ _logout_text }}</a>
+            </div>
+        </li>
+    {% endif %}
+{% endblock %}
