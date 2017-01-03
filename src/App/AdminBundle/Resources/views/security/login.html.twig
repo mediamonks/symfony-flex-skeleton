@@ -1,19 +1,54 @@
-<html>
-<body>
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
 
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-{% endif %}
+{% block sonata_header %}{% endblock %}
+{% block sonata_left_side %}{% endblock %}
+{% block sonata_nav %}{% endblock %}
+{% block sonata_breadcrumb %}{% endblock %}
 
-    <form action="{{ path('admin_login') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+{% block stylesheets %}
+    {{ parent() }}
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password" />
+    <style>
+        .content {
+            margin: 0px;
+            padding: 0px;
+        }
+        .wrapper {
+            background-color:transparent !important;
+        }
+    </style>
+{% endblock %}
 
-        <button type="submit">login</button>
-    </form>
+{% block sonata_head_title %}Secured Area{% endblock %}
 
-</body>
-</html>
+{% block sonata_wrapper %}
+    {% block sonata_page_content %}
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h1>Secured Area</h1>
+
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <form action="{{ path('admin_login') }}" method="post">
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input autocomplete="new-password" type="username" class="form-control" id="username" name="_username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input autocomplete="new-password" type="password" class="form-control" id="password" name="_password" placeholder="Password">
+                    </div>
+
+                    <button type="submit" class="btn btn-default">Login</button>
+                </form>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    {% endblock %}
+{% endblock %}
