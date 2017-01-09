@@ -103,21 +103,21 @@ class Environment
      */
     public static function getDebug()
     {
-        if (empty(self::$debug)) {
+        if (is_null(self::$debug)) {
+
+            self::$debug = false;
+            if (self::getName() !== self::ENV_PRODUCTION) {
+                self::$debug = true;
+            }
             if (getenv(self::ENVIRONMENT_NAME_DEBUG)) {
                 self::$debug = (bool)getenv(self::ENVIRONMENT_NAME_DEBUG);
-            } else {
-                self::$debug = false;
+            }
+            if (self::isCli()) {
+                $input = new ArgvInput();
                 if (self::getName() !== self::ENV_PRODUCTION) {
-                    self::$debug = true;
-                }
-                if (self::isCli()) {
-                    $input = new ArgvInput();
-                    if (self::getName() !== self::ENV_PRODUCTION) {
-                        self::$debug = !$input->hasParameterOption([self::ARGUMENT_NO_DEBUG]);
-                    } else {
-                        self::$debug = $input->hasParameterOption([self::ARGUMENT_DEBUG]);
-                    }
+                    self::$debug = !$input->hasParameterOption([self::ARGUMENT_NO_DEBUG]);
+                } else {
+                    self::$debug = $input->hasParameterOption([self::ARGUMENT_DEBUG]);
                 }
             }
         }

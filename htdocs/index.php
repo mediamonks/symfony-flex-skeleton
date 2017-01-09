@@ -2,9 +2,10 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
-$loader = require_once __DIR__.'/../app/autoload.php';
+require_once __DIR__.'/../app/autoload.php';
 
-Request::enableHttpMethodParameterOverride();
+// allow a PUT request to be sent as POST request with a PUT parameter so Symfony will handle it as PUT request
+//Request::enableHttpMethodParameterOverride();
 
 $kernel = new AppKernel(Environment::getName(), Environment::getDebug());
 $kernel->loadClassCache();
