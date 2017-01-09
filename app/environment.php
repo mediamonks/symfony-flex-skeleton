@@ -15,7 +15,12 @@ if (!defined('ENVIRONMENT')) {
             } elseif (strpos(__DIR__, '/Users/') !== false) {
                 $environment = ENV_LOCAL;
             } else {
-                $environment = ENV_LOCAL;
+                $environment = ENV_PRODUCTION;
+            }
+
+            $argEnv = explode('=',end($argv));
+            if ($argEnv[0] === '--env' || $argEnv[0] === '-e') {
+                $environment = $argEnv[1];
             }
         } elseif (!empty($_SERVER['SERVER_NAME'])) {
             switch (@$_SERVER['SERVER_NAME']) {
