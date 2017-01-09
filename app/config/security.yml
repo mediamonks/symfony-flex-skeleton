@@ -34,6 +34,10 @@ security:
                 always_use_default_target_path: true
                 default_target_path: /%admin_directory%/dashboard
                 csrf_token_generator: security.csrf.token_manager
+            remember_me:
+                secret:   '%secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
             logout:
                 path:           /%admin_directory%/logout
             anonymous:          ~

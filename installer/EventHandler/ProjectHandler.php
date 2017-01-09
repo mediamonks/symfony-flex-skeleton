@@ -29,7 +29,7 @@ class ProjectHandler extends AbstractHandler
         // replace page titles
         $this->write('Writing project title to templates');
 
-        $titleCurrent = 'MediaMonks Symfony Skeleton';
+        $titleCurrent = 'Skeleton';
         $titleNew = sprintf('%s %s', $brandName, $projectName);
 
         File::replaceInFile($titleCurrent, $titleNew, File::SONATA_ADMIN_CONFIG);
