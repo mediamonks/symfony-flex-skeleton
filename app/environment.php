@@ -1,49 +1,197 @@
 <?php
 
-define('ENV_TEST', 'test'); // phpunit / behat
-define('ENV_LOCAL', 'local');
-define('ENV_DEVELOPMENT', 'development');
-define('ENV_TESTING', 'testing');
-define('ENV_ACCEPTANCE', 'acceptance');
-define('ENV_PRODUCTION', 'production');
+use Symfony\Component\Console\Input\ArgvInput;
 
-if (!defined('ENVIRONMENT')) {
-    if (($environment = getenv('ENVIRONMENT')) == false || getenv('ENVIRONMENT') == ENV_PRODUCTION) {
-        if (php_sapi_name() == 'cli') {
-            if (strpos(__DIR__, 'C:') !== false) {
-                $environment = ENV_LOCAL;
-            } elseif (strpos(__DIR__, '/Users/') !== false) {
-                $environment = ENV_LOCAL;
-            } else {
-                $environment = ENV_PRODUCTION;
-            }
+class Environment
+{
+    const ENV_TEST = 'test'; // phpunit / behat
+    const ENV_LOCAL = 'local';
+    const ENV_DEVELOPMENT = 'development';
+    const ENV_TESTING = 'testing';
+    const ENV_ACCEPTANCE = 'acceptance';
+    const ENV_PRODUCTION = 'production';
 
-            $argEnv = explode('=',end($argv));
-            if ($argEnv[0] === '--env' || $argEnv[0] === '-e') {
-                $environment = $argEnv[1];
-            }
-        } elseif (!empty($_SERVER['SERVER_NAME'])) {
-            switch (@$_SERVER['SERVER_NAME']) {
-                case 'localhost':
-                case '127.0.0.1': {
-                    $environment = ENV_LOCAL;
-                    break;
-                }
-                case 'test': {
-                    $environment = ENV_TEST;
-                    break;
-                }
-                default: {
-                    $environment = ENV_PRODUCTION;
-                    break;
-                }
-            }
-        } else {
-            $environment = ENV_PRODUCTION;
+    const ENV_LEGACY_UAT = 'uat';
+
+    const ENVIRONMENT_NAME_ENVIRONMENT = 'ENVIRONMENT';
+    const ENVIRONMENT_NAME_DEBUG = 'debug';
+
+    const ARGUMENT_DEBUG = '--debug';
+    const ARGUMENT_NO_DEBUG = '--no-debug';
+    const ARGUMENT_ENVIRONMENT = '--env';
+    const ARGUMENT_ENVIRONMENT_SHORT = '-e';
+
+    const CLI_PATH_WINDOWS = 'C:';
+    const CLI_PATH_MAC = '/Users/';
+
+    private static $serverNamesLocal = ['localhost', 'local'];
+
+    /**
+     * @var string
+     */
+    private static $name;
+
+    /**
+     * @var bool
+     */
+    private static $debug;
+
+    /**
+     * @return array
+     */
+    public static function getNames()
+    {
+        return [
+            self::ENV_TEST,
+            self::ENV_LOCAL,
+            self::ENV_DEVELOPMENT,
+            self::ENV_TESTING,
+            self::ENV_ACCEPTANCE,
+            self::ENV_PRODUCTION,
+        ];
+    }
+
+    /**
+     * @param $environment
+     * @return bool
+     */
+    public static function isValidName($environment)
+    {
+        return in_array($environment, self::getNames());
+    }
+
+    /**
+     * @param $environment
+     * @throws Exception
+     */
+    public static function assertIsValidName($environment)
+    {
+        if (!self::isValidName($environment)) {
+            throw new \Exception(sprintf('Invalid environment "%s" was detected', $environment));
         }
     }
-    if ($environment === 'uat') {
-        $environment = 'testing';
+
+    /**
+     * @return string
+     */
+    public static function getName()
+    {
+        if (empty(self::$name)) {
+            $name = getenv(self::ENVIRONMENT_NAME_ENVIRONMENT);
+            if (empty($name)) {
+                if (self::isCli()) {
+                    $name = self::getNameFromCli();
+                } elseif (self::isWeb()) {
+                    $name = self::getNameFromWeb();
+                } else {
+                    $name = self::ENV_PRODUCTION;
+                }
+            }
+
+            $name = self::correctLegacyName($name);
+
+            self::assertIsValidName($name);
+
+            self::$name = $name;
+        }
+
+        return self::$name;
     }
-    define('ENVIRONMENT', $environment);
+
+    /**
+     * @return bool
+     */
+    public static function getDebug()
+    {
+        if (empty(self::$debug)) {
+            if (getenv(self::ENVIRONMENT_NAME_DEBUG)) {
+                self::$debug = (bool)getenv(self::ENVIRONMENT_NAME_DEBUG);
+            } else {
+                self::$debug = false;
+                if (self::getName() !== self::ENV_PRODUCTION) {
+                    self::$debug = true;
+                }
+                if (self::isCli()) {
+                    $input = new ArgvInput();
+                    if (self::getName() !== self::ENV_PRODUCTION) {
+                        self::$debug = !$input->hasParameterOption([self::ARGUMENT_NO_DEBUG]);
+                    } else {
+                        self::$debug = $input->hasParameterOption([self::ARGUMENT_DEBUG]);
+                    }
+                }
+            }
+        }
+
+        return self::$debug;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isCli()
+    {
+        return PHP_SAPI === 'cli';
+    }
+
+    /**
+     * @return string
+     */
+    public static function getNameFromCli()
+    {
+        $input = new ArgvInput();
+        $name = $input->getParameterOption([self::ARGUMENT_ENVIRONMENT, self::ARGUMENT_ENVIRONMENT_SHORT]);
+        if (!empty($name)) {
+            return $name;
+        }
+
+        if (strpos(__DIR__, self::CLI_PATH_WINDOWS) !== false) {
+            return self::ENV_LOCAL;
+        }
+        if (strpos(__DIR__, self::CLI_PATH_MAC) !== false) {
+            return self::ENV_LOCAL;
+        }
+
+        return self::ENV_PRODUCTION;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isWeb()
+    {
+        return !empty(self::getServerName());
+    }
+
+    /**
+     * @return string
+     */
+    public static function getNameFromWeb()
+    {
+        if (in_array(self::getServerName(), self::$serverNamesLocal)) {
+            return self::ENV_LOCAL;
+        }
+
+        return self::ENV_PRODUCTION;
+    }
+
+    /**
+     * @return mixed
+     */
+    private static function getServerName()
+    {
+        return $_SERVER['SERVER_NAME'];
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    private function correctLegacyName($name)
+    {
+        if ($name === self::ENV_LEGACY_UAT) {
+            return self::ENV_TESTING;
+        }
+
+        return $name;
+    }
 }
