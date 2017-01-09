@@ -18,7 +18,8 @@
         },
         "classmap": [
             "app/AppKernel.php",
-            "app/AppCache.php"
+            "app/AppCache.php",
+            "app/Environment.php"
         ]
     },
     "minimum-stability": "dev",
