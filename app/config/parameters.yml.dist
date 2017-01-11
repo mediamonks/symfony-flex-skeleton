@@ -5,8 +5,8 @@ parameters:
 
     locale: en
 
-	ip_whitelist:
-	    - 192.168.33.1
+    ip_whitelist:
+        - 192.168.33.1
         - 127.0.0.1
 	
     mailer_transport: smtp
