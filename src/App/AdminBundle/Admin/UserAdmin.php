@@ -2,35 +2,14 @@
 
 namespace App\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-use FOS\UserBundle\Model\UserManagerInterface;
+use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Security\Core\Tests\Encoder\PasswordEncoder;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserAdmin extends Admin
+class UserAdmin extends AbstractAdmin
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFormBuilder()
-    {
-        $this->formOptions['data_class'] = $this->getClass();
-
-        $options                      = $this->formOptions;
-        $options['validation_groups'] = (!$this->getSubject() || is_null(
-                $this->getSubject()->getId()
-            )) ? 'Registration' : 'Profile';
-
-        $formBuilder = $this->getFormContractor()->getFormBuilder($this->getUniqid(), $options);
-
-        $this->defineFormBuilder($formBuilder);
-
-        return $formBuilder;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -53,17 +32,17 @@ class UserAdmin extends Admin
         $listMapper
             ->addIdentifier('username')
             ->add('email')
-            ->add('groups')
-            ->add('enabled', null, ['editable' => true])
-            ->add('locked', null, ['editable' => true])
-            ->add('createdAt');
+            ->add('createdAt')
+        ;
 
-        if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
+        $securityChecker = $this->getConfigurationPool()->getContainer()->get('security.authorization_checker');
+
+        if ($securityChecker->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
             $listMapper
                 ->add(
                     'impersonating',
                     'string',
-                    ['template' => 'SonataUserBundle:Admin:Field/impersonating.html.twig']
+                    ['template' => 'AppAdminBundle:security:impersonating.html.twig']
                 );
         }
 
@@ -83,59 +62,16 @@ class UserAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $filterMapper)
-    {
-        $filterMapper
-            ->add('id')
-            ->add('username')
-            ->add('locked')
-            ->add('email')
-            ->add('groups');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureShowFields(ShowMapper $showMapper)
-    {
-        $showMapper
-            ->with('General')
-            ->add('username')
-            ->add('email')
-            ->end()
-            ->with('Groups')
-            ->add('groups')
-            ->end()
-            ->with('Profile')
-            ->add('dateOfBirth')
-            ->add('firstname')
-            ->add('lastname')
-            ->add('website')
-            ->add('biography')
-            ->add('gender')
-            ->add('locale')
-            ->add('timezone')
-            ->add('phone')
-            ->end()
-            ->with('Social')
-            ->add('facebookUid')
-            ->add('facebookName')
-            ->add('twitterUid')
-            ->add('twitterName')
-            ->add('gplusUid')
-            ->add('gplusName')
-            ->end()
-            ->with('Security')
-            ->add('token')
-            ->add('twoStepVerificationCode')
-            ->end();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $securityChecker = $this->getConfigurationPool()->getContainer()->get('security.authorization_checker');
+        $roles = $this->getConfigurationPool()->getContainer()->getParameter('security.role_hierarchy.roles');
+
+        $passwordFieldOptions = ['required' => (!$this->getSubject() || is_null($this->getSubject()->getId()))];
+        if ((!$this->getSubject() || is_null($this->getSubject()->getId()))) {
+            $passwordFieldOptions['constraints'] = new NotBlank();
+        }
+
         $formMapper
             ->with('General')
             ->add('username')
@@ -143,52 +79,26 @@ class UserAdmin extends Admin
             ->add(
                 'plainPassword',
                 'text',
-                [
-                    'required' => (!$this->getSubject() || is_null($this->getSubject()->getId()))
-                ]
+                $passwordFieldOptions
             )
-            ->end()
-            ->with('Profile')
-            ->add('avatar', null, ['required' => false, 'label' => 'Avatar'])
-            ->add('firstname', null, ['required' => false])
-            ->add('lastname', null, ['required' => false])
-            ->add('locale', 'locale', ['required' => false])
-            ->add('timezone', 'timezone', ['required' => false])
-            ->end()
-            ->with('Social')
-            ->add('facebookUid', null, ['required' => false])
-            ->add('facebookName', null, ['required' => false])
-            ->add('twitterUid', null, ['required' => false])
-            ->add('twitterName', null, ['required' => false])
-            ->add('gplusUid', null, ['required' => false])
-            ->add('gplusName', null, ['required' => false])
             ->end();
 
-        if ($this->getSubject() && !$this->getSubject()->hasRole('ROLE_SUPER_ADMIN')) {
+        if ($securityChecker->isGranted('ROLE_ADMIN')) {
             $formMapper
-                ->with('Management')
+                ->with('Roles')
                 ->add(
-                    'realRoles',
-                    'sonata_security_roles',
+                    'roles',
+                    'choice',
                     [
-                        'label'    => 'form.label_roles',
+                        'label' => false,
                         'expanded' => true,
                         'multiple' => true,
-                        'required' => false
+                        'required' => false,
+                        'choices' => array_combine(array_keys($roles), array_keys($roles))
                     ]
                 )
-                ->add('locked', null, ['required' => false])
-                ->add('expired', null, ['required' => false])
-                ->add('enabled', null, ['required' => false])
-                ->add('credentialsExpired', null, ['required' => false])
                 ->end();
         }
-
-        $formMapper
-            ->with('Security')
-            ->add('token', null, ['required' => false])
-            ->add('twoStepVerificationCode', null, ['required' => false])
-            ->end();
     }
 
     /**
@@ -196,7 +106,7 @@ class UserAdmin extends Admin
      */
     public function preUpdate($user)
     {
-        $this->updatePassword($user);
+        $this->updatePassword();
     }
 
     /**
@@ -204,31 +114,16 @@ class UserAdmin extends Admin
      */
     public function prePersist($user)
     {
-        $this->updatePassword($user);
+        $this->updatePassword();
     }
 
-    /**
-     * @param $user
-     */
-    protected function updatePassword($user)
+    private function updatePassword()
     {
-        $this->getUserManager()->updateCanonicalFields($user);
-        $this->getUserManager()->updatePassword($user);
-    }
+        /** @var PasswordEncoder $passwordEncoder */
+        $passwordEncoder = $this->getConfigurationPool()->getContainer()->get('security.password_encoder');
 
-    /**
-     * @param UserManagerInterface $userManager
-     */
-    public function setUserManager(UserManagerInterface $userManager)
-    {
-        $this->userManager = $userManager;
-    }
-
-    /**
-     * @return UserManagerInterface
-     */
-    public function getUserManager()
-    {
-        return $this->userManager;
+        if ($this->getSubject()->getPlainPassword()) {
+            $this->getSubject()->updatePassword($passwordEncoder->encodePassword($this->getSubject(), $this->getSubject()->getPlainPassword()));
+        }
     }
 }

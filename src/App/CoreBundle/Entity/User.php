@@ -55,6 +55,8 @@ class User implements UserInterface, \Serializable
      */
     protected $password;
 
+    protected $plainPassword;
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -70,8 +72,13 @@ class User implements UserInterface, \Serializable
      */
     protected $roles;
 
+    public function __toString()
+    {
+        return $this->getUsername();
+    }
+
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -79,18 +86,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $id
-     * @return User
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -98,7 +94,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      * @return User
      */
     public function setEmail($email)
@@ -109,7 +105,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmailCanonical()
     {
@@ -117,7 +113,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $emailCanonical
+     * @param string $emailCanonical
      * @return User
      */
     public function setEmailCanonical($emailCanonical)
@@ -128,7 +124,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUsername()
     {
@@ -136,7 +132,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $username
+     * @param string $username
      * @return User
      */
     public function setUsername($username)
@@ -155,7 +151,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $firstName
+     * @param string $firstName
      * @return User
      */
     public function setFirstName($firstName)
@@ -166,7 +162,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastName()
     {
@@ -174,7 +170,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $lastName
+     * @param string $lastName
      * @return User
      */
     public function setLastName($lastName)
@@ -185,7 +181,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastLogin()
     {
@@ -253,9 +249,42 @@ class User implements UserInterface, \Serializable
         return $this->roles;
     }
 
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param $newPassword
+     */
+    public function updatePassword($newPassword)
+    {
+        $this->password = $newPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function hasRole($role) {
+        return in_array($role, $this->roles);
     }
 
     public function getSalt()
@@ -265,7 +294,6 @@ class User implements UserInterface, \Serializable
 
     public function eraseCredentials()
     {
-        $this->password = 'removed';
     }
 
     public function updateJwtVerifier()

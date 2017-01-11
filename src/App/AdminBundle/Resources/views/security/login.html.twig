@@ -13,8 +13,16 @@
             margin: 0px;
             padding: 0px;
         }
+        body {
+            background: #eee !important;
+        }
         .wrapper {
-            background-color:transparent !important;
+            background-color: transparent !important;
+        }
+        .login-box {
+            background: white;
+            border: 1px solid #3c8dbc;
+            padding-bottom: 25px;
         }
     </style>
 {% endblock %}
@@ -25,7 +33,7 @@
     {% block sonata_page_content %}
         <div class="row">
             <div class="col-md-4"></div>
-            <div class="col-md-4">
+            <div class="col-md-4 login-box">
                 <h1>Secured Area</h1>
 
                 {% if error %}
@@ -51,7 +59,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="btn btn-default">Login</button>
+                    <button type="submit" class="btn btn-primary">Login</button>
                 </form>
             </div>
             <div class="col-md-4"></div>

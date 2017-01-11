@@ -1,12 +1,26 @@
 {% block user_block %}
     {% if app.user %}
         <li class="user-header bg-light-blue">
+            <i class="fa fa-user" style="font-size: 40px; margin-top: 25px;"></i>
             <p>{{ app.user.username }}</p>
         </li>
 
         <li class="user-footer">
+            {% if app.user.hasRole('ROLE_SUPER_ADMIN') %}
+                <div class="pull-left">
+                    <a href="{{ path('admin_app_core_user_edit', {id: app.user.id}) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i> Profile</a>
+                </div>
+            {% endif %}
             <div class="pull-right">
-                <a href="{{ path('admin_logout') }}" class="btn btn-default btn-flat"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                    <a href="{{ path('sonata_admin_dashboard', {'_switch_user': '_exit'}) }}" class="btn btn-default btn-flat">
+                        <i class="fa fa-sign-out fa-fw"></i> Exit impersonation
+                    </a>
+                {% else %}
+                    <a href="{{ path('admin_logout') }}" class="btn btn-default btn-flat">
+                        <i class="fa fa-sign-out fa-fw"></i> Logout
+                    </a>
+                {% endif %}
             </div>
         </li>
     {% endif %}
