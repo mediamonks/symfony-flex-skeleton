@@ -42,7 +42,8 @@
         "ocramius/proxy-manager": "~1.0",
         "sonata-project/doctrine-orm-admin-bundle": "~3.0",
         "sonata-project/admin-bundle": "~3.0",
-        "firebase/php-jwt": "^3.0"
+        "firebase/php-jwt": "^3.0",
+        "wikimedia/ip-set": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
