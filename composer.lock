@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "41ee5029382362cc9e318a8750b629f6",
-    "content-hash": "c58b895dfd01f814be461ac716b22daa",
+    "hash": "0ee20fbde8e38b02581455e3c2adf324",
+    "content-hash": "02693aa37cea80eb76e3b8fa6d83e155",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3724,6 +3724,48 @@
                 "templating"
             ],
             "time": "2016-12-23 11:06:22"
+        },
+        {
+            "name": "wikimedia/ip-set",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/IPSet.git",
+                "reference": "b71a3834b42e2bcb2d9fa037abbb654e82117a01"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/b71a3834b42e2bcb2d9fa037abbb654e82117a01",
+                "reference": "b71a3834b42e2bcb2d9fa037abbb654e82117a01",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.9.2",
+                "mediawiki/mediawiki-codesniffer": "0.5.1",
+                "phpunit/phpunit": "4.7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Brandon Black",
+                    "email": "blblack@gmail.com"
+                }
+            ],
+            "description": "Efficiently match IP addresses against a set of CIDR specifications.",
+            "homepage": "https://github.com/wikimedia/IPSet",
+            "time": "2016-02-12 15:19:10"
         },
         {
             "name": "zendframework/zend-code",
