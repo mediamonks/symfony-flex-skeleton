@@ -1,3 +1,7 @@
+admin_login:
+    resource: "@AppAdminBundle/Controller"
+    type:     annotation
+
 _sonata_admin:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
 

@@ -1,4 +1,10 @@
 services:
+    core.repository.user:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - App\CoreBundle\Entity\User
+
     core.security.jwt_manager:
         class: App\CoreBundle\Security\JWT\FirebaseJWTManager
         arguments:

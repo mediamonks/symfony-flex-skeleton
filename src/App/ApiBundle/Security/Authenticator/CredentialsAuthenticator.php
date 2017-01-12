@@ -2,7 +2,7 @@
 
 namespace App\ApiBundle\Security\Authenticator;
 
-use FOS\UserBundle\Model\UserManager;
+use App\CoreBundle\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -23,18 +23,18 @@ class CredentialsAuthenticator extends AbstractGuardAuthenticator
     private $passwordEncoder;
 
     /**
-     * @var UserManager
+     * @var UserRepository
      */
-    private $userManager;
+    private $userRepository;
 
     /**
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param UserManager $userManager
+     * @param UserRepository $userRepository
      */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, UserManager $userManager)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, UserRepository $userRepository = null)
     {
         $this->passwordEncoder = $passwordEncoder;
-        $this->userManager     = $userManager;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -43,7 +43,7 @@ class CredentialsAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        if($request->get('_route') !== self::ROUTE_NAME) {
+        if ($request->get('_route') !== self::ROUTE_NAME) {
             return null;
         }
 
@@ -56,7 +56,7 @@ class CredentialsAuthenticator extends AbstractGuardAuthenticator
 
         return [
             'username' => $username,
-            'password' => $password
+            'password' => $password,
         ];
     }
 
@@ -67,7 +67,7 @@ class CredentialsAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return $this->userManager->findUserByUsername($credentials['username']);
+        return $this->userRepository->findUserByUsername($credentials['username']);
     }
 
     /**

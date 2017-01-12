@@ -39,7 +39,7 @@ class FirebaseJWTManager implements JWTManagerInterface
 
     /**
      * @param $token
-     * @return object
+     * @return array
      */
     public function parse($token)
     {

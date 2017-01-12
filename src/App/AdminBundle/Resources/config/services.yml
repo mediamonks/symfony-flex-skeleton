@@ -1,1 +1,20 @@
 services:
+    admin.controller.security:
+        class: App\AdminBundle\Controller\SecurityController
+        arguments:
+            - '@security.authentication_utils'
+            - '@templating'
+
+    app.request_listener:
+        class: App\AdminBundle\EventListeners\IpWhitelistListener
+        arguments:
+            - "%ip_whitelist%"
+            - "%admin_directory%"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    admin.user:
+        class: App\AdminBundle\Admin\UserAdmin
+        arguments: [~, App\CoreBundle\Entity\User, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Users, group: User management }

@@ -22,11 +22,9 @@
             "app/Environment.php"
         ]
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
         "php": "^5.6|^7.0",
-        "symfony/symfony": "^2.8",
+        "symfony/symfony": "^3.2",
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
         "symfony/swiftmailer-bundle": "~2.3",
@@ -43,9 +41,9 @@
         "zendframework/zend-crypt": "^2.6",
         "ocramius/proxy-manager": "~1.0",
         "sonata-project/doctrine-orm-admin-bundle": "~3.0",
-        "sonata-project/user-bundle": "~3.0",
         "sonata-project/admin-bundle": "~3.0",
-        "firebase/php-jwt": "^3.0"
+        "firebase/php-jwt": "^3.0",
+        "wikimedia/ip-set": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
@@ -64,13 +62,11 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "Installer\\ScriptsDummy::buildBootstrap",
             "Installer\\ScriptsDummy::clearCache",
             "Installer\\ScriptsDummy::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
         ],
         "post-update-cmd": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"

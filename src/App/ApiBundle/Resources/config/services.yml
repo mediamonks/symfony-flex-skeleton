@@ -3,13 +3,13 @@ services:
         class: App\ApiBundle\Security\Authenticator\CredentialsAuthenticator
         arguments:
             - '@security.user_password_encoder.generic'
-            - '@fos_user.user_manager'
+            - '@core.repository.user'
 
     api.security.authenticator.jwt_authenticator:
         class: App\ApiBundle\Security\Authenticator\JWTAuthenticator
         arguments:
             - '@core.security.jwt_manager'
-            - '@fos_user.user_manager'
+            - '@core.repository.user'
 
     api.controller.auth:
         class: App\ApiBundle\Controller\AuthController

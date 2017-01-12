@@ -26,47 +26,9 @@ public function add(array $parameters = array())
 {
 $this->parameters = array_replace($this->parameters, $parameters);
 }
-public function get($key, $default = null, $deep = false)
+public function get($key, $default = null)
 {
-if ($deep) {
-@trigger_error('Using paths to find deeper items in '.__METHOD__.' is deprecated since version 2.8 and will be removed in 3.0. Filter the returned value in your own code instead.', E_USER_DEPRECATED);
-}
-if (!$deep || false === $pos = strpos($key,'[')) {
 return array_key_exists($key, $this->parameters) ? $this->parameters[$key] : $default;
-}
-$root = substr($key, 0, $pos);
-if (!array_key_exists($root, $this->parameters)) {
-return $default;
-}
-$value = $this->parameters[$root];
-$currentKey = null;
-for ($i = $pos, $c = strlen($key); $i < $c; ++$i) {
-$char = $key[$i];
-if ('['=== $char) {
-if (null !== $currentKey) {
-throw new \InvalidArgumentException(sprintf('Malformed path. Unexpected "[" at position %d.', $i));
-}
-$currentKey ='';
-} elseif (']'=== $char) {
-if (null === $currentKey) {
-throw new \InvalidArgumentException(sprintf('Malformed path. Unexpected "]" at position %d.', $i));
-}
-if (!is_array($value) || !array_key_exists($currentKey, $value)) {
-return $default;
-}
-$value = $value[$currentKey];
-$currentKey = null;
-} else {
-if (null === $currentKey) {
-throw new \InvalidArgumentException(sprintf('Malformed path. Unexpected "%s" at position %d.', $char, $i));
-}
-$currentKey .= $char;
-}
-}
-if (null !== $currentKey) {
-throw new \InvalidArgumentException(sprintf('Malformed path. Path must end with "]".'));
-}
-return $value;
 }
 public function set($key, $value)
 {
@@ -80,42 +42,29 @@ public function remove($key)
 {
 unset($this->parameters[$key]);
 }
-public function getAlpha($key, $default ='', $deep = false)
+public function getAlpha($key, $default ='')
 {
-return preg_replace('/[^[:alpha:]]/','', $this->get($key, $default, $deep));
+return preg_replace('/[^[:alpha:]]/','', $this->get($key, $default));
 }
-public function getAlnum($key, $default ='', $deep = false)
+public function getAlnum($key, $default ='')
 {
-return preg_replace('/[^[:alnum:]]/','', $this->get($key, $default, $deep));
+return preg_replace('/[^[:alnum:]]/','', $this->get($key, $default));
 }
-public function getDigits($key, $default ='', $deep = false)
+public function getDigits($key, $default ='')
 {
-return str_replace(array('-','+'),'', $this->filter($key, $default, FILTER_SANITIZE_NUMBER_INT, array(), $deep));
+return str_replace(array('-','+'),'', $this->filter($key, $default, FILTER_SANITIZE_NUMBER_INT));
 }
-public function getInt($key, $default = 0, $deep = false)
+public function getInt($key, $default = 0)
 {
-return (int) $this->get($key, $default, $deep);
+return (int) $this->get($key, $default);
 }
-public function getBoolean($key, $default = false, $deep = false)
+public function getBoolean($key, $default = false)
 {
-return $this->filter($key, $default, FILTER_VALIDATE_BOOLEAN, array(), $deep);
+return $this->filter($key, $default, FILTER_VALIDATE_BOOLEAN);
 }
-public function filter($key, $default = null, $filter = FILTER_DEFAULT, $options = array(), $deep = false)
+public function filter($key, $default = null, $filter = FILTER_DEFAULT, $options = array())
 {
-static $filters = null;
-if (null === $filters) {
-foreach (filter_list() as $tmp) {
-$filters[filter_id($tmp)] = 1;
-}
-}
-if (is_bool($filter) || !isset($filters[$filter]) || is_array($deep)) {
-@trigger_error('Passing the $deep boolean as 3rd argument to the '.__METHOD__.' method is deprecated since version 2.8 and will be removed in 3.0. Remove it altogether as the $deep argument will be removed in 3.0.', E_USER_DEPRECATED);
-$tmp = $deep;
-$deep = $filter;
-$filter = $options;
-$options = $tmp;
-}
-$value = $this->get($key, $default, $deep);
+$value = $this->get($key, $default);
 if (!is_array($options) && $options) {
 $options = array('flags'=> $options);
 }
@@ -512,7 +461,7 @@ return $request;
 }
 public static function create($uri, $method ='GET', $parameters = array(), $cookies = array(), $files = array(), $server = array(), $content = null)
 {
-$server = array_replace(array('SERVER_NAME'=>'localhost','SERVER_PORT'=> 80,'HTTP_HOST'=>'localhost','HTTP_USER_AGENT'=>'Symfony/2.X','HTTP_ACCEPT'=>'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8','HTTP_ACCEPT_LANGUAGE'=>'en-us,en;q=0.5','HTTP_ACCEPT_CHARSET'=>'ISO-8859-1,utf-8;q=0.7,*;q=0.7','REMOTE_ADDR'=>'127.0.0.1','SCRIPT_NAME'=>'','SCRIPT_FILENAME'=>'','SERVER_PROTOCOL'=>'HTTP/1.1','REQUEST_TIME'=> time(),
+$server = array_replace(array('SERVER_NAME'=>'localhost','SERVER_PORT'=> 80,'HTTP_HOST'=>'localhost','HTTP_USER_AGENT'=>'Symfony/3.X','HTTP_ACCEPT'=>'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8','HTTP_ACCEPT_LANGUAGE'=>'en-us,en;q=0.5','HTTP_ACCEPT_CHARSET'=>'ISO-8859-1,utf-8;q=0.7,*;q=0.7','REMOTE_ADDR'=>'127.0.0.1','SCRIPT_NAME'=>'','SCRIPT_FILENAME'=>'','SERVER_PROTOCOL'=>'HTTP/1.1','REQUEST_TIME'=> time(),
 ), $server);
 $server['PATH_INFO'] ='';
 $server['REQUEST_METHOD'] = strtoupper($method);
@@ -726,18 +675,15 @@ public static function getHttpMethodParameterOverride()
 {
 return self::$httpMethodParameterOverride;
 }
-public function get($key, $default = null, $deep = false)
+public function get($key, $default = null)
 {
-if ($deep) {
-@trigger_error('Using paths to find deeper items in '.__METHOD__.' is deprecated since version 2.8 and will be removed in 3.0. Filter the returned value in your own code instead.', E_USER_DEPRECATED);
-}
-if ($this !== $result = $this->query->get($key, $this, $deep)) {
+if ($this !== $result = $this->attributes->get($key, $this)) {
 return $result;
 }
-if ($this !== $result = $this->attributes->get($key, $this, $deep)) {
+if ($this !== $result = $this->query->get($key, $this)) {
 return $result;
 }
-if ($this !== $result = $this->request->get($key, $this, $deep)) {
+if ($this !== $result = $this->request->get($key, $this)) {
 return $result;
 }
 return $default;
@@ -988,6 +934,13 @@ static::initializeFormats();
 }
 return isset(static::$formats[$format]) ? static::$formats[$format][0] : null;
 }
+public static function getMimeTypes($format)
+{
+if (null === static::$formats) {
+static::initializeFormats();
+}
+return isset(static::$formats[$format]) ? static::$formats[$format] : array();
+}
 public function getFormat($mimeType)
 {
 $canonicalMimeType = null;
@@ -1016,7 +969,7 @@ static::$formats[$format] = is_array($mimeTypes) ? $mimeTypes : array($mimeTypes
 public function getRequestFormat($default ='html')
 {
 if (null === $this->format) {
-$this->format = $this->get('_format', $default);
+$this->format = $this->attributes->get('_format', $default);
 }
 return $this->format;
 }
@@ -1053,7 +1006,15 @@ return $this->getMethod() === strtoupper($method);
 }
 public function isMethodSafe()
 {
-return in_array($this->getMethod(), 0 < func_num_args() && !func_get_arg(0) ? array('GET','HEAD','OPTIONS','TRACE') : array('GET','HEAD'));
+if (!func_num_args() || func_get_arg(0)) {
+@trigger_error('Checking only for cacheable HTTP methods with Symfony\Component\HttpFoundation\Request::isMethodSafe() is deprecated since version 3.2 and will throw an exception in 4.0. Disable checking only for cacheable methods by calling the method with `false` as first argument or use the Request::isMethodCacheable() instead.', E_USER_DEPRECATED);
+return in_array($this->getMethod(), array('GET','HEAD'));
+}
+return in_array($this->getMethod(), array('GET','HEAD','OPTIONS','TRACE'));
+}
+public function isMethodIdempotent()
+{
+return in_array($this->getMethod(), array('HEAD','GET','PUT','DELETE','TRACE','OPTIONS','PURGE'));
 }
 public function isMethodCacheable()
 {
@@ -1315,7 +1276,7 @@ return $request;
 }
 return new static($query, $request, $attributes, $cookies, $files, $server, $content);
 }
-private function isFromTrustedProxy()
+public function isFromTrustedProxy()
 {
 return self::$trustedProxies && IpUtils::checkIp($this->server->get('REMOTE_ADDR'), self::$trustedProxies);
 }
@@ -1341,4 +1302,5 @@ return $clientIps ? array_reverse($clientIps) : array($firstTrustedIp);
 }
 }
 }
+namespace {require __DIR__.'/../vendor/symfony/symfony/src/Symfony/Component/ClassLoader/ClassCollectionLoader.php';}
 namespace {require __DIR__.'/../vendor/symfony/symfony/src/Symfony/Component/ClassLoader/ApcClassLoader.php';}

@@ -6,8 +6,6 @@ use Symfony\Component\Debug\Debug;
 
 date_default_timezone_set('UTC');
 
-require_once __DIR__.'/../var/bootstrap.php.cache';
-
 /**
  * @var ClassLoader $loader
  */
