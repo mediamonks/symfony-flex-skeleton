@@ -4,6 +4,7 @@ services:
         arguments:
             - '@security.authentication_utils'
             - '@templating'
+
     app.request_listener:
         class: App\AdminBundle\EventListeners\IpWhitelistListener
         arguments:
@@ -11,6 +12,7 @@ services:
             - "%admin_directory%"
         tags:
             - { name: kernel.event_listener, event: kernel.request }
+
     admin.user:
         class: App\AdminBundle\Admin\UserAdmin
         arguments: [~, App\CoreBundle\Entity\User, ~]

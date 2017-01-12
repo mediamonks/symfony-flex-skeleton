@@ -21,6 +21,7 @@ security:
             security: false
 
         admin:
+            switch_user:        true
             pattern:            ^/%admin_directory%(.*)
             context:            user
             form_login:
