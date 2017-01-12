@@ -14,11 +14,6 @@ class ScriptsDummy
     /**
      * @param Event $event
      */
-    public static function buildBootstrap(Event $event) {}
-
-    /**
-     * @param Event $event
-     */
     public static function clearCache(Event $event) {}
 
     /**
