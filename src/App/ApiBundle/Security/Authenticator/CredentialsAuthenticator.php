@@ -67,7 +67,7 @@ class CredentialsAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return $this->userRepository->findUserByUsername($credentials['username']);
+        return $this->userRepository->findOneByUsername($credentials['username']);
     }
 
     /**
