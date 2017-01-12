@@ -65,7 +65,6 @@ class AuthController
         return [
             'accessToken' => $this->jwtManager->sign([
                 'id'       => $user->getId(),
-                'token'    => $user->getToken(),
                 'verifier' => $user->getJwtVerifier(),
                 'username' => $user->getUsername()
             ])
