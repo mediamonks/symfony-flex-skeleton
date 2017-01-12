@@ -3,6 +3,7 @@
 namespace Installer\EventHandler;
 
 use Installer\Helper\File;
+use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 use Zend\Math\Rand;
 
 class UserHandler extends AbstractHandler
@@ -18,19 +19,16 @@ class UserHandler extends AbstractHandler
     {
         $this->writeHeader('Users');
 
-        $brand = File::readMetaData('brand');
         $project = File::readMetaData('project');
 
         $this->users[] = $this->createUser(
             $project['sanatized'] . 'SuperAdmin',
-            sprintf('super-admin@%s.local', strtolower($brand['sanatized'])),
             'super admin',
             ['ROLE_SUPER_ADMIN']
         );
 
         $this->users[] = $this->createUser(
             $project['sanatized'] . 'Admin',
-            sprintf('admin@%s.local', strtolower($brand['sanatized'])),
             'admin'
         );
 
@@ -41,24 +39,29 @@ class UserHandler extends AbstractHandler
 
     /**
      * @param $username
-     * @param $email
      * @param $type
      * @param array $roles
      * @return array
      */
-    protected function createUser($username, $email, $type, array $roles =[])
+    protected function createUser($username, $type, array $roles =[])
     {
-        $roles[] = 'ROLE_SONATA_ADMIN';
+        $roles[] = 'ROLE_ADMIN';
 
         $this->write(sprintf('Creating <comment>%s</comment> user', $type));
 
         $password = Rand::getString(20, self::CHAR_LIST_PASSWORD);
 
-        $this->executeSymfonyCommand(sprintf('fos:user:create "%s" "%s" "%s" --super-admin', $username, $email, $password));
+        $passwordEncoded = password_hash($password, PASSWORD_BCRYPT);
 
-        foreach($roles as $role) {
-            $this->executeSymfonyCommand(sprintf('fos:user:promote %s %s', $username, $role));
-        }
+        $query = sprintf("
+          INSERT INTO `users`
+          (`username`, `password`, `roles`, `created_at`, `updated_at`)
+          VALUES
+          ('%s', '%s', '%s', now(), now())", $username, $passwordEncoded, addslashes(json_encode($roles)));
+
+        $query = str_replace(["\n", "\r"], ' ', $query);
+
+        $this->executeSymfonyCommand(sprintf('doctrine:query:sql "%s"', $query));
 
         return [
             'type' => $type,

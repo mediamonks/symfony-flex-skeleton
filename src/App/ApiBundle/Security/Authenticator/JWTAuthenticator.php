@@ -2,8 +2,8 @@
 
 namespace App\ApiBundle\Security\Authenticator;
 
+use App\CoreBundle\Repository\UserRepository;
 use App\CoreBundle\Security\JWT\JWTManagerInterface;
-use FOS\UserBundle\Model\UserManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -24,18 +24,18 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
     private $jwtManager;
 
     /**
-     * @var UserManager
+     * @var UserRepository
      */
-    private $userManager;
+    private $userRepository;
 
     /**
      * @param JWTManagerInterface $jwtManager
-     * @param UserManager $userManager
+     * @param UserRepository $userRepository
      */
-    public function __construct(JWTManagerInterface $jwtManager, UserManager $userManager)
+    public function __construct(JWTManagerInterface $jwtManager, UserRepository $userRepository = null)
     {
-        $this->jwtManager  = $jwtManager;
-        $this->userManager = $userManager;
+        $this->jwtManager = $jwtManager;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -70,7 +70,7 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return $this->userManager->findUserBy(['id' => $credentials['id']]);
+        return $this->userRepository->find($credentials['id']);
     }
 
     /**
@@ -80,12 +80,13 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        if(!hash_equals($user->getToken(), $credentials['token'])) {
+        if (!hash_equals($user->getToken(), $credentials['token'])) {
             return false;
         }
-        if($user->getJwtVerifier() > $credentials['verifier']) {
+        if ($user->getJwtVerifier() > $credentials['verifier']) {
             return false;
         }
+
         return true;
     }
 

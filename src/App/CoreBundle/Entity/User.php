@@ -2,17 +2,20 @@
 
 namespace App\CoreBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use MediaMonks\Doctrine\Mapping\Annotation as MediaMonks;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\CoreBundle\Repository\UserRepository")
  * @ORM\Table(name="users")
  */
-class User extends BaseUser
+class User implements UserInterface, \Serializable
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -38,39 +41,14 @@ class User extends BaseUser
     protected $username;
 
     /**
-     * @ORM\Column(type="string", nullable=true, unique=true, length=180)
+     * @ORM\Column(type="string", nullable=true)
      */
-    protected $usernameCanonical;
+    protected $firstName;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $firstname;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $lastname;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $locale;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $timezone;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $enabled;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $salt;
+    protected $lastName;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -78,19 +56,14 @@ class User extends BaseUser
     protected $password;
 
     /**
+     * @var string
+     */
+    protected $plainPassword;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $lastLogin;
-
-    /**
-     * @ORM\Column(type="string", nullable=true, length=180)
-     */
-    protected $confirmationToken;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $passwordRequestedAt;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -98,442 +71,63 @@ class User extends BaseUser
     protected $jwtVerifier;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Group")
-     * @ORM\JoinTable(name="users_groups",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     * )
-     */
-    protected $groups;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $locked;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $expired;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $expiresAt;
-
-    /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="json_array", nullable=true)
      */
     protected $roles;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $credentialsExpired;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $credentialsExpireAt;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $twoStepVerificationCode;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $facebookUid;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $facebookName;
-
-    /**
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    protected $facebookData;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $twitterUid;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $twitterName;
-
-    /**
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    protected $twitterData;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $gplusUid;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $gplusName;
-
-    /**
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    protected $gplusData;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $token;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $avatar;
-
-    public function __construct()
+    public function __toString()
     {
-        parent::__construct();
-
-        $this->updateToken();
+        return $this->getUsername();
     }
 
-    public function updateToken($length = 20)
+    /**
+     * @return integer
+     */
+    public function getId()
     {
-        $this->token = sha1(random_bytes($length));
+        return $this->id;
     }
 
-    public function updateJwtVerifier()
+    /**
+     * @return string
+     */
+    public function getEmail()
     {
-        $this->jwtVerifier = time();
+        return $this->email;
     }
 
     /**
      * @param string $email
-     * @return $this
+     * @return User
      */
     public function setEmail($email)
     {
         $this->email = $email;
 
-        $this->setEmailCanonical($email);
-
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getConfirmationToken()
+    public function getEmailCanonical()
     {
-        return $this->confirmationToken;
+        return $this->emailCanonical;
     }
 
     /**
-     * @param mixed $confirmationToken
+     * @param string $emailCanonical
      * @return User
      */
-    public function setConfirmationToken($confirmationToken)
+    public function setEmailCanonical($emailCanonical)
     {
-        $this->confirmationToken = $confirmationToken;
+        $this->emailCanonical = $emailCanonical;
+
         return $this;
     }
 
     /**
-     * @return mixed
-     */
-    public function getExpired()
-    {
-        return $this->expired;
-    }
-
-    /**
-     * @param mixed $expired
-     * @return User
-     */
-    public function setExpired($expired)
-    {
-        $this->expired = $expired;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFacebookData()
-    {
-        return $this->facebookData;
-    }
-
-    /**
-     * @param mixed $facebookData
-     * @return User
-     */
-    public function setFacebookData($facebookData)
-    {
-        $this->facebookData = $facebookData;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFacebookName()
-    {
-        return $this->facebookName;
-    }
-
-    /**
-     * @param mixed $facebookName
-     * @return User
-     */
-    public function setFacebookName($facebookName)
-    {
-        $this->facebookName = $facebookName;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFacebookUid()
-    {
-        return $this->facebookUid;
-    }
-
-    /**
-     * @param mixed $facebookUid
-     * @return User
-     */
-    public function setFacebookUid($facebookUid)
-    {
-        $this->facebookUid = $facebookUid;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFirstname()
-    {
-        return $this->firstname;
-    }
-
-    /**
-     * @param mixed $firstname
-     * @return User
-     */
-    public function setFirstname($firstname)
-    {
-        $this->firstname = $firstname;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGplusData()
-    {
-        return $this->gplusData;
-    }
-
-    /**
-     * @param mixed $gplusData
-     * @return User
-     */
-    public function setGplusData($gplusData)
-    {
-        $this->gplusData = $gplusData;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGplusName()
-    {
-        return $this->gplusName;
-    }
-
-    /**
-     * @param mixed $gplusName
-     * @return User
-     */
-    public function setGplusName($gplusName)
-    {
-        $this->gplusName = $gplusName;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGplusUid()
-    {
-        return $this->gplusUid;
-    }
-
-    /**
-     * @param mixed $gplusUid
-     * @return User
-     */
-    public function setGplusUid($gplusUid)
-    {
-        $this->gplusUid = $gplusUid;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLastname()
-    {
-        return $this->lastname;
-    }
-
-    /**
-     * @param mixed $lastname
-     * @return User
-     */
-    public function setLastname($lastname)
-    {
-        $this->lastname = $lastname;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @param mixed $locale
-     * @return User
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTimezone()
-    {
-        return $this->timezone;
-    }
-
-    /**
-     * @param mixed $timezone
-     * @return User
-     */
-    public function setTimezone($timezone)
-    {
-        $this->timezone = $timezone;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getToken()
-    {
-        return $this->token;
-    }
-
-    /**
-     * @param mixed $token
-     * @return User
-     */
-    public function setToken($token)
-    {
-        $this->token = $token;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTwitterData()
-    {
-        return $this->twitterData;
-    }
-
-    /**
-     * @param mixed $twitterData
-     * @return User
-     */
-    public function setTwitterData($twitterData)
-    {
-        $this->twitterData = $twitterData;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTwitterName()
-    {
-        return $this->twitterName;
-    }
-
-    /**
-     * @param mixed $twitterName
-     * @return User
-     */
-    public function setTwitterName($twitterName)
-    {
-        $this->twitterName = $twitterName;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTwitterUid()
-    {
-        return $this->twitterUid;
-    }
-
-    /**
-     * @param mixed $twitterUid
-     * @return User
-     */
-    public function setTwitterUid($twitterUid)
-    {
-        $this->twitterUid = $twitterUid;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTwoStepVerificationCode()
-    {
-        return $this->twoStepVerificationCode;
-    }
-
-    /**
-     * @param mixed $twoStepVerificationCode
-     * @return User
-     */
-    public function setTwoStepVerificationCode($twoStepVerificationCode)
-    {
-        $this->twoStepVerificationCode = $twoStepVerificationCode;
-        return $this;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getUsername()
     {
@@ -541,75 +135,69 @@ class User extends BaseUser
     }
 
     /**
-     * @param mixed $username
+     * @param string $username
      * @return User
      */
     public function setUsername($username)
     {
         $this->username = $username;
+
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getUsernameCanonical()
+    public function getFirstName()
     {
-        return $this->usernameCanonical;
+        return $this->firstName;
     }
 
     /**
-     * @param mixed $usernameCanonical
+     * @param string $firstName
      * @return User
      */
-    public function setUsernameCanonical($usernameCanonical)
+    public function setFirstName($firstName)
     {
-        $this->usernameCanonical = $usernameCanonical;
-        return $this;
-    }
+        $this->firstName = $firstName;
 
-    /**
-     * @return mixed
-     */
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-    /**
-     * @param mixed $avatar
-     * @return User
-     */
-    public function setAvatar($avatar)
-    {
-        $this->avatar = $avatar;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getFullName()
+    public function getLastName()
     {
-        return sprintf('%s %s', $this->getFirstname(), $this->getLastname());
+        return $this->lastName;
     }
 
     /**
-     * @return array
-     */
-    public function getRealRoles()
-    {
-        return $this->roles;
-    }
-
-    /**
-     * @param array $roles
-     *
+     * @param string $lastName
      * @return User
      */
-    public function setRealRoles(array $roles)
+    public function setLastName($lastName)
     {
-        $this->setRoles($roles);
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * @param mixed $lastLogin
+     * @return User
+     */
+    public function setLastLogin($lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }
@@ -629,6 +217,90 @@ class User extends BaseUser
     public function setJwtVerifier($jwtVerifier)
     {
         $this->jwtVerifier = $jwtVerifier;
+
         return $this;
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(
+            [
+                $this->id,
+                $this->username,
+                $this->password,
+                // see section on salt below
+                // $this->salt,
+            ]
+        );
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param $newPassword
+     */
+    public function updatePassword($newPassword)
+    {
+        $this->password = $newPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function hasRole($role) {
+        return in_array($role, $this->roles);
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function updateJwtVerifier()
+    {
+        $this->jwtVerifier = time();
     }
 }

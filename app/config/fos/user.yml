@@ -1,7 +1,0 @@
-fos_user:
-    db_driver: orm
-    user_class: App\CoreBundle\Entity\User
-    firewall_name: main
-    group:
-        group_class:  App\CoreBundle\Entity\Group
-    use_listener: false

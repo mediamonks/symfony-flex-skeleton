@@ -1,4 +1,3 @@
 imports:
     - { resource: admin.yml }
     - { resource: block.yml }
-    - { resource: user.yml }

@@ -2,7 +2,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: doctrine/config.yml }
     - { resource: sonata/config.yml }
-    - { resource: fos/config.yml }
     - { resource: security.yml }
     - { resource: services.yml }
 

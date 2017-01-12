@@ -1,6 +1,6 @@
 sonata_admin:
-    title: "MediaMonks Symfony Skeleton"
+    title: "Skeleton"
     security:
         handler: sonata.admin.security.handler.role
-
-sonata_user:
+    templates:
+        user_block: 'AppAdminBundle::user_block.html.twig'
