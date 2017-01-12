@@ -13,7 +13,7 @@ class Environment
 
     const ENV_LEGACY_UAT = 'uat';
 
-    const ENVIRONMENT_NAME_ENVIRONMENT = 'ENVIRONMENT';
+    const ENVIRONMENT_NAME_ENVIRONMENT = 'ENVIRONMENT'; // PHP_ENV
     const ENVIRONMENT_NAME_DEBUG = 'debug';
 
     const ARGUMENT_DEBUG = '--debug';
