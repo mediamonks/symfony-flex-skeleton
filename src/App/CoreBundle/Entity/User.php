@@ -55,6 +55,9 @@ class User implements UserInterface, \Serializable
      */
     protected $password;
 
+    /**
+     * @var string
+     */
     protected $plainPassword;
 
     /**
