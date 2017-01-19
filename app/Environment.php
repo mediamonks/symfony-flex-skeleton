@@ -186,7 +186,7 @@ class Environment
      * @param $name
      * @return mixed
      */
-    private function correctLegacyName($name)
+    private static function correctLegacyName($name)
     {
         if ($name === self::ENV_LEGACY_UAT) {
             return self::ENV_TESTING;
