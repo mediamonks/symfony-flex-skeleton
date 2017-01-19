@@ -57,7 +57,7 @@ class UserHandler extends AbstractHandler
           INSERT INTO users
           (username, password, roles, created_at, updated_at)
           VALUES
-          ('%s', '%s', '%s', now(), now())", $username, $passwordEncoded, addslashes(json_encode($roles)));
+          ('%s', '%s', '%s', now(), now())", $username, addslashes($passwordEncoded), addslashes(json_encode($roles)));
 
         $query = str_replace(["\n", "\r"], ' ', $query);
 
