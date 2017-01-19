@@ -54,8 +54,8 @@ class UserHandler extends AbstractHandler
         $passwordEncoded = password_hash($password, PASSWORD_BCRYPT);
 
         $query = sprintf("
-          INSERT INTO `users`
-          (`username`, `password`, `roles`, `created_at`, `updated_at`)
+          INSERT INTO users
+          (username, password, roles, created_at, updated_at)
           VALUES
           ('%s', '%s', '%s', now(), now())", $username, $passwordEncoded, addslashes(json_encode($roles)));
 
