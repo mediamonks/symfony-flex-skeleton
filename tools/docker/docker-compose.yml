@@ -1,0 +1,13 @@
+version: "2"
+services:
+    apache:
+        build: .
+        container_name: apache
+        ports:
+            - "80:80"
+        volumes:
+            - "../../:/var/www/html"
+            - "/composer-cache:/root/.composer/cache"
+            - "/home/vagrant/.ssh:/root/.ssh"
+        environment:
+            - ENVIRONMENT=local

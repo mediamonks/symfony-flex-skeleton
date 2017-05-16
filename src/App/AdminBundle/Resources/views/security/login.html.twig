@@ -13,16 +13,21 @@
             margin: 0px;
             padding: 0px;
         }
+
         body {
-            background: #eee !important;
+            background: #dedede;
+            background-size: cover !important;
         }
+
         .wrapper {
             background-color: transparent !important;
         }
-        .login-box {
-            background: white;
-            border: 1px solid #3c8dbc;
-            padding-bottom: 25px;
+
+        .login-box-custom {
+            padding: 20px 50px 50px 50px;
+            border-radius: 4px;
+            background-color: white;
+            margin-top: 100px;
         }
     </style>
 {% endblock %}
@@ -33,11 +38,12 @@
     {% block sonata_page_content %}
         <div class="row">
             <div class="col-md-4"></div>
-            <div class="col-md-4 login-box">
-                <h1>Secured Area</h1>
+            <div class="col-md-4 login-box-custom">
+                <h1><i class="fa fa-lock"></i> Secured Area</h1>
 
                 {% if error %}
-                    <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    <div class="alert alert-danger"
+                         role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
 
                 <form action="{{ path('admin_login') }}" method="post">
@@ -46,20 +52,21 @@
 
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input autocomplete="username" class="form-control" id="username" name="_username" placeholder="Username">
+                        <input class="form-control" id="username" name="_username" placeholder="Username">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input autocomplete="password" type="password" class="form-control" id="password" name="_password" placeholder="Password">
+                        <input type="password" class="form-control" id="password" name="_password"
+                               placeholder="Password">
                     </div>
 
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" id="remember_me" name="_remember_me" /> Keep me logged in
+                            <input type="checkbox" id="remember_me" name="_remember_me"/> Keep me logged in
                         </label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-sign-in"></i> Login</button>
                 </form>
             </div>
             <div class="col-md-4"></div>

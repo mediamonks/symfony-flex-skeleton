@@ -4,6 +4,7 @@ namespace Installer;
 
 use Composer\Script\Event;
 use Installer\EventHandler as Handler;
+use Symfony\Component\Process\Process;
 
 /**
  * @author Robert Slootjes <robert@mediamonks.com>
@@ -52,6 +53,25 @@ class Scripts
         $event->getIO()->write(str_repeat('=', strlen($message)));
         $event->getIO()->write('');
         $event->getIO()->write('');
+
+        mkdir('source/symfony', null, true);
+        $commands = [
+            'mv ./app ./source/symfony/app',
+            'mv ./bin ./source/symfony/bin',
+            'mv ./src ./source/symfony/src',
+            'mv ./tests ./source/symfony/tests',
+            'mv ./var ./source/symfony/var',
+            'mv ./vendor ./source/symfony/vendor',
+            'mv ./web ./source/symfony/web',
+            'mv ./.gitignore ./source/symfony/.gitignore',
+            'mv ./behat.yml ./source/symfony/behat.yml',
+            'mv ./composer.json ./source/symfony/composer.json',
+            'mv ./composer.lock ./source/symfony/composer.lock',
+            'mv ./README.md ./source/symfony/README.md',
+            'echo /tools/vagrant/config.yml >> .gitignore'
+        ];
+        $move = new Process(implode(' && ', $commands));
+        $move->run();
     }
 
     /**
