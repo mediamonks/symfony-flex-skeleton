@@ -68,7 +68,9 @@ class Scripts
             'mv ./composer.json ./source/symfony/composer.json',
             'mv ./composer.lock ./source/symfony/composer.lock',
             'mv ./README.md ./source/symfony/README.md',
-            'echo /tools/vagrant/config.yml >> .gitignore'
+            'echo /tools/vagrant/config.yml >> .gitignore',
+            'echo .idea >> .gitignore',
+            'echo .vagrant >> .gitignore'
         ];
         $move = new Process(implode(' && ', $commands));
         $move->run();

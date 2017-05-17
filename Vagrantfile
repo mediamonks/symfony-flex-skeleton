@@ -6,7 +6,7 @@ if File.file?('./tools/vagrant/config.yml')
     hostname = conf["hostname"]
     ip_address = conf["ip_address"]
 else
-    raise "Configuration file 'tools/vagrant/config.yml' does not exist."
+    raise "Configuration file 'tools/vagrant/config.yml' does not exist. Please copy tools/vagrant/config.yml.dist and provide hostname and (optional) ipaddress."
 end
 
 Vagrant.configure("2") do |config|
