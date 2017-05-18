@@ -13,7 +13,7 @@ class IndexController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @Sensio\Route(path="/", name="front_end_index")
-     * @Sensio\Cache(smaxage=3600, maxage=3600)
+     * @Sensio\Cache(smaxage=300, maxage=300)
      */
     public function indexAction()
     {

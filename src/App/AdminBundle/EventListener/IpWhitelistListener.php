@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AdminBundle\EventListeners;
+namespace App\AdminBundle\EventListener;
 
 use IPSet\IPSet;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -9,24 +9,23 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class IpWhitelistListener
 {
     /**
-     * @var array
-     */
-    private $ipWhitelist;
-
-    /**
      * @var string
      */
     private $adminDirectory;
 
     /**
-     * IpWhitelistListener constructor.
-     * @param array $ipWhitelist
-     * @param string $adminDirectory
+     * @var array
      */
-    public function __construct(array $ipWhitelist, $adminDirectory)
+    private $ipWhitelist;
+
+    /**
+     * @param $adminDirectory
+     * @param array $ipWhitelist
+     */
+    public function __construct($adminDirectory, array $ipWhitelist = null)
     {
-        $this->ipWhitelist = $ipWhitelist;
         $this->adminDirectory = $adminDirectory;
+        $this->ipWhitelist = $ipWhitelist;
     }
 
     /**
@@ -35,8 +34,11 @@ class IpWhitelistListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $request = $event->getRequest();
+        if (empty($this->ipWhitelist)) {
+            return;
+        }
 
+        $request = $event->getRequest();
         if (!$event->isMasterRequest()) {
             // don't do anything if it's not the master request
             return;

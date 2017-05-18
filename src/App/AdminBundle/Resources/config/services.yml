@@ -5,11 +5,11 @@ services:
             - '@security.authentication_utils'
             - '@templating'
 
-    app.request_listener:
-        class: App\AdminBundle\EventListeners\IpWhitelistListener
+    admin.listener.ip_whitelist:
+        class: App\AdminBundle\EventListener\IpWhitelistListener
         arguments:
-            - "%ip_whitelist%"
             - "%admin_directory%"
+            - "%ip_whitelist%"
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
