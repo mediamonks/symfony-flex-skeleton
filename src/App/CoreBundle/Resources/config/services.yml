@@ -9,3 +9,8 @@ services:
         class: App\CoreBundle\Security\JWT\FirebaseJWTManager
         arguments:
             - '%secret%'
+
+    core.listener.cache:
+        class: App\CoreBundle\EventListener\CacheListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response }
