@@ -2,22 +2,38 @@ require 'yaml'
 
 if File.file?('./tools/vagrant/config.yml')
     conf = YAML.load_file('tools/vagrant/config.yml')
-    cache_dir = conf["composer_cache_dir"]
-    hostname = conf["hostname"]
-    ip_address = conf["ip_address"]
 else
-    raise "Configuration file 'tools/vagrant/config.yml' does not exist. Please copy tools/vagrant/config.yml.dist and provide hostname and (optional) ipaddress."
+    conf = YAML.load_file('tools/vagrant/config.yml.dist')
 end
+
+cache_dir = conf["composer_cache_dir"]
+hostname = conf["hostname"]
+ip_address = conf["ip_address"]
 
 Vagrant.configure("2") do |config|
     config.vm.box = "mediamonks/ubuntu16-docker"
 
-	config.hostmanager.enabled = true
-	config.hostmanager.manage_host = true
-	config.hostmanager.manage_guest = true
-	config.hostmanager.ignore_private_ip = false
-	config.hostmanager.include_offline = true
-	config.vm.hostname = hostname
+	config.trigger.before :up do
+        run "bash ./tools/vagrant/hostupdate-up.sh #{ip_address} #{hostname}"
+    end
+    config.trigger.before :resume do
+        run "bash ./tools/vagrant/hostupdate-up.sh #{ip_address} #{hostname}"
+    end
+    config.trigger.before :reload do
+        run "bash ./tools/vagrant/hostupdate-down.sh #{ip_address}"
+    end
+    config.trigger.after :reload do
+        run "bash ./tools/vagrant/hostupdate-up.sh #{ip_address} #{hostname}"
+    end
+    config.trigger.before :suspend do
+        run "bash ./tools/vagrant/hostupdate-down.sh #{ip_address}"
+    end
+    config.trigger.before :halt do
+        run "bash ./tools/vagrant/hostupdate-down.sh #{ip_address}"
+    end
+    config.trigger.before :destroy do
+        run "bash ./tools/vagrant/hostupdate-down.sh #{ip_address}"
+    end
 
 	config.vm.network "private_network", ip: ip_address
 	config.vm.synced_folder "./", "/app", type: "nfs"
