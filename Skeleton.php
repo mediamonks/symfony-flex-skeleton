@@ -237,7 +237,12 @@ class Skeleton
         $cleanup = self::askQuestion('Remove installer?', 'y');
         if ($cleanup === 'y') {
             unlink(self::getPathFromTools('../Skeleton.php'));
-            rmdir(self::getPathFromTools('../vendor'));
+
+            $di = new \RecursiveDirectoryIterator(self::getPathFromTools('../vendor'), \FilesystemIterator::SKIP_DOTS);
+            $ri = new \RecursiveIteratorIterator($di, \RecursiveIteratorIterator::CHILD_FIRST);
+            foreach ($ri as $file) {
+                $file->isDir() ? rmdir($file) : unlink($file);
+            }
         }
     }
 
