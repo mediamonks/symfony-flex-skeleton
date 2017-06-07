@@ -20,7 +20,6 @@ class Skeleton
     const COLOR_CYAN = "\e[1;37m\e[46m";
     const COLOR_BLUE = "\e[1;37m\e[44m";
     const COLOR_PURPLE = "\e[1;37m\e[45m";
-    const COLOR_YELLOW = "\e[1;30m\e[43m";
 
     const FILE_GIT_ORIG_HEAD = '.git/ORIG_HEAD';
     const GIT_COMMAND_VERSION = 'git rev-parse HEAD';
@@ -37,7 +36,7 @@ class Skeleton
         $readmeFile = self::getPathFromTools('../README.md');
 
         if($package->getStability() !== 'stable') {
-            $question = sprintf('The stability of this release is '.self::COLOR_RED.'%s'.self::COLOR_GREEN.' instead of '.self::COLOR_YELLOW.'stable'.self::COLOR_GREEN.'. Are you sure you want to continue?', $package->getStability());
+            $question = sprintf('The stability of this release is '.self::COLOR_RED.'%s'.self::COLOR_GREEN.' instead of '.self::COLOR_PURPLE.'stable'.self::COLOR_GREEN.'. Are you sure you want to continue?', $package->getStability());
             $answer = self::askQuestion($question, 'y/n');
             if($answer === 'n') {
                 self::echoString('Aborting installation', self::COLOR_RED);
@@ -82,10 +81,31 @@ class Skeleton
         echo $process->getOutput();
         self::askQuestion('Did the security checker approve all used packages?', 'y', true);
 
-		$hostname = self::askQuestion('Project (vagrant) hostname', 'symfony-skeleton.local');
-        $ipaddress = self::askQuestion('Project (vagrant) ip address', '192.168.33.2');
+        hostname:
+		$hostname = self::askQuestion('Project (vagrant) hostname (.local will be added)');
+        $hostname .= '.local';
+        if(!preg_match('~^([a-z0-9-]+.local)$~', $hostname)) {
+            self::echoString('Hostname should only contain a-z, 0-9 and dashes', self::COLOR_RED);
+            goto hostname;
+        }
+
+        ipaddress:
+        $ipaddress = self::askQuestion('Project (vagrant) ip address (192.168.33. prefix will be added)', random_int(2, 255));
+        if ((int)$ipaddress >= 2 && (int)$ipaddress <= 255) {
+            $ipaddress = '192.168.33.' . $ipaddress;
+        } else {
+            self::echoString('Please choose a number between 2 and 255', self::COLOR_RED);
+            goto ipaddress;
+        }
+
         $composerCacheDir = self::askQuestion('Composer cache directory', '~');
+
+        phpversion:
         $phpVersion = self::askQuestion('PHP Version 5.6 or 7.0', '7.0');
+        if (!in_array($phpVersion, ['5.6', '7.0'])) {
+            self::echoString('Please choose version 5.6 or 7.0', self::COLOR_RED);
+            goto phpversion;
+        }
 
         if ($phpVersion === '5.6') {
             echo self::executeProcess('cd source/symfony && composer require symfony/symfony:^3.2 --no-update');
@@ -197,9 +217,9 @@ class Skeleton
         );
         $assemblaMeta = self::getMeta('assembla');
         if(!empty($assemblaMeta)) {
-            self::echoString('Copy the user table below to a new wiki page called '.self::COLOR_YELLOW.'Admin_Credentials'.self::COLOR_CYAN.' on Assembla:', self::COLOR_CYAN);
+            self::echoString('Copy the user table below to a new wiki page called '.self::COLOR_PURPLE.'Admin_Credentials'.self::COLOR_CYAN.' on Assembla:', self::COLOR_CYAN);
             self::echoString(sprintf('%swiki/new', $assemblaMeta['url']), self::COLOR_CYAN);
-            self::echoString('(make sure to set the visibility to '.self::COLOR_YELLOW.'Private'.self::COLOR_CYAN.' and the markup format to '.self::COLOR_YELLOW.'markdown'.self::COLOR_DEFAULT.')', self::COLOR_CYAN);
+            self::echoString('(make sure to set the visibility to '.self::COLOR_PURPLE.'Private'.self::COLOR_CYAN.' and the markup format to '.self::COLOR_PURPLE.'markdown'.self::COLOR_DEFAULT.')', self::COLOR_CYAN);
         } else {
             self::echoString('Copy the user table below to a secure location:', self::COLOR_CYAN);
         }
@@ -217,6 +237,7 @@ class Skeleton
         $cleanup = self::askQuestion('Remove installer?', 'y');
         if ($cleanup === 'y') {
             unlink(self::getPathFromTools('../Skeleton.php'));
+            rmdir(self::getPathFromTools('../vendor'));
         }
     }
 
