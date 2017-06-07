@@ -16,8 +16,8 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd": [
-            "Installer\\Skeleton::postCreateProject"
+        "post-install-cmd": [
+            "Installer\\Skeleton::install"
         ]
     }
 }
