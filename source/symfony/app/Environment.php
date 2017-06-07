@@ -21,7 +21,7 @@ class Environment
     const ARGUMENT_ENVIRONMENT = '--env';
     const ARGUMENT_ENVIRONMENT_SHORT = '-e';
 
-    const CLI_PATH_WINDOWS = 'C:';
+    const CLI_PATH_WINDOWS = 'AppData\Local';
     const CLI_PATH_MAC = '/Users/';
 
     private static $serverNamesLocal = ['localhost', 'local'];
@@ -144,10 +144,10 @@ class Environment
             return $name;
         }
 
-        if (strpos(__DIR__, self::CLI_PATH_WINDOWS) !== false) {
+        if (strpos(__DIR__, self::CLI_PATH_MAC) !== false) {
             return self::ENV_LOCAL;
         }
-        if (strpos(__DIR__, self::CLI_PATH_MAC) !== false) {
+        if (strpos(getenv('LOCALAPPDATA'), self::CLI_PATH_WINDOWS) !== false) {
             return self::ENV_LOCAL;
         }
 
