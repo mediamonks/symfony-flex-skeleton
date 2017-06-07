@@ -490,8 +490,8 @@ class Skeleton
 
         return [
             'type' => $type,
-            'username' => $username,
-            'password' => $password,
+            'username' => sprintf('`%s`', $username),
+            'password' => sprintf('`%s`', $password),
         ];
     }
 

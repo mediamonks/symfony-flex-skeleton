@@ -1,7 +1,4 @@
 /.idea
-/assembla.json
-/meta.json
-/build/
 /phpunit.xml
 /bin/*
 !/bin/console
@@ -22,4 +19,3 @@
 !/web/bundles/
 /web/bundles/*
 !/web/bundles/.htaccess
-/DEV
