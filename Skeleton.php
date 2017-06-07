@@ -229,6 +229,7 @@ class Skeleton
             $userValues[] = array_values($user);
         }
         echo (new TextTable(['Type', 'Username', 'Password'], $userValues))->render();
+        echo PHP_EOL;
 
         if(!empty($assemblaMeta)) {
             self::askQuestion('Did you create the page?' , 'y', true);
