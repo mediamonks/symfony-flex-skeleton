@@ -29,7 +29,7 @@ class Skeleton
     /**
      * @param Event $event
      */
-    public static function postRootPackageInstall(Event $event)
+    public static function postCreateProject(Event $event)
     {
         $package = $event->getComposer()->getPackage();
         $parametersFile = self::getPathFromApp('config/parameters.yml');

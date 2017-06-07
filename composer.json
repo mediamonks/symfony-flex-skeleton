@@ -16,8 +16,8 @@
         }
     },
     "scripts": {
-        "post-root-package-install": [
-            "Installer\\Skeleton::postRootPackageInstall"
+        "post-create-project-cmd": [
+            "Installer\\Skeleton::postCreateProject"
         ]
     }
 }
