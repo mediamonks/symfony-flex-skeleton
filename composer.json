@@ -8,6 +8,10 @@
         {
             "name": "Robert Slootjes",
             "email": "robert@mediamonks.com"
+        },
+        {
+            "name": "Eduan de Bruijne",
+            "email": "eduan.de.bruijne@mediamonks.com"
         }
     ],
 	"autoload": {
