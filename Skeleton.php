@@ -14,12 +14,13 @@ class Skeleton
     const LENGTH_ADMIN_DIRECTORY = 16;
     const LENGTH_ENCRYPTION_KEY = 64;
 
-    const COLOR_DEFAULT = "\e[1;37m\e[0m";
-    const COLOR_GREEN = "\e[1;37m\e[42m";
-    const COLOR_RED = "\e[1;37m\e[41m";
-    const COLOR_CYAN = "\e[1;37m\e[46m";
-    const COLOR_BLUE = "\e[1;37m\e[44m";
-    const COLOR_PURPLE = "\e[1;37m\e[45m";
+    const COLOR_DEFAULT = "\e[1;37m";
+    const COLOR_GREEN = "\e[1;32m";
+    const COLOR_RED = "\e[1;31m";
+    const COLOR_CYAN = "\e[1;36m";
+    const COLOR_BLUE = "\e[1;34m";
+    const COLOR_MAGENTA = "\e[1;35m";
+    const COLOR_YELLOW = "\e[1;33m";
 
     const FILE_GIT_ORIG_HEAD = '.git/ORIG_HEAD';
     const GIT_COMMAND_VERSION = 'git rev-parse HEAD';
@@ -36,9 +37,9 @@ class Skeleton
         $readmeFile = self::getPathFromTools('../README.md');
 
         if($package->getStability() !== 'stable') {
-            $question = sprintf('The stability of this release is '.self::COLOR_RED.'%s'.self::COLOR_GREEN.' instead of '.self::COLOR_PURPLE.'stable'.self::COLOR_GREEN.'. Are you sure you want to continue?', $package->getStability());
-            $answer = self::askQuestion($question, 'y/n');
-            if($answer === 'n') {
+            $question = sprintf('The stability of this release is '.self::COLOR_RED.'%s'.self::COLOR_GREEN.' instead of '.self::COLOR_YELLOW.'stable'.self::COLOR_GREEN.'. Are you sure you want to continue?', $package->getStability());
+            $answer = self::askQuestion($question, 'y');
+            if($answer !== 'y') {
                 self::echoString('Aborting installation', self::COLOR_RED);
                 exit;
             }
@@ -67,7 +68,7 @@ class Skeleton
             array_values($data)
         );
 
-		self::echoWelcome((isset($event->getArguments()[0]) && $event->getArguments()[0] === 'marco'));
+        self::echoWelcome((isset($event->getArguments()[0]) && $event->getArguments()[0] === 'marco'));
         self::copyFile(self::getPathFromApp('config/parameters.yml.dist'), $parametersFile);
 
         exec('cd source/symfony && composer install --ignore-platform-reqs');
@@ -81,8 +82,15 @@ class Skeleton
         echo $process->getOutput();
         self::askQuestion('Did the security checker approve all used packages?', 'y', true);
 
+        $brandName = self::askQuestion('Name of the brand');
+        $projectName = self::askQuestion('Name of the project');
+
+        $titleNew = sprintf('%s %s', $brandName, $projectName);
+        self::replaceInFile(self::getPathFromApp('config/sonata/admin.yml'), 'Skeleton', $titleNew);
+        self::replaceInFile(self::getPathFromApp('../src/App/FrontEndBundle/Resources/views/layout.html.twig'), 'MediaMonks Symfony Skeleton', $titleNew);
+
         hostname:
-		$hostname = self::askQuestion('Project (vagrant) hostname (.local will be added)');
+        $hostname = self::askQuestion('Project (vagrant) hostname (.local will be added)', self::normalizeString($titleNew));
         $hostname .= '.local';
         if(!preg_match('~^([a-z0-9-]+.local)$~', $hostname)) {
             self::echoString('Hostname should only contain a-z, 0-9 and dashes', self::COLOR_RED);
@@ -101,9 +109,9 @@ class Skeleton
         $composerCacheDir = self::askQuestion('Composer cache directory', '~');
 
         phpversion:
-        $phpVersion = self::askQuestion('PHP Version 5.6 or 7.0', '7.0');
-        if (!in_array($phpVersion, ['5.6', '7.0'])) {
-            self::echoString('Please choose version 5.6 or 7.0', self::COLOR_RED);
+        $phpVersion = self::askQuestion('PHP Version 5.6, 7.0 or 7.1', '7.0');
+        if (!in_array($phpVersion, ['5.6', '7.0', '7.1'])) {
+            self::echoString('Please choose version 5.6, 7.0 or 7.1', self::COLOR_RED);
             goto phpversion;
         }
 
@@ -114,12 +122,6 @@ class Skeleton
             echo self::executeProcess('cd source/symfony && composer update');
         }
 
-        $brandName = self::askQuestion('Name of the brand');
-        $projectName = self::askQuestion('Name of the project');
-
-        $titleNew = sprintf('%s %s', $brandName, $projectName);
-        self::replaceInFile(self::getPathFromApp('config/sonata/admin.yml'), 'Skeleton', $titleNew);
-        self::replaceInFile(self::getPathFromApp('../src/App/FrontEndBundle/Resources/views/layout.html.twig'), 'MediaMonks Symfony Skeleton', $titleNew);
         self::replaceInFile(self::getPathFromTools('docker/Dockerfile'), '7.0', $phpVersion);
 
         $content = 'hostname: ' . $hostname . PHP_EOL;
@@ -185,12 +187,13 @@ class Skeleton
         try {
             self::testDbCredentials($dbHost, $dbPort, $dbUser, $dbPassword, $dbName);
         } catch (\Exception $e) {
-            self::echoString($e->getMessage(), self::COLOR_RED);
             if (strpos($e->getMessage(), 'already exists') !== false) {
                 self::echoString(sprintf('Database with name "%s" already exists', $dbName), self::COLOR_RED);
                 goto dbname;
+            } else {
+                self::echoString($e->getMessage(), self::COLOR_RED);
+                goto db;
             }
-            goto db;
         }
 
         self::replaceParameter(self::getPathFromApp('config/parameters_local.yml'), 'database_host', $dbHost);
@@ -217,9 +220,9 @@ class Skeleton
         );
         $assemblaMeta = self::getMeta('assembla');
         if(!empty($assemblaMeta)) {
-            self::echoString('Copy the user table below to a new wiki page called '.self::COLOR_PURPLE.'Admin_Credentials'.self::COLOR_CYAN.' on Assembla:', self::COLOR_CYAN);
+            self::echoString('Copy the user table below to a new wiki page called '.self::COLOR_MAGENTA.'Admin_Credentials'.self::COLOR_CYAN.' on Assembla:', self::COLOR_CYAN, false);
             self::echoString(sprintf('%swiki/new', $assemblaMeta['url']), self::COLOR_CYAN);
-            self::echoString('(make sure to set the visibility to '.self::COLOR_PURPLE.'Private'.self::COLOR_CYAN.' and the markup format to '.self::COLOR_PURPLE.'markdown'.self::COLOR_DEFAULT.')', self::COLOR_CYAN);
+            self::echoString('(make sure to set the visibility to '.self::COLOR_MAGENTA.'Private'.self::COLOR_CYAN.' and the markup format to '.self::COLOR_MAGENTA.'markdown'.self::COLOR_DEFAULT.')', self::COLOR_CYAN);
         } else {
             self::echoString('Copy the user table below to a secure location:', self::COLOR_CYAN);
         }
@@ -247,35 +250,35 @@ class Skeleton
         return str_replace(' ', '', preg_replace('/[^a-zA-Z0-9]+/', '', $value));
     }
 
-	private static function echoWelcome($marco) {
-		echo "\033[33m";
+    private static function echoWelcome($marco) {
+        echo "\033[33m";
         echo "=============================================================================" . PHP_EOL;
         echo "=---------------------------------------------------------------------------=" . PHP_EOL;
         echo "=============================================================================" . PHP_EOL;
-		echo "                            _ _                          _                   " . PHP_EOL;
-		echo "             /\/\   ___  __| (_) __ _  /\/\   ___  _ __ | | _____            " . PHP_EOL;
-		echo "            /    \ / _ \/ _` | |/ _` |/    \ / _ \| '_ \| |/ / __|           " . PHP_EOL;
-		echo "           / /\/\ \  __/ (_| | | (_| / /\/\ \ (_) | | | |   <\__ \\           " . PHP_EOL;
-		echo "           \/    \/\___|\__,_|_|\__,_\/    \/\___/|_| |_|_|\_\___/           " . PHP_EOL;
-		echo "                                                                             " . PHP_EOL;
-		echo "                      __ _        _      _                                   " . PHP_EOL;
-		echo "                     / _\ | _____| | ___| |_ ___  _ __                       " . PHP_EOL;
-		echo "                     \ \| |/ / _ \ |/ _ \ __/ _ \| '_ \                      " . PHP_EOL;
-		echo "                     _\ \   <  __/ |  __/ || (_) | | | |                     " . PHP_EOL;
-		echo "                     \__/_|\_\___|_|\___|\__\___/|_| |_|                     " . PHP_EOL;
-		echo "                                                                             " . PHP_EOL;
-		if ($marco) {
-		    self::echoMarco();
+        echo "                            _ _                          _                   " . PHP_EOL;
+        echo "             /\/\   ___  __| (_) __ _  /\/\   ___  _ __ | | _____            " . PHP_EOL;
+        echo "            /    \ / _ \/ _` | |/ _` |/    \ / _ \| '_ \| |/ / __|           " . PHP_EOL;
+        echo "           / /\/\ \  __/ (_| | | (_| / /\/\ \ (_) | | | |   <\__ \\           " . PHP_EOL;
+        echo "           \/    \/\___|\__,_|_|\__,_\/    \/\___/|_| |_|_|\_\___/           " . PHP_EOL;
+        echo "                                                                             " . PHP_EOL;
+        echo "                      __ _        _      _                                   " . PHP_EOL;
+        echo "                     / _\ | _____| | ___| |_ ___  _ __                       " . PHP_EOL;
+        echo "                     \ \| |/ / _ \ |/ _ \ __/ _ \| '_ \                      " . PHP_EOL;
+        echo "                     _\ \   <  __/ |  __/ || (_) | | | |                     " . PHP_EOL;
+        echo "                     \__/_|\_\___|_|\___|\__\___/|_| |_|                     " . PHP_EOL;
+        echo "                                                                             " . PHP_EOL;
+        if ($marco) {
+            self::echoMarco();
         } else {
-		    self::echoStandard();
+            self::echoStandard();
         }
-		echo "                                                                             " . PHP_EOL;
+        echo "                                                                             " . PHP_EOL;
         echo "=============================================================================" . PHP_EOL;
         echo "=---------------------------------------------------------------------------=" . PHP_EOL;
         echo "=============================================================================" . PHP_EOL . PHP_EOL;
-	}
+    }
 
-	private static function echoMarco() {
+    private static function echoMarco() {
         echo "              __                              ___   __        .ama     ,     " . PHP_EOL;
         echo "           ,d888a                          ,d88888888888ba.  ,88'I)   d      " . PHP_EOL;
         echo "          a88']8i                         a88'.8'8)   `'8888:88  ' _a8'      " . PHP_EOL;
@@ -291,7 +294,7 @@ class Skeleton
         echo "       '888888PP''        `8''''''8   '888PP'  `888P'  `88P'88P'8m'          " . PHP_EOL;
     }
 
-	private static function echoStandard() {
+    private static function echoStandard() {
         echo "                                   _, . '__ .                                " . PHP_EOL;
         echo "                                '_(_0o),(__)o().                             " . PHP_EOL;
         echo "                              ,o(__),_)o(_)O,(__)o                           " . PHP_EOL;
@@ -321,31 +324,32 @@ class Skeleton
         return $randomString;
     }
 
-	private static function askQuestion($question, $default = null, $matchDefault = false, $required = true) {
+    private static function askQuestion($question, $default = null, $matchDefault = false, $required = true) {
         ask:
-        $fullQuestion = " " . $question . (!empty($default) ? " (".$default.")" : "") . ": ";
-		echo self::COLOR_GREEN . $fullQuestion . self::COLOR_DEFAULT . " ";
-		$handle = fopen ("php://stdin","r");
-		$answer = trim(fgets($handle));
-		if(empty($answer)){
+        $fullQuestion = $question . (!empty($default) ? self::COLOR_YELLOW . " (".$default.")" : "") . self::COLOR_DEFAULT . ": ";
+        echo self::COLOR_GREEN . $fullQuestion;
+        $handle = fopen ("php://stdin","r");
+        $answer = trim(fgets($handle));
+        if(empty($answer)){
             if ($default === null && $required) goto ask;
             $answer = $default;
-		}
+        }
         if ($matchDefault && ($answer !== $default)) {
             self::echoString('Abort!', self::COLOR_RED);
             exit;
         }
         self::echoString($answer);
 
-		return $answer;
-	}
+        return $answer;
+    }
 
-	private static function echoString($string, $color = "\e[1;37m\e[0m") {
+    private static function echoString($string, $color = "\e[1;37m\e[0m", $newline = true) {
         if ($string === null) $string = 'null';
-        echo $color . $string . self::COLOR_DEFAULT . PHP_EOL . PHP_EOL;
-	}
+        echo $color . $string . self::COLOR_DEFAULT . PHP_EOL;
+        if ($newline) echo PHP_EOL;
+    }
 
-	private static function replaceInFile($filename, $search, $replace) {
+    private static function replaceInFile($filename, $search, $replace) {
         file_put_contents($filename, str_replace(
             $search,
             $replace,
@@ -485,14 +489,14 @@ class Skeleton
           ('%s', '%s', '%s', now(), now())", $username, addslashes($passwordEncoded), addslashes(json_encode($roles)));
         $query = str_replace(["\n", "\r"], ' ', $query);
 
-        self::echoString('Creating user: '.$username, self::COLOR_PURPLE);
+        self::echoString('Creating user: '.$username, self::COLOR_MAGENTA, false);
         $process = new Process(sprintf('cd source/symfony && php bin/console doctrine:query:sql "%s"', $query));
         $process->run();
 
         return [
             'type' => $type,
             'username' => sprintf('`%s`', $username),
-            'password' => sprintf('`%s`', $password),
+            'password' => sprintf('`%s`', $password)
         ];
     }
 
