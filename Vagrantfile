@@ -11,7 +11,7 @@ hostname = conf["hostname"]
 ip_address = conf["ip_address"]
 
 Vagrant.configure("2") do |config|
-    config.vm.box = "mediamonks/ubuntu16-docker"
+    config.vm.box = "mediamonks/linux-docker"
 
 	config.trigger.before :up do
         run "bash ./tools/vagrant/hostupdate-up.sh #{ip_address} #{hostname}"
