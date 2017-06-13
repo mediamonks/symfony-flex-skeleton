@@ -104,7 +104,7 @@ class Skeleton
         ipaddress:
         $ipaddress = self::askQuestion(
             'Project (vagrant) ip address (192.168.33. prefix will be added)',
-            random_int(2, 255)
+            rand(2, 255)
         );
         if ((int)$ipaddress >= 2 && (int)$ipaddress <= 255) {
             $ipaddress = '192.168.33.'.$ipaddress;
