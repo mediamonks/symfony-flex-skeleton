@@ -13,6 +13,10 @@ ip_address = conf["ip_address"]
 Vagrant.configure("2") do |config|
     config.vm.box = "mediamonks/linux-docker"
 
+    unless Vagrant.has_plugin?("vagrant-triggers")
+      raise "Please install vagrant-triggers plugin! 'vagrant plugin install vagrant-triggers'"
+    end
+
     config.trigger.before [:up, :resume] do
         if Vagrant::Util::Platform.windows? then
             run "which sed"
