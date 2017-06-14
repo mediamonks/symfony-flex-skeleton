@@ -1,0 +1,1 @@
+sed -i '/'%1'/d' %windir%\System32\drivers\etc\hosts

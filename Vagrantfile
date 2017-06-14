@@ -13,26 +13,22 @@ ip_address = conf["ip_address"]
 Vagrant.configure("2") do |config|
     config.vm.box = "mediamonks/linux-docker"
 
-	config.trigger.before :up do
-        run "bash ./tools/vagrant/hostupdate-up.sh #{ip_address} #{hostname}"
+    config.trigger.before [:up, :resume] do
+        if Vagrant::Util::Platform.windows? then
+            run "which sed"
+            system("powershell -Command \"Start-Process tools/vagrant/add-host.bat #{ip_address}, #{hostname} -verb RunAs\"")
+        else
+            system("bash tools/vagrant/add-host.sh #{ip_address} #{hostname}")
+        end
     end
-    config.trigger.before :resume do
-        run "bash ./tools/vagrant/hostupdate-up.sh #{ip_address} #{hostname}"
-    end
-    config.trigger.before :reload do
-        run "bash ./tools/vagrant/hostupdate-down.sh #{ip_address}"
-    end
-    config.trigger.after :reload do
-        run "bash ./tools/vagrant/hostupdate-up.sh #{ip_address} #{hostname}"
-    end
-    config.trigger.before :suspend do
-        run "bash ./tools/vagrant/hostupdate-down.sh #{ip_address}"
-    end
-    config.trigger.before :halt do
-        run "bash ./tools/vagrant/hostupdate-down.sh #{ip_address}"
-    end
-    config.trigger.before :destroy do
-        run "bash ./tools/vagrant/hostupdate-down.sh #{ip_address}"
+
+    config.trigger.before [:suspend, :halt, :destroy] do
+        if Vagrant::Util::Platform.windows? then
+            run "which sed"
+            system("powershell -Command \"Start-Process tools/vagrant/remove-host.bat #{ip_address} -verb RunAs\"")
+        else
+            system("bash tools/vagrant/remove-host.sh #{ip_address}")
+        end
     end
 
 	config.vm.network "private_network", ip: ip_address
