@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
       raise "Please install vagrant-triggers plugin! 'vagrant plugin install vagrant-triggers'"
     end
 
-    config.trigger.before [:up, :resume] do
+    config.trigger.after [:up, :resume] do
         if Vagrant::Util::Platform.windows? then
             run "which sed"
             system("powershell -Command \"Start-Process tools/vagrant/add-host.bat #{ip_address}, #{hostname} -verb RunAs\"")
@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
         end
     end
 
-    config.trigger.before [:suspend, :halt, :destroy] do
+    config.trigger.after [:suspend, :halt, :destroy] do
         if Vagrant::Util::Platform.windows? then
             run "which sed"
             system("powershell -Command \"Start-Process tools/vagrant/remove-host.bat #{ip_address} -verb RunAs\"")

@@ -274,7 +274,7 @@ class Skeleton
 
     private static function normalizeString($value)
     {
-        return str_replace(' ', '', preg_replace('/[^a-zA-Z0-9]+/', '', $value));
+        return strtolower(str_replace(' ', '', preg_replace('/[^a-zA-Z0-9]+/', '', $value)));
     }
 
     private static function echoWelcome()
