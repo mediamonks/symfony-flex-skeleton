@@ -77,6 +77,8 @@ class User implements UserInterface, \Serializable
 
     public function __toString()
     {
+		if (empty($this->getUsername())) return '';
+		
         return $this->getUsername();
     }
 
