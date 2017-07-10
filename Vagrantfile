@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     config.vm.box = "mediamonks/linux-docker"
 
     unless Vagrant.has_plugin?("vagrant-triggers")
-      raise "Please install vagrant-triggers plugin! 'vagrant plugin install vagrant-triggers'"
+      raise "Please install vagrant-triggers plugin! run 'vagrant plugin install vagrant-triggers'"
     end
 
     config.trigger.after [:up, :resume] do
