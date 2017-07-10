@@ -1,5 +1,6 @@
 doctrine:
     dbal:
+        schema_filter: ~^(?!sessions)~
         driver:   "%database_driver%"
         host:     "%database_host%"
         port:     "%database_port%"

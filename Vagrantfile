@@ -7,7 +7,7 @@ else
 end
 
 cache_dir = conf["composer_cache_dir"]
-hostname = conf["hostname"]
+hostnames = conf["hostnames"]
 ip_address = conf["ip_address"]
 
 Vagrant.configure("2") do |config|
@@ -20,9 +20,13 @@ Vagrant.configure("2") do |config|
     config.trigger.after [:up, :resume] do
         if Vagrant::Util::Platform.windows? then
             run "which sed"
-            system("powershell -Command \"Start-Process tools/vagrant/add-host.bat #{ip_address}, #{hostname} -verb RunAs\"")
+            hostnames.each do |host|
+                system("powershell -Command \"Start-Process tools/vagrant/add-host.bat #{ip_address}, #{host} -verb RunAs\"")
+            end
         else
-            system("bash tools/vagrant/add-host.sh #{ip_address} #{hostname}")
+            hostnames.each do |host|
+                system("bash tools/vagrant/add-host.sh #{ip_address} #{host}")
+            end
         end
     end
 
@@ -47,8 +51,4 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", path: "tools/vagrant/provision_root.sh"
     config.vm.provision "shell", path: "tools/vagrant/provision.sh", privileged: false
     config.vm.provision "shell", path: "tools/vagrant/init.sh"
-
-	config.vm.provider "virtualbox" do |v|
-	    v.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
-	end
 end
