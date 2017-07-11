@@ -5,6 +5,7 @@ services:
         container_name: apache
         ports:
             - "80:80"
+            - "443:443"
         volumes:
             - "../../:/var/www/html"
             - "/composer-cache:/root/.composer/cache"

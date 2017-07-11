@@ -81,7 +81,7 @@ class Skeleton
 
         hostname:
         $hostname = self::askQuestion(
-            'Project (vagrant) hostname (.local/.dev will be added automatically)',
+            'Project (vagrant) hostname (.local domain will be added automatically)',
             self::normalizeString($titleNew)
         );
         if (!preg_match('~^([a-z0-9-]+)$~', trim($hostname))) {
@@ -89,8 +89,7 @@ class Skeleton
             goto hostname;
         }
 
-        $hostnameLocal = $hostname . '.local';
-        $hostnameDev = $hostname . '.dev';
+        $hostnameVm = $hostname . '.local';
 
         ipaddress:
         $ipaddress = self::askQuestion(
@@ -122,14 +121,15 @@ class Skeleton
 
         self::replaceInFile(self::getPathFromTools('docker/Dockerfile'), '7.0', $phpVersion);
 
+        self::replaceInFile(self::getPathFromTools('docker/generateSSL.sh'), 'symfony-skeleton', $hostname);
+        self::replaceInFile(self::getPathFromTools('docker/generateSSL.sh'), '192.168.33.2', $ipaddress);
+
         self::copyFile(self::getPathFromTools('vagrant/config.yml.dist'), self::getPathFromTools('vagrant/config.yml'));
-        self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), 'symfony-skeleton.local', $hostnameLocal);
-        self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), 'symfony-skeleton.dev', $hostnameDev);
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), 'symfony-skeleton.local', $hostnameVm);
         self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), '192.168.33.2', $ipaddress);
         self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), '~', $composerCacheDir);
 
-        self::replaceInFile(self::getPathFromTools('vagrant/config.yml.dist'), 'symfony-skeleton.local', $hostnameLocal);
-        self::replaceInFile(self::getPathFromTools('vagrant/config.yml.dist'), 'symfony-skeleton.dev', $hostnameDev);
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml.dist'), 'symfony-skeleton.local', $hostnameVm);
 
         self::writeToMeta('brand', $brandName);
         self::writeToMeta('project', $projectName);
