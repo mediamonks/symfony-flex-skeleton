@@ -66,7 +66,7 @@ class Skeleton
         self::echoWelcome();
         self::copyFile(self::getPathFromApp('config/parameters.yml.dist'), $parametersFile);
 
-//        exec('cd source/symfony && composer install --ignore-platform-reqs');
+        exec('cd source/symfony && composer install --ignore-platform-reqs');
 
         $brandName = self::askQuestion('Name of the brand');
         $projectName = self::askQuestion('Name of the project');
