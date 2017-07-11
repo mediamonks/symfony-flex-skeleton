@@ -27,6 +27,10 @@ class Skeleton
      */
     public static function install(Event $event)
     {
+        $filesystem = new Filesystem();
+        $filesystem->remove(self::getPathFromTools('../composer.json'));
+        $filesystem->remove(self::getPathFromTools('../composer.lock'));
+
         $package = $event->getComposer()->getPackage();
         $parametersFile = self::getPathFromApp('config/parameters.yml');
         $readmeFile = self::getPathFromTools('../README.md');
@@ -66,18 +70,7 @@ class Skeleton
         self::echoWelcome();
         self::copyFile(self::getPathFromApp('config/parameters.yml.dist'), $parametersFile);
 
-        exec('cd source/symfony && composer install --ignore-platform-reqs');
-        $process = new Process('cd source/symfony && php bin/symfony_requirements');
-        $process->run();
-        echo $process->getOutput();
-        self::askQuestion('Did the requirement checker approve your system?', 'y', true);
-
-        $process = new Process(
-            'cd source/symfony && php vendor/sensiolabs/security-checker/security-checker security:check'
-        );
-        $process->run();
-        echo $process->getOutput();
-        self::askQuestion('Did the security checker approve all used packages?', 'y', true);
+//        exec('cd source/symfony && composer install --ignore-platform-reqs');
 
         $brandName = self::askQuestion('Name of the brand');
         $projectName = self::askQuestion('Name of the project');
@@ -92,14 +85,16 @@ class Skeleton
 
         hostname:
         $hostname = self::askQuestion(
-            'Project (vagrant) hostname (.local will be added)',
+            'Project (vagrant) hostname (.local/.dev will be added automatically)',
             self::normalizeString($titleNew)
         );
-        $hostname .= '.local';
-        if (!preg_match('~^([a-z0-9-]+.local)$~', $hostname)) {
+        if (!preg_match('~^([a-z0-9-]+)$~', trim($hostname))) {
             self::echoString('Hostname should only contain a-z, 0-9 and dashes', self::COLOR_RED);
             goto hostname;
         }
+
+        $hostnameLocal = $hostname . '.local';
+        $hostnameDev = $hostname . '.dev';
 
         ipaddress:
         $ipaddress = self::askQuestion(
@@ -131,11 +126,14 @@ class Skeleton
 
         self::replaceInFile(self::getPathFromTools('docker/Dockerfile'), '7.0', $phpVersion);
 
-        $content = 'hostname: '.$hostname.PHP_EOL;
-        $content .= 'ip_address: '.$ipaddress.PHP_EOL;
-        $content .= 'composer_cache_dir: '.$composerCacheDir.PHP_EOL;
-        self::putContentInFile($content, self::getPathFromTools('vagrant/config.yml'));
-        self::replaceInFile(self::getPathFromTools('vagrant/config.yml.dist'), 'symfony-skeleton.local', $hostname);
+        self::copyFile(self::getPathFromTools('vagrant/config.yml.dist'), self::getPathFromTools('vagrant/config.yml'));
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), 'symfony-skeleton.local', $hostnameLocal);
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), 'symfony-skeleton.dev', $hostnameDev);
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), '192.168.33.2', $ipaddress);
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), '~', $composerCacheDir);
+
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml.dist'), 'symfony-skeleton.local', $hostnameLocal);
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml.dist'), 'symfony-skeleton.dev', $hostnameDev);
 
         self::writeToMeta('brand', $brandName);
         self::writeToMeta('project', $projectName);
@@ -266,7 +264,6 @@ class Skeleton
 
         $cleanup = self::askQuestion('Remove installer?', 'y');
         if ($cleanup === 'y') {
-            $filesystem = new Filesystem();
             $filesystem->remove(self::getPathFromTools('../Skeleton.php'));
             $filesystem->remove(self::getPathFromTools('../vendor'));
         }
