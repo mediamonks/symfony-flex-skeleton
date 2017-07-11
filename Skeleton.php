@@ -81,7 +81,7 @@ class Skeleton
 
         hostname:
         $hostname = self::askQuestion(
-            'Project (vagrant) hostname (.local domain will be added automatically)',
+            'Project (vagrant) hostname (.lcl domain will be added automatically)',
             self::normalizeString($titleNew)
         );
         if (!preg_match('~^([a-z0-9-]+)$~', trim($hostname))) {
@@ -89,7 +89,7 @@ class Skeleton
             goto hostname;
         }
 
-        $hostnameVm = $hostname . '.local';
+        $hostnameLcl = $hostname . '.lcl';
 
         ipaddress:
         $ipaddress = self::askQuestion(
@@ -125,11 +125,11 @@ class Skeleton
         self::replaceInFile(self::getPathFromTools('docker/generateSSL.sh'), '192.168.33.2', $ipaddress);
 
         self::copyFile(self::getPathFromTools('vagrant/config.yml.dist'), self::getPathFromTools('vagrant/config.yml'));
-        self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), 'symfony-skeleton.local', $hostnameVm);
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), 'symfony-skeleton.lcl', $hostnameLcl);
         self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), '192.168.33.2', $ipaddress);
         self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), '~', $composerCacheDir);
 
-        self::replaceInFile(self::getPathFromTools('vagrant/config.yml.dist'), 'symfony-skeleton.local', $hostnameVm);
+        self::replaceInFile(self::getPathFromTools('vagrant/config.yml.dist'), 'symfony-skeleton.lcl', $hostnameLcl);
 
         self::writeToMeta('brand', $brandName);
         self::writeToMeta('project', $projectName);

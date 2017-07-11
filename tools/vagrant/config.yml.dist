@@ -1,4 +1,4 @@
 hostnames:
-    - symfony-skeleton.local
+    - symfony-skeleton.lcl
 ip_address: 192.168.33.2
 composer_cache_dir: ~

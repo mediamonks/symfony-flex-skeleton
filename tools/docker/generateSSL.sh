@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 HOST=symfony-skeleton
-DOMAIN=local
+DOMAIN=lcl
 IP=192.168.33.2
 COUNTRY=NL
 STATE=UT

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 cd /app/tools/docker/
-bash generateSSL.sh
+echo "Generating SSL Certificate..."
+bash generateSSL.sh &> /dev/null
 docker-compose up -d
