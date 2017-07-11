@@ -1,3 +1,4 @@
 .idea
 .vagrant
 tools/vagrant/config.yml
+composer.lock
