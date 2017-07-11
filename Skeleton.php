@@ -27,10 +27,6 @@ class Skeleton
      */
     public static function install(Event $event)
     {
-        $filesystem = new Filesystem();
-        $filesystem->remove(self::getPathFromTools('../composer.json'));
-        $filesystem->remove(self::getPathFromTools('../composer.lock'));
-
         $package = $event->getComposer()->getPackage();
         $parametersFile = self::getPathFromApp('config/parameters.yml');
         $readmeFile = self::getPathFromTools('../README.md');
@@ -262,10 +258,12 @@ class Skeleton
             self::askQuestion('Did you create the page?', 'y', true);
         }
 
-        $cleanup = self::askQuestion('Remove installer?', 'y');
+        $cleanup = self::askQuestion('Cleanup installer files?', 'y');
         if ($cleanup === 'y') {
+            $filesystem = new Filesystem();
+            $filesystem->remove(self::getPathFromTools('../composer.json'));
+            $filesystem->remove(self::getPathFromTools('../composer.lock'));
             $filesystem->remove(self::getPathFromTools('../Skeleton.php'));
-            $filesystem->remove(self::getPathFromTools('../vendor'));
         }
     }
 
