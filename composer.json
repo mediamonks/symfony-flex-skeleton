@@ -27,7 +27,7 @@
         "vendor-dir": "source/symfony/vendor"
     },
     "scripts": {
-        "post-root-package-install": [
+        "post-create-project-cmd": [
             "Installer\\Skeleton::install"
         ]
     }
