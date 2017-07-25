@@ -263,6 +263,7 @@ class Skeleton
             $filesystem = new Filesystem();
             $filesystem->remove(self::getPathFromTools('../composer.json'));
             $filesystem->remove(self::getPathFromTools('../composer.lock'));
+            $filesystem->remove(self::getPathFromTools('../vendor'));
             $filesystem->remove(self::getPathFromTools('../Skeleton.php'));
         }
     }
