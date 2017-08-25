@@ -16,7 +16,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 class JWTAuthenticator extends AbstractGuardAuthenticator
 {
     const KEY_ACCESS_TOKEN = 'accessToken';
-    const KEY_ACCESS_TOKEN_HEADER = 'Authorization';
+    const KEY_ACCESS_TOKEN_HEADER = 'Token';
 
     /**
      * @var JWTManagerInterface

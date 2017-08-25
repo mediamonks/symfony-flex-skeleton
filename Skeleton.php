@@ -488,8 +488,7 @@ class Skeleton
 
     private static function createSchema()
     {
-        $process = new Process('cd source/symfony && php bin/console doctrine:schema:update --force');
-        $process->run();
+        self::executeProcess('cd source/symfony && php bin/console doctrine:schema:update --force');
     }
 
     private static function createSessionTable($dbHost, $dbPort, $dbUser, $dbPassword, $dbName)
@@ -524,8 +523,7 @@ class Skeleton
         $query = str_replace(["\n", "\r"], ' ', $query);
 
         self::echoString('Creating user: '.$username, self::COLOR_MAGENTA, false);
-        $process = new Process(sprintf('cd source/symfony && php bin/console doctrine:query:sql "%s"', $query));
-        $process->run();
+        self::executeProcess((sprintf('cd source/symfony && php bin/console doctrine:query:sql "%s"', $query)));
 
         return [
             'type'     => $type,
@@ -537,6 +535,7 @@ class Skeleton
     private static function executeProcess($command)
     {
         $process = new Process($command);
+        $process->setTimeout(600);
         $process->run();
 
         return $process->getOutput();
