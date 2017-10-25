@@ -511,11 +511,7 @@ class Skeleton
         $passwordEncoded = password_hash($password, PASSWORD_BCRYPT);
 
         $query = sprintf(
-            "
-          INSERT INTO users
-          (username, password, roles, created_at, updated_at)
-          VALUES
-          ('%s', '%s', '%s', now(), now())",
+            'INSERT INTO users (username, password, roles, created_at, updated_at) VALUES ("%s", "%s", "%s", now(), now())',
             $username,
             addslashes($passwordEncoded),
             addslashes(json_encode($roles))
