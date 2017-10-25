@@ -217,17 +217,21 @@ class Skeleton
 
         self::createDatabase($dbHost, $dbPort, $dbUser, $dbPassword, $dbName);
         self::createSchema();
-        self::createSessionTable($dbHost, $dbPort, $dbUser, $dbPassword, $dbName);
+
+        $connection = self::getDbConnection(true, $dbHost, $dbPort, $dbUser, $dbPassword, $dbName);
+        self::createSessionTable($connection);
 
         // Users
         $project = self::getMeta('project');
         $users = [];
         $users[] = self::createUser(
+            $connection,
             self::normalizeString($project).'SuperAdmin',
             'super admin',
             ['ROLE_SUPER_ADMIN']
         );
         $users[] = self::createUser(
+            $connection,
             self::normalizeString($project).'Admin',
             'admin'
         );
@@ -491,9 +495,9 @@ class Skeleton
         self::executeProcess('cd source/symfony && php bin/console doctrine:schema:update --force');
     }
 
-    private static function createSessionTable($dbHost, $dbPort, $dbUser, $dbPassword, $dbName)
+    private static function createSessionTable($connection)
     {
-        self::getDbConnection(true, $dbHost, $dbPort, $dbUser, $dbPassword, $dbName)->exec(
+        $connection->exec(
             'CREATE TABLE `sessions` (
   `sess_id` varchar(128) COLLATE utf8_bin NOT NULL,
   `sess_data` longtext COLLATE utf8_bin NOT NULL,
@@ -504,22 +508,22 @@ class Skeleton
         );
     }
 
-    private static function createUser($username, $type, array $roles = [])
+    private static function createUser($connection, $username, $type, array $roles = [])
     {
         $roles[] = 'ROLE_ADMIN';
         $password = self::generateRandomString(20, self::CHAR_LIST_PASSWORD);
         $passwordEncoded = password_hash($password, PASSWORD_BCRYPT);
 
         $query = sprintf(
-            'INSERT INTO users (username, password, roles, created_at, updated_at) VALUES ("%s", "%s", "%s", now(), now())',
+            "INSERT INTO users (username, password, roles, created_at, updated_at) VALUES ('%s', '%s', '%s', now(), now())",
             $username,
             addslashes($passwordEncoded),
             addslashes(json_encode($roles))
         );
-        $query = str_replace(["\n", "\r"], ' ', $query);
+        $query = str_replace(["\n", "\r"], " ", $query);
 
         self::echoString('Creating user: '.$username, self::COLOR_MAGENTA, false);
-        self::executeProcess((sprintf('cd source/symfony && php bin/console doctrine:query:sql "%s"', $query)));
+        $connection->exec($query);
 
         return [
             'type'     => $type,
