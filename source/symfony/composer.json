@@ -25,6 +25,11 @@
             "app/Environment.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/src"
+        }
+    },
     "require": {
         "php": "^5.6|^7.0",
         "symfony/symfony": "^3.3",
