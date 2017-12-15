@@ -112,15 +112,19 @@ class Skeleton
             goto phpversion;
         }
 
+        self::replaceInFile(self::getPathFromTools('./../source/symfony/composer.json'), '"php": "7.0"', '"php": "'.$phpVersion.'"');
+
         if ($phpVersion === '5.6') {
+            self::echoString('Updating dependencies for php 5.6...');
+            echo self::executeProcess('cd source/symfony && composer require knplabs/knp-menu-bundle 2.1.3 --no-update');
             echo self::executeProcess('cd source/symfony && composer require symfony/symfony:^3.2 --no-update');
             echo self::executeProcess('cd source/symfony && composer require twig/twig:^1.28 --no-update');
             echo self::executeProcess('rm -rf source/symfony/var/cache');
             echo self::executeProcess('cd source/symfony && composer update');
+            self::replaceInFile(self::getPathFromTools('docker/Dockerfile'), '/etc/php/7.0/apache2/php.ini', '/etc/php5/apache2/php.ini');
         }
 
         self::replaceInFile(self::getPathFromTools('docker/Dockerfile'), '7.0', $phpVersion);
-
         self::replaceInFile(self::getPathFromTools('docker/generateSSL.sh'), 'symfony-skeleton', $hostname);
         self::replaceInFile(self::getPathFromTools('docker/generateSSL.sh'), '192.168.33.2', $ipaddress);
 
@@ -128,7 +132,6 @@ class Skeleton
         self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), 'symfony-skeleton.lcl', $hostnameLcl);
         self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), '192.168.33.2', $ipaddress);
         self::replaceInFile(self::getPathFromTools('vagrant/config.yml'), '~', $composerCacheDir);
-
         self::replaceInFile(self::getPathFromTools('vagrant/config.yml.dist'), 'symfony-skeleton.lcl', $hostnameLcl);
 
         self::writeToMeta('brand', $brandName);

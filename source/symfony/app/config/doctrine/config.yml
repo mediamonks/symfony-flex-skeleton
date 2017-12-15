@@ -48,3 +48,4 @@ stof_doctrine_extensions:
             loggable: true
             sluggable: true
             sortable: true
+            blameable: true
