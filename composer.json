@@ -53,10 +53,13 @@
         "symfony": {
             "id": "",
             "allow-contrib": true,
-			"endpoint": "https://symfony-flex.eu.dev.monkapps.com"
+            "endpoint": "https://symfony.mediamonks.net"
         }
     },
 	"repositories": [
-		{"type": "composer", "url": "https://toran.mediamonks.net/repo/private/"}
+        {
+            "type": "composer",
+            "url": "https://toran.mediamonks.net/repo/private/"
+        }
 	]
 }
