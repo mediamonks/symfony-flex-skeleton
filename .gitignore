@@ -1,0 +1,4 @@
+.idea
+.vagrant
+tools/vagrant/config.yml
+vendor
