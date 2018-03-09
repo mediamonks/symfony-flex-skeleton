@@ -162,6 +162,11 @@ class Installer
                     $output->writeln("================================================================================");
                     $output->writeln("=------------------------------------------------------------------------------=");
                     $output->writeln("================================================================================");
+
+                    rmdir(sprintf('%s/vendor', __DIR__));
+                    unlink(sprintf('%s/composer.json', __DIR__));
+                    unlink(sprintf('%s/composer.lock', __DIR__));
+                    unlink(sprintf('%s/Installer.php', __DIR__));
                 }
             )
             ->getApplication()
