@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 
 class Installer
 {
@@ -132,9 +133,11 @@ class Installer
                         $settings[$setting] = $answer;
                     }
 
+                    $filesystem = new Filesystem();
+
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), 'skeleton.lcl', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), '192.168.33.2', $settings['ipAddress']);
-                    copy(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), sprintf('%s/tools/vagrant/config.yml', __DIR__));
+                    $filesystem->copy(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), sprintf('%s/tools/vagrant/config.yml', __DIR__));
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml', __DIR__), '~', $settings['composerCacheDirectory']);
                     self::replaceInFile(sprintf('%s/tools/docker/Dockerfile', __DIR__), 'mediamonks/apachephp:7.1', $settings['dockerImage']);
                     self::replaceInFile(sprintf('%s/tools/docker/generateSSL.sh', __DIR__), 'skeleton.lcl', $settings['hostname']);
@@ -163,10 +166,10 @@ class Installer
                     $output->writeln("=------------------------------------------------------------------------------=");
                     $output->writeln("================================================================================");
 
-                    rmdir(sprintf('%s/vendor', __DIR__));
-                    unlink(sprintf('%s/composer.json', __DIR__));
-                    unlink(sprintf('%s/composer.lock', __DIR__));
-                    unlink(sprintf('%s/Installer.php', __DIR__));
+                    $filesystem->remove(sprintf('%s/vendor', __DIR__));
+                    $filesystem->remove(sprintf('%s/composer.json', __DIR__));
+                    $filesystem->remove(sprintf('%s/composer.lock', __DIR__));
+                    $filesystem->remove(sprintf('%s/Installer.php', __DIR__));
                 }
             )
             ->getApplication()
