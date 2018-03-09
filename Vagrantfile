@@ -23,6 +23,7 @@ Vagrant.configure("2") do |config|
                 system("bash tools/vagrant/add-host.sh #{ip_address} #{host}")
             end
         end
+        system("bash tools/vagrant/welcome.sh #{hostnames.first}")
     end
     config.trigger.after [:suspend, :halt, :destroy] do
         if Vagrant::Util::Platform.windows? then
@@ -40,6 +41,10 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.provision "shell", run: "always", inline: <<-SHELL
-        cd /vagrant/tools/docker && bash generateSSL.sh &> /dev/null && docker-compose rm -f && docker-compose up -d && docker exec apache bash /var/www/html/tools/docker/init.sh
+        cd /vagrant/tools/docker && \
+        bash generateSSL.sh &> /dev/null && \
+        docker-compose rm -f && \
+        docker-compose up -d && \
+        docker exec apache bash /var/www/html/tools/docker/init.sh
     SHELL
 end

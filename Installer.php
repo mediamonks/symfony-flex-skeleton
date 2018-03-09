@@ -85,7 +85,7 @@ class Installer
                     $settings = [];
                     $questions = [
                         'hostname' => [
-                            'q' => 'Vagrant hostname (".lcl" will be added automatically):',
+                            'q' => 'Vagrant hostname (".lcl" will be added automatically)',
                             'd' => 'symfony-skeleton',
                             'suf' => '.lcl',
                             'val' => function ($value) {
@@ -93,12 +93,12 @@ class Installer
                             }
                         ],
                         'composerCacheDirectory' => [
-                            'q' => 'Composer Cache directory (for you personally):',
+                            'q' => 'Composer Cache directory (for you personally)',
                             'd' => '~',
                             'val' => null
                         ],
                         'ipAddress' => [
-                            'q' => 'Vagrant IP address ("192.168.33." will be prepended automatically):',
+                            'q' => 'Vagrant IP address ("192.168.33." will be prepended automatically)',
                             'd' => rand(5, 240),
                             'pre' => '192.168.33.',
                             'val' => function ($value) {
@@ -107,14 +107,14 @@ class Installer
                             }
                         ],
                         'dockerImage' => [
-                            'q' => 'PHP Version (please check with your project manager for this project):',
+                            'q' => 'PHP Version (please check with your project manager for this project)',
                             'd' => '7.1',
                             'pre' => 'mediamonks/apachephp:',
                             'choices' => ['5.6', '7.0', '7.1', '7.2']
                         ],
                     ];
 
-                    $settings['projectName'] = $symfonyStyle->ask('Project name:', null, function($value) {
+                    $settings['projectName'] = $symfonyStyle->ask('Project name', null, function($value) {
                         if (empty($value)) throw new Exception('Project name is mandatory!');
                         return $value;
                     });
@@ -158,6 +158,10 @@ class Installer
                     $output->writeln(" <comment>Windows Users</comment>                                               ");
                     $output->writeln(" If you want to speed up the Vagrant/Docker setup, please install               ");
                     $output->writeln(" the <info>vagrant-winnfsd</info> plugin for faster IO performance.             ");
+                    $output->writeln("                                                                                ");
+                    $output->writeln(" <comment>Available Recipes</comment>                                           ");
+                    $output->writeln(" Sonata Admin: <info>composer req admin</info>                                  ");
+                    $output->writeln(" API: <info>composer req api</info>                                             ");
                     $output->writeln("                                                                                ");
                     $output->writeln("                                                                                ");
                     $output->writeln(" Run <info>vagrant up</info> now!                                               ");
