@@ -4,6 +4,7 @@ namespace Skeleton;
 
 use Exception;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -40,7 +41,8 @@ class Installer
      */
     public static function install()
     {
-        (new Application('installer', '3.0.0'))
+        $application = new Application('installer', '3.0.0');
+        $application
             ->register('installer')
             ->setCode(
                 function (InputInterface $input, OutputInterface $output) {
@@ -163,7 +165,8 @@ class Installer
                 }
             )
             ->getApplication()
-            ->setDefaultCommand('installer', true)
-            ->run();
+            ->setDefaultCommand('installer', true);
+
+        var_dump($application->run(new ArrayInput([])));
     }
 }
