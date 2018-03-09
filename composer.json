@@ -1,5 +1,30 @@
 {
+    "name": "mediamonks/skeleton-symfony",
+    "description": "MediaMonks Symfony Skeleton Project",
+    "type": "project",
+    "license": "proprietary",
+    "homepage": "https://www.mediamonks.com/",
+    "authors": [
+        {
+            "name": "Robert Slootjes",
+            "email": "robert@mediamonks.com"
+        },
+        {
+            "name": "Eduan de Bruijne",
+            "email": "eduan.de.bruijne@mediamonks.com"
+        }
+    ],
     "require": {
         "symfony/console": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Skeleton\\": "./"
+        }
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "Skeleton\\Installer::install"
+        ]
     }
 }
