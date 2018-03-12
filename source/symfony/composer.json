@@ -4,7 +4,7 @@
     "license": "MIT",
     "description": "A minimal Symfony project recommended to create bare bones applications",
     "require": {
-        "php": "^7.0",
+        "php": "^7.0.8",
         "ext-iconv": "*",
         "symfony/console": "^3.4",
         "symfony/flex": "^1.0",
@@ -20,10 +20,7 @@
             "*": "dist"
         },
         "sort-packages": true,
-        "bin-dir": "bin",
-        "platform": {
-            "php": "7.1"
-        }
+        "bin-dir": "bin"
     },
     "autoload": {
         "psr-4": {
