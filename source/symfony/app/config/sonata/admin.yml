@@ -1,6 +1,0 @@
-sonata_admin:
-    title: "Skeleton"
-    security:
-        handler: sonata.admin.security.handler.role
-    templates:
-        user_block: 'AppAdminBundle::user_block.html.twig'

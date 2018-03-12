@@ -1,12 +1,4 @@
-#AuthType Basic
-#AuthName "Login"
-
-# devmonks
-#AuthUserFile /data/web/mmonks/devmonks.nl/www/.htpasswd
-
-<Limit GET>
-	#Require valid-user
-</Limit>
+PassEnv APP_ENV
 
 # set p3p header for iFrame apps
 # see further below
@@ -103,7 +95,6 @@ DirectoryIndex index.php
    Header set P3P "policyref=\"/w3c/p3p.xml\", CP=\"IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT\""
 </IfModule>
 
-
 # ##############################################################################
 # # CROSS-ORIGIN RESOURCE SHARING (CORS)                                       #
 # ##############################################################################
@@ -116,10 +107,11 @@ DirectoryIndex index.php
 # http://code.google.com/p/html5security/wiki/CrossOriginRequestSecurity
 # http://enable-cors.org/
 
-<IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "*"
-    Header set Access-Control-Allow-Headers: X-Requested-With,X-Force-Status-Code-200,X-HTTP-Method-Override
-</IfModule>
+#<IfModule mod_headers.c>
+#    Header set Access-Control-Allow-Origin "*"
+#    Header set Access-Control-Allow-Headers: X-Requested-With,X-Force-Status-Code-200,X-HTTP-Method-Override
+#</IfModule>
+
 # ------------------------------------------------------------------------------
 # | CORS-enabled images                                                        |
 # ------------------------------------------------------------------------------
@@ -149,8 +141,6 @@ DirectoryIndex index.php
         Header set Access-Control-Allow-Origin "*"
     </FilesMatch>
 </IfModule>
-
-
 
 # ##############################################################################
 # # MIME TYPES AND ENCODING                                                    #

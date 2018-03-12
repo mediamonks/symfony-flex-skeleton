@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 if [ -f ssl.crt ]; then
-   echo SSL.cert already exists
+   echo SSL Configuration already exists.
 else
-    HOST=symfony-skeleton
-    DOMAIN=lcl
+    HOST=skeleton.lcl
     IP=192.168.33.2
     COUNTRY=NL
     STATE=UT
     CITY=Hilversum
     ORGANIZATION=MediaMonks
     ORGANIZATION_UNIT=PHP
-    EMAIL=info@$HOSTNAME.$DOMAIN
+    EMAIL=info@$HOST
 
     (
     echo [req]
@@ -26,12 +25,12 @@ else
     echo O = $ORGANIZATION
     echo OU = $ORGANIZATION_UNIT
     echo emailAddress = $EMAIL
-    echo CN = $HOST.$DOMAIN
+    echo CN = $HOST
     echo [v3_req]
     echo subjectAltName = @alt_names
     echo [alt_names]
     echo DNS.1 = $IP
-    echo DNS.2 = $HOST.$DOMAIN
+    echo DNS.2 = $HOST
     )>ssl.cnf
 
     openssl req -new -x509 -newkey rsa:2048 -sha256 -nodes -keyout ssl.key -days 9000 -out ssl.crt -config ssl.cnf

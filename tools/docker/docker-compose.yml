@@ -8,10 +8,7 @@ services:
             - "443:443"
         volumes:
             - "../../:/var/www/html"
-            - "/composer-cache:/root/.composer/cache"
-            - "/home/vagrant/.ssh:/root/.ssh"
-        environment:
-            - ENVIRONMENT=local
+            - "/composer-cache:/root/.composer/cache" #optional
 #        links:
 #            - mysql
 #    mysql:
