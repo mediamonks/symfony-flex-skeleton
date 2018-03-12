@@ -38,7 +38,7 @@ class Installer
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function install()
     {
@@ -106,10 +106,9 @@ class Installer
                                 return $value;
                             }
                         ],
-                        'dockerImage' => [
+                        'phpVersion' => [
                             'q' => 'PHP Version (please check with your project manager for this project)',
                             'd' => '7.1',
-                            'pre' => 'mediamonks/apachephp:',
                             'choices' => ['5.6', '7.0', '7.1', '7.2']
                         ],
                     ];
@@ -139,7 +138,8 @@ class Installer
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), '192.168.33.2', $settings['ipAddress']);
                     $filesystem->copy(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), sprintf('%s/tools/vagrant/config.yml', __DIR__));
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml', __DIR__), '~', $settings['composerCacheDirectory']);
-                    self::replaceInFile(sprintf('%s/tools/docker/Dockerfile', __DIR__), 'mediamonks/apachephp:7.1', $settings['dockerImage']);
+                    self::replaceInFile(sprintf('%s/tools/docker/Dockerfile', __DIR__), 'mediamonks/apachephp:7.1', sprintf('mediamonks/apachephp:%s', $settings['phpVersion']));
+                    self::replaceInFile(sprintf('%s/source/symfony/composer.json', __DIR__), '"php": "7.1"', sprintf('"php": "%s"', $settings['phpVersion']));
                     self::replaceInFile(sprintf('%s/tools/docker/generateSSL.sh', __DIR__), 'skeleton.lcl', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/generateSSL.sh', __DIR__), '192.168.33.2', $settings['ipAddress']);
 
