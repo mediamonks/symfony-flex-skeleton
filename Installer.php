@@ -109,7 +109,7 @@ class Installer
                         'phpVersion' => [
                             'q' => 'PHP Version (please check with your project manager for this project)',
                             'd' => '7.1',
-                            'choices' => ['5.6', '7.0', '7.1', '7.2']
+                            'choices' => ['7.0', '7.1', '7.2']
                         ],
                     ];
 
