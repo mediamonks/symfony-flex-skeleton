@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
     config.vm.network "private_network", ip: ip_address
     config.vm.synced_folder "./", "/vagrant", type: "nfs"
     if cache_dir
-        config.vm.synced_folder cache_dir, "/composer-cache", type: "nfs"
+        config.vm.synced_folder cache_dir, "/home/vagrant/composer-cache", type: "nfs"
     end
 
     config.vm.provision "shell", run: "always", inline: <<-SHELL
