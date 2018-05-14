@@ -139,6 +139,7 @@ class Installer
                     $filesystem->copy(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), sprintf('%s/tools/vagrant/config.yml', __DIR__));
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml', __DIR__), '~', $settings['composerCacheDirectory']);
                     self::replaceInFile(sprintf('%s/tools/docker/Dockerfile', __DIR__), 'mediamonks/apachephp:7.1', sprintf('mediamonks/apachephp:%s', $settings['phpVersion']));
+                    self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__image__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/generateSSL.sh', __DIR__), 'skeleton.lcl', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/generateSSL.sh', __DIR__), '192.168.33.2', $settings['ipAddress']);
 
