@@ -73,8 +73,8 @@ class Installer
                     echo "                              ./:    dMN+                                       ".PHP_EOL;
                     echo "                             .mMMo .yNy-                                        ".PHP_EOL;
                     echo "                              smd+oyo-                                          ".PHP_EOL;
-                    echo "                                ..                                 Skeleton 3.0 ".PHP_EOL;
-                    echo "                                                                    Symfony 3.4 ".PHP_EOL;
+                    echo "                                ..                 symfony/framework-bundle 4.0 ".PHP_EOL;
+                    echo "                                                           symfony/skeleton 4.0 ".PHP_EOL;
                     echo "                                                                                ".PHP_EOL;
                     echo "================================================================================".PHP_EOL;
                     echo "=------------------------------------------------------------------------------=".PHP_EOL;
@@ -109,7 +109,7 @@ class Installer
                         'phpVersion' => [
                             'q' => 'PHP Version (please check with your project manager for this project)',
                             'd' => '7.1',
-                            'choices' => ['7.0', '7.1', '7.2']
+                            'choices' => ['7.1', '7.2']
                         ],
                     ];
 
@@ -179,6 +179,6 @@ class Installer
             ->getApplication()
             ->setDefaultCommand('installer', true);
 
-        var_dump($application->run(new ArrayInput([])));
+        $application->run(new ArrayInput([]));
     }
 }
