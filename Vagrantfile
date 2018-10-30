@@ -5,6 +5,15 @@ else
     conf = YAML.load_file('tools/vagrant/config.yml.dist')
 end
 
+module OS
+    def OS.windows?
+        (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+    end
+    def OS.mac?
+        (/darwin/ =~ RUBY_PLATFORM) != nil
+    end
+end
+
 hostnames = conf["hostnames"]
 ip_address = conf["ip_address"]
 cache_dir = conf["composer_cache_dir"]
@@ -12,25 +21,32 @@ cache_dir = conf["composer_cache_dir"]
 Vagrant.configure("2") do |config|
     config.vm.box = "mediamonks/linux-docker"
 
-    config.trigger.after [:up, :resume] do
-        if Vagrant::Util::Platform.windows? then
-            run "which sed"
+    system("bash tools/vagrant/triggers.sh")
+
+    config.trigger.after [:up, :resume] do |trigger|
+        trigger.ruby do |env,machine|
             hostnames.each do |host|
-                system("powershell -Command \"Start-Process tools/vagrant/add-host.bat #{ip_address}, #{host} -verb RunAs\"")
+                if OS.windows?
+                    system('which sed')
+                    system("powershell -Command \"Start-Process tools/vagrant/add-host.bat #{ip_address}, #{host} -verb RunAs\"")
+                else
+                    system("bash tools/vagrant/add-host.sh #{ip_address} #{host}")
+                end
             end
-        else
-            hostnames.each do |host|
-                system("bash tools/vagrant/add-host.sh #{ip_address} #{host}")
-            end
+            system("bash tools/vagrant/welcome.sh #{hostnames.first}")
         end
-        system("bash tools/vagrant/welcome.sh #{hostnames.first}")
     end
-    config.trigger.after [:suspend, :halt, :destroy] do
-        if Vagrant::Util::Platform.windows? then
-            run "which sed"
-            system("powershell -Command \"Start-Process tools/vagrant/remove-host.bat #{ip_address} -verb RunAs\"")
-        else
-            system("bash tools/vagrant/remove-host.sh #{ip_address}")
+
+    config.trigger.after [:suspend, :halt, :destroy] do |trigger|
+        trigger.ruby do |env,machine|
+            hostnames.each do |host|
+                if OS.windows?
+                    system('which sed')
+                    system("powershell -Command \"Start-Process tools/vagrant/remove-host.bat #{ip_address} -verb RunAs\"")
+                else
+                    system("bash tools/vagrant/remove-host.sh #{ip_address}")
+                end
+            end
         end
     end
 

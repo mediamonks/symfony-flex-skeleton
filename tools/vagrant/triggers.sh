@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+echo "--"
+echo ""
+echo "!! Warning:"
+echo "Please remove the vagrant-triggers plugin if you have it installed!"
+echo "Triggers are included in Vagrant 2.2.* and it's not backwards compatible."
+echo ""
+echo "Read https://wiki.mediamonks.net/Vagrant#Required_plugins for more info."
+echo ""
+echo "--"
