@@ -21,7 +21,9 @@ cache_dir = conf["composer_cache_dir"]
 Vagrant.configure("2") do |config|
     config.vm.box = "mediamonks/linux-docker"
 
-    system("bash tools/vagrant/triggers.sh")
+    if Vagrant.has_plugin?("vagrant-triggers")
+        system("bash tools/vagrant/triggers.sh")
+    end
 
     config.trigger.after [:up, :resume] do |trigger|
         trigger.ruby do |env,machine|
