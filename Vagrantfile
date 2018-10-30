@@ -9,9 +9,6 @@ module OS
     def OS.windows?
         (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
     end
-    def OS.mac?
-        (/darwin/ =~ RUBY_PLATFORM) != nil
-    end
 end
 
 hostnames = conf["hostnames"]
@@ -41,13 +38,11 @@ Vagrant.configure("2") do |config|
 
     config.trigger.after [:suspend, :halt, :destroy] do |trigger|
         trigger.ruby do |env,machine|
-            hostnames.each do |host|
-                if OS.windows?
-                    system('which sed')
-                    system("powershell -Command \"Start-Process tools/vagrant/remove-host.bat #{ip_address} -verb RunAs\"")
-                else
-                    system("bash tools/vagrant/remove-host.sh #{ip_address}")
-                end
+            if OS.windows?
+                system('which sed')
+                system("powershell -Command \"Start-Process tools/vagrant/remove-host.bat #{ip_address} -verb RunAs\"")
+            else
+                system("bash tools/vagrant/remove-host.sh #{ip_address}")
             end
         end
     end
