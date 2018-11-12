@@ -134,11 +134,17 @@ class Installer
 
                     $filesystem = new Filesystem();
 
+                    // Guus Meeuwis en Vagrant:
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), 'skeleton.lcl', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), '192.168.33.2', $settings['ipAddress']);
                     $filesystem->copy(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), sprintf('%s/tools/vagrant/config.yml', __DIR__));
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml', __DIR__), '~', $settings['composerCacheDirectory']);
-                    self::replaceInFile(sprintf('%s/tools/docker/Dockerfile', __DIR__), 'mediamonks/apachephp:7.1', sprintf('mediamonks/apachephp:%s', $settings['phpVersion']));
+
+                    // Dockerinos:
+                    $phpVersionShort = sprintf('php%s', str_replace('.', '', $settings['phpVersion']));
+                    self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php-fpm-7.1.d', sprintf('php-fpm-%s.d', $settings['phpVersion']));
+                    self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php71', $phpVersionShort);
+                    self::replaceInFile(sprintf('%s/tools/docker/web/www.conf', __DIR__), 'skeleton.lcl', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__image__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/generateSSL.sh', __DIR__), 'skeleton.lcl', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/generateSSL.sh', __DIR__), '192.168.33.2', $settings['ipAddress']);
