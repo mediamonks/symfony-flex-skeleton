@@ -1,22 +1,25 @@
 version: "3"
 services:
-    apache:
+    web:
+        container_name: web
         build:
-            context: .
-        container_name: apache
-        image: __image__
+            context: ./web
+        image: web.__image__
+        depends_on:
+            - php
         ports:
             - "80:80"
             - "443:443"
         volumes:
-            - "../../:/var/www/html"
-            - "~/composer-cache/:/root/.composer/cache" #optional
-#        links:
-#            - mysql
-#    mysql:
-#        image: mysql
-#        volumes:
-#            - "./sql:/docker-entrypoint-initdb.d"
-#        environment:
-#            - MYSQL_DATABASE=database_name
-#            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - ../../:/var/www
+        working_dir: /var/www/source/symfony
+
+    php:
+        container_name: php
+        build:
+            context: ./php
+        image: php.__image__
+        volumes:
+            - ../../:/var/www
+        working_dir: /var/www/source/symfony
+        command: bash -c "cd /var/www/tools/docker && chmod +x *.sh && ./init.sh && php-fpm --nodaemonize"

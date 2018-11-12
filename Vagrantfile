@@ -55,9 +55,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", run: "always", inline: <<-SHELL
         cd /vagrant/tools/docker && \
-        bash generateSSL.sh &> /dev/null && \
         docker-compose rm -f && \
-        docker-compose up -d && \
-        docker exec apache bash /var/www/html/tools/docker/init.sh
+        docker-compose up -d
     SHELL
 end
