@@ -4,7 +4,7 @@ RUN yum -y groupinstall "Development Tools"
 RUN useradd -ms /bin/bash -d /var/www www-data
 
 RUN yum -y update
-RUN yum install -y php71 php71-fpm php71-mbstring php71-pdo
+RUN yum install -y php71 php71-fpm php71-mbstring php71-pdo php71-mysqli php71-gd
 
 COPY ./www.conf /etc/php-fpm-7.1.d/www.conf
 COPY ./xdebug-php71.so /usr/local/php/xdebug.so
