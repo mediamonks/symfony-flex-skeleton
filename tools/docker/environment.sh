@@ -10,4 +10,6 @@ else
     mkdir production
 
     sed -i 's/APP_ENV=dev/APP_ENV=local/g' /var/www/source/symfony/.env
+    sed -i 's/dev/local/g' /var/www/source/symfony/config/bootstrap.php
+    sed -i 's/prod/production/g' /var/www/source/symfony/config/bootstrap.php
 fi
