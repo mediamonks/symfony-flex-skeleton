@@ -35,4 +35,4 @@ phpunit:
 	@echo "|| Running php-unit"
 	@echo "=================================================================="
 	@echo ""
-	docker exec php bash -c "bin/phpunit --coverage-html ./reporting/coverage"
+	docker exec php bash -c "bin/phpunit --coverage-html ./reports/coverage"
