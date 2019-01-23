@@ -22,4 +22,4 @@ services:
         volumes:
             - ../../:/var/www
         working_dir: /var/www/source/symfony
-        command: bash -c "cd /var/www/tools/docker && make && php-fpm --nodaemonize"
+        command: bash -c "cd /var/www/tools/docker && ./php/docker-compose-init.sh && php-fpm --nodaemonize"
