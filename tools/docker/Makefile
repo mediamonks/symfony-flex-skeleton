@@ -36,3 +36,4 @@ phpunit:
 	@echo "=================================================================="
 	@echo ""
 	docker exec php bash -c "bin/phpunit --coverage-html ./reports/coverage"
+	docker exec php bash -c "vendor/bin/phpmetrics --report-html=./reporting/metrics ./"
