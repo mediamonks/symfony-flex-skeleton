@@ -1,16 +1,38 @@
-all: docker_scripts	ssl	composer permissions environment
+frontend:
+	@echo "Building frontend"
+	docker run --volume $PWD/../../source/frontend:/frontend --workdir /frontend --rm node:latest bash -c "yarn && yarn build --versionNumber=src && cp -r $PWD/../source/frontend/dist/version/src $PWD/../../source/symfony/public/src"
 
-docker_scripts:
-	@chmod +x *.sh
+migrate:
+	docker exec php bin/console doctrine:migrations:migrate
 
-ssl:
-	@./generateSSL.sh
+qa: linting analyse test
+	 
+	
 
-composer:
-	@cd /var/www/source/symfony; composer install
+preview:
+	@echo "Building preview"
 
-permissions:
-	@cd /var/www/source/symfony; chmod -R 777 var/log var/cache
+linting:
+	@echo "||"
+	@echo "|| Code linting with --dry-run"
+	@echo "=================================================================="
+	@echo ""
+	docker exec php bash -c "vendor/bin/php-cs-fixer fix --dry-run"
 
-environment:
-	@./environment.sh
+analyse:
+	@echo ""
+	@echo "||"
+	@echo "|| Static analysis"
+	@echo "=================================================================="
+	@echo ""
+	docker exec php bash -c "vendor/bin/phpstan analyse -c .phpstan.neon.dist"
+
+test: phpunit
+
+phpunit:
+	@echo ""
+	@echo "||"
+	@echo "|| Running php-unit"
+	@echo "=================================================================="
+	@echo ""
+	docker exec php bash -c "bin/phpunit --coverage-html ./reporting/coverage"
