@@ -15,7 +15,7 @@ lint:
 analyse:
 	@echo "=================================================================="
 	@docker exec php bash -c "vendor/bin/phpstan analyse -c .phpstan.neon.dist"
-	@docker exec php bash -c "vendor/bin/phpmetrics --report-html=./reports/metrics ./"
+	@docker exec php bash -c "vendor/bin/phpmetrics --report-html=./reporting/metrics --exclude='vendor,tests,var,bin'"
 
 test:
 	@echo "=================================================================="
