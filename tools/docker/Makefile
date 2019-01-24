@@ -15,7 +15,10 @@ lint:
 analyse:
 	@echo "=================================================================="
 	@docker exec php bash -c "vendor/bin/phpstan analyse -c .phpstan.neon.dist"
+	@echo "=================================================================="
 	@docker exec php bash -c "vendor/bin/phpmetrics --report-html=./reports/metrics ./"
+	@echo "=================================================================="
+	@docker exec php bash -c "bin/console security:check"
 
 test:
 	@echo "=================================================================="
