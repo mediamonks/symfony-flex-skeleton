@@ -4,5 +4,3 @@ parameters:
         - %rootDir%/../../../src
     excludes_analyse:
         - %rootDir%/../../../src/Migrations
-        - %rootDir%/../../../src/Admin/UserAdmin.php
-        - %rootDir%/../../../src/Form/EntityModalType.php
