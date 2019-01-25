@@ -16,7 +16,7 @@ analyse:
 	@echo "=================================================================="
 	@docker exec php bash -c "vendor/bin/phpstan analyse -c .phpstan.neon.dist"
 	@echo "=================================================================="
-	@docker exec php bash -c "vendor/bin/phpmetrics --report-html=./reports/metrics --exclude='vendor,tests,var,bin'"
+	@docker exec php bash -c "vendor/bin/phpmetrics --report-html=./reports/metrics --exclude='vendor,tests,var,bin' ./"
 	@echo "=================================================================="
 	@docker exec php bash -c "bin/console security:check"
 
