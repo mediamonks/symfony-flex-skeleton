@@ -21,8 +21,8 @@ List of useful recipes/packages can be found [here](#recipes).
     
 ## Tools
 Tools included in this skeleton:  
-- Phpunit (https://phpunit.de/)  
-- Phpstan (https://github.com/phpstan/phpstan) 
+- phpunit (https://phpunit.de/)  
+- phpstan (https://github.com/phpstan/phpstan)  
 - php-cs-fixer (https://github.com/FriendsOfPHP/PHP-CS-Fixer)  
 - php metrics (https://www.phpmetrics.org/)  
 
