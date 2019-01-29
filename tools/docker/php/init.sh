@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 #
-# Composer install
-#============================================
-cd /var/www/source/symfony; composer install
-
-#
-# Setting folder permissions
-#============================================
-cd /var/www/source/symfony; chmod -R 777 var/log var/cache
-
-#
 # Generate SSL
 #============================================
 if [ -f ssl.crt ]; then
@@ -48,6 +38,16 @@ else
 
     openssl req -new -x509 -newkey rsa:2048 -sha256 -nodes -keyout ssl.key -days 9000 -out ssl.crt -config ssl.cnf
 fi
+
+#
+# Composer install
+#============================================
+cd /var/www/source/symfony; composer install
+
+#
+# Setting folder permissions
+#============================================
+cd /var/www/source/symfony; chmod -R 777 var/log var/cache
 
 #
 # Configuring environments
