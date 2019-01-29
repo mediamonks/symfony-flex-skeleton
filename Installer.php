@@ -97,7 +97,7 @@ class Installer
                             'd' => '~',
                             'val' => null
                         ],
-                        'ipAddress' => [
+                        'vagrantIp' => [
                             'q' => 'Vagrant IP address ("192.168.33." will be prepended automatically)',
                             'd' => rand(5, 240),
                             'pre' => '192.168.33.',
@@ -135,8 +135,8 @@ class Installer
                     $filesystem = new Filesystem();
 
                     // Guus Meeuwis en Vagrant:
-                    self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), 'skeleton.lcl', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), '192.168.33.2', $settings['ipAddress']);
+                    self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
                     $filesystem->copy(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), sprintf('%s/tools/vagrant/config.yml', __DIR__));
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml', __DIR__), '~', $settings['composerCacheDirectory']);
 
@@ -144,15 +144,15 @@ class Installer
                     $phpVersionShort = sprintf('php%s', str_replace('.', '', $settings['phpVersion']));
                     self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php-fpm-7.1.d', sprintf('php-fpm-%s.d', $settings['phpVersion']));
                     self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php71', $phpVersionShort);
-                    self::replaceInFile(sprintf('%s/tools/docker/web/www.conf', __DIR__), 'skeleton.lcl', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/docker/web/www.conf', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/docker/web/init.sh', __DIR__), 'skeleton.lcl', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/docker/web/init.sh', __DIR__), '192.168.33.2', $settings['ipAddress']);
+                    self::replaceInFile(sprintf('%s/tools/docker/web/init.sh', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/docker/web/init.sh', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
 
-                    // Readme
+                    // Readwin
                     self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__project_name__', $settings['projectName']);
                     self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__vagrant_ip__', $settings['ipAddress']);
+                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
                     self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__php_version__', $phpVersionShort);
 
                     $output->writeln("================================================================================");
@@ -161,7 +161,7 @@ class Installer
                     $output->writeln("                                                                                ");
                     $output->writeln(" <comment>Project Info</comment>                                                ");
                     $output->writeln(" Hostname: <info>".$settings['hostname']."</info>                               ");
-                    $output->writeln(" IP Address: <info>".$settings['ipAddress']."</info>                            ");
+                    $output->writeln(" IP Address: <info>".$settings['vagrantIp']."</info>                            ");
                     $output->writeln("                                                                                ");
                     $output->writeln(" <comment>Local SSL</comment>                                                   ");
                     $output->writeln(" If you want to use SSL for this project, please install                        ");
@@ -173,7 +173,9 @@ class Installer
                     $output->writeln("                                                                                ");
                     $output->writeln(" <comment>Available Recipes</comment>                                           ");
                     $output->writeln(" Sonata Admin: <info>composer req admin</info>                                  ");
+                    $output->writeln(" Sonata Media Bundle: <info>composer req sonata-media</info>                    ");
                     $output->writeln(" API: <info>composer req api</info>                                             ");
+                    $output->writeln(" PII: <info>composer req pii</info>                                             ");
                     $output->writeln("                                                                                ");
                     $output->writeln("                                                                                ");
                     $output->writeln(" Run <info>vagrant up</info> now!                                               ");

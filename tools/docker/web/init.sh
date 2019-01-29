@@ -11,8 +11,8 @@ chmod +x *.sh
 if [ -f ssl.crt ]; then
    echo SSL Configuration already exists.
 else
-    HOST=test.lcl
-    IP=192.168.33.55
+    HOST=__hostname__
+    IP=__vagrant_ip__
     COUNTRY=NL
     STATE=UT
     CITY=Hilversum

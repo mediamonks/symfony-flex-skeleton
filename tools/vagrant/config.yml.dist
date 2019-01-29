@@ -1,4 +1,4 @@
 hostnames:
-    - skeleton.lcl
-ip_address: 192.168.33.2
+    - __hostname__
+ip_address: __vagrant_ip__
 composer_cache_dir: ~

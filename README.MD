@@ -49,10 +49,5 @@ Check http://www.phpmetrics.org/documentation/index.html for the meaning of the 
 
 
 ## Recipes
-- admin (Sonata Admin with user management)  
-- api (MediaMonks Rest API Bundle)  
-- pii (Doctrine Extensions for encryption and hashing)  
-- sonata-media (MediaMonks Sonata Media Bundle)  
-
-Private recipes can be found here: https://symfony.mediamonks.net
+Private recipes can be found here: https://symfony.mediamonks.net  
 Public recipes can be found here: https://flex.symfony.com
