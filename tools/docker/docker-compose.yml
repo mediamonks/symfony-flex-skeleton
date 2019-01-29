@@ -4,7 +4,7 @@ services:
         container_name: web
         build:
             context: ./web
-        image: web.__image__
+        image: web.__hostname__
         depends_on:
             - php
         ports:
@@ -19,7 +19,7 @@ services:
         container_name: php
         build:
             context: ./php
-        image: php.__image__
+        image: php.__hostname__
         volumes:
             - ../../:/var/www
         working_dir: /var/www/source/symfony

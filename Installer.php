@@ -145,9 +145,15 @@ class Installer
                     self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php-fpm-7.1.d', sprintf('php-fpm-%s.d', $settings['phpVersion']));
                     self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php71', $phpVersionShort);
                     self::replaceInFile(sprintf('%s/tools/docker/web/www.conf', __DIR__), 'skeleton.lcl', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__image__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/init.sh', __DIR__), 'skeleton.lcl', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/init.sh', __DIR__), '192.168.33.2', $settings['ipAddress']);
+
+                    // Readme
+                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__project_name__', $settings['projectName']);
+                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__vagrant_ip__', $settings['ipAddress']);
+                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__php_version__', $phpVersionShort);
 
                     $output->writeln("================================================================================");
                     $output->writeln("=------------------------------------------------------------------------------=");
