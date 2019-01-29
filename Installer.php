@@ -146,8 +146,8 @@ class Installer
                     self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php71', $phpVersionShort);
                     self::replaceInFile(sprintf('%s/tools/docker/web/www.conf', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/docker/web/init.sh', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/docker/web/init.sh', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
+                    self::replaceInFile(sprintf('%s/tools/docker/php/init.sh', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/docker/php/init.sh', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
 
                     // Readwin
                     self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__project_name__', $settings['projectName']);
