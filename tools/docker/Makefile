@@ -10,7 +10,7 @@ qa: lint analyse test
 
 lint:
 	@echo "=================================================================="
-	@docker exec php bash -c "vendor/bin/php-cs-fixer fix --dry-run"
+	@docker exec php bash -c "vendor/bin/php-cs-fixer fix"
 
 analyse:
 	@echo "=================================================================="
