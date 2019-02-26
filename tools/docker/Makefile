@@ -2,7 +2,7 @@ qa: lint analyse test
 
 #frontend:
 #    @echo "=================================================================="
-#    @docker run --volume $PWD/../../source/frontend:/frontend --workdir /frontend --rm node:latest bash -c "yarn && yarn build --versionNumber=src && cp -r $PWD/../source/frontend/dist/version/src $PWD/../../source/symfony/public/version/src"
+#    @docker run --volume ${PWD}/../../source:/source --workdir /source --rm node:latest bash -c "cd frontend && yarn && yarn build --versionNumber=src && cp -r dist/version/src ../symfony/public/version/src"
 
 #migrate:
 #    @echo "=================================================================="
