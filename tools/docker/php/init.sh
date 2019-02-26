@@ -28,3 +28,8 @@ else
 
     echo Environments created.
 fi
+
+#
+# Ready message
+#============================================
+echo Project is ready!
