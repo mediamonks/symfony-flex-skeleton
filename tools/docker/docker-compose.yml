@@ -20,7 +20,7 @@ services:
         build:
             context: ./php
             args:
-                php_version: 7.2
+                php_version: __php_version__
         image: php.__hostname__
         volumes:
             - ../../:/var/www

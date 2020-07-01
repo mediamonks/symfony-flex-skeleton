@@ -110,7 +110,7 @@ class Installer
                         'phpVersion' => [
                             'q' => 'PHP Version (please check with your project manager for this project)',
                             'd' => '7.1',
-                            'choices' => ['7.1', '7.2']
+                            'choices' => ['7.1', '7.2', '7.3']
                         ],
                     ];
 
@@ -142,10 +142,9 @@ class Installer
                     self::replaceInFile(sprintf('%s/tools/vagrant/config.yml', __DIR__), '~', $settings['composerCacheDirectory']);
 
                     // Dockerinos:
-                    $phpVersionShort = sprintf('php%s', str_replace('.', '', $settings['phpVersion']));
-                    self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php-fpm-7.1.d', sprintf('php-fpm-%s.d', $settings['phpVersion']));
-                    self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php71', $phpVersionShort);
+                    $phpVersionName = sprintf('php%s', str_replace('.', '', $settings['phpVersion']));
                     self::replaceInFile(sprintf('%s/tools/docker/web/www.conf', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__php_version', $settings['phpVersion']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
@@ -154,7 +153,7 @@ class Installer
                     self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__project_name__', $settings['projectName']);
                     self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
-                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__php_version__', $phpVersionShort);
+                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__php_version__', $phpVersionName);
 
                     $output->writeln("================================================================================");
                     $output->writeln("=------------------------------------------------------------------------------=");
