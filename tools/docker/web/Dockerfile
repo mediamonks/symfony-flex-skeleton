@@ -1,9 +1,13 @@
-FROM amazonlinux:1
+FROM amazonlinux:2
 
-RUN yum -y groupinstall "Development Tools"
+RUN yum -y install -y shadow-utils
 RUN useradd -ms /bin/bash -d /var/www www-data
 
 RUN yum -y update
+RUN yum install -y amazon-linux-extras
+
+RUN amazon-linux-extras enable nginx1.12
+RUN yum clean metadata
 RUN yum install -y nginx
 
 COPY ./nginx.conf /etc/nginx/nginx.conf

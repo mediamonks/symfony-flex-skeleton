@@ -19,6 +19,8 @@ services:
         container_name: php
         build:
             context: ./php
+            args:
+                php_version: 7.2
         image: php.__hostname__
         volumes:
             - ../../:/var/www

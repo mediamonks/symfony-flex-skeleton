@@ -1,22 +1,33 @@
-FROM amazonlinux:1
+FROM amazonlinux:2
 
-RUN yum -y groupinstall "Development Tools"
+ARG php_version=7.2
+
+RUN yum install -y shadow-utils gcc make
 RUN useradd -ms /bin/bash -d /var/www www-data
 
 RUN yum -y update
-RUN yum install -y php71 php71-fpm php71-mbstring php71-pdo php71-mysqli php71-gd
+RUN yum install -y amazon-linux-extras
 
-COPY ./www.conf /etc/php-fpm-7.1.d/www.conf
-COPY ./xdebug-php71.so /usr/local/php/xdebug.so
+# PHP
+RUN amazon-linux-extras enable php${php_version}
+RUN yum clean metadata
+RUN yum install -y php-devel php-pecl php-cli php-fpm php-mbstring php-pdo php-mysqli php-gd php-pear
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php --install-dir=/usr/bin --filename=composer
+# X-Debug
+RUN pear config-set php_ini /etc/php.ini
+RUN pecl install xdebug
 
-RUN echo 'zend_extension="/usr/local/php/xdebug.so"' >> /etc/php.ini
 RUN echo 'xdebug.max_nesting_level=250' >> /etc/php.ini
 RUN echo 'xdebug.remote_enable=1' >> /etc/php.ini
 RUN echo 'xdebug.remote_connect_back=1' >> /etc/php.ini
 RUN echo 'xdebug.idekey=PHPSTORM' >> /etc/php.ini
+
+# FPM
+COPY ./www.conf /etc/php-fpm.d/www.conf
+
+# Composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php --install-dir=/usr/bin --filename=composer
 
 EXPOSE 9005
 
