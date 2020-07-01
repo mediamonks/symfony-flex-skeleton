@@ -16,7 +16,8 @@ class Installer
      * @param $value
      * @return string
      */
-    public static function normalizeString($value) {
+    public static function normalizeString($value)
+    {
         return strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9]+/', '-', $value)));
     }
 
@@ -47,38 +48,38 @@ class Installer
             ->register('installer')
             ->setCode(
                 function (InputInterface $input, OutputInterface $output) {
-                    echo "================================================================================".PHP_EOL;
-                    echo "=------------------------------------------------------------------------------=".PHP_EOL;
-                    echo "================================================================================".PHP_EOL;
-                    echo "                                                                                ".PHP_EOL;
-                    echo "                             _ _                          _                     ".PHP_EOL;
-                    echo "              /\/\   ___  __| (_) __ _  /\/\   ___  _ __ | | _____              ".PHP_EOL;
-                    echo "             /    \ / _ \/ _` | |/ _` |/    \ / _ \| '_ \| |/ / __|             ".PHP_EOL;
-                    echo "            / /\/\ \  __/ (_| | | (_| / /\/\ \ (_) | | | |   <\__ \\             ".PHP_EOL;
-                    echo "            \/    \/\___|\__,_|_|\__,_\/    \/\___/|_| |_|_|\_\___/             ".PHP_EOL;
-                    echo "                                                                                ".PHP_EOL;
-                    echo "                                                                                ".PHP_EOL;
-                    echo "                                                ...                             ".PHP_EOL;
-                    echo "                                            .+y+:+Nd:                           ".PHP_EOL;
-                    echo "                                           oNd.  /NN+                           ".PHP_EOL;
-                    echo "                                .:::-    .hMM-    ..                            ".PHP_EOL;
-                    echo "                              :hNy/:/o+- hMMy  .yy.                             ".PHP_EOL;
-                    echo "                             .NMM/    -+hMMM/  :Nd.                             ".PHP_EOL;
-                    echo "                             .mMMNs.   -NMMN+++/:                               ".PHP_EOL;
-                    echo "                           :: :dMMMm-  sMMMs                                    ".PHP_EOL;
-                    echo "                          oMN:  +MMM+  NMMM-                                    ".PHP_EOL;
-                    echo "                          -hm:../NNy. /MMMh                                     ".PHP_EOL;
-                    echo "                            -:/+o/-   hMMN-                                     ".PHP_EOL;
-                    echo "                                     :MMN+                                      ".PHP_EOL;
-                    echo "                              ./:    dMN+                                       ".PHP_EOL;
-                    echo "                             .mMMo .yNy-                                        ".PHP_EOL;
-                    echo "                              smd+oyo-                                          ".PHP_EOL;
-                    echo "                                ..                 symfony/framework-bundle 4.0 ".PHP_EOL;
-                    echo "                                                           symfony/skeleton 4.0 ".PHP_EOL;
-                    echo "                                                                                ".PHP_EOL;
-                    echo "================================================================================".PHP_EOL;
-                    echo "=------------------------------------------------------------------------------=".PHP_EOL;
-                    echo "================================================================================".PHP_EOL.PHP_EOL;
+                    echo "================================================================================" . PHP_EOL;
+                    echo "=------------------------------------------------------------------------------=" . PHP_EOL;
+                    echo "================================================================================" . PHP_EOL;
+                    echo "                                                                                " . PHP_EOL;
+                    echo "                             _ _                          _                     " . PHP_EOL;
+                    echo "              /\/\   ___  __| (_) __ _  /\/\   ___  _ __ | | _____              " . PHP_EOL;
+                    echo "             /    \ / _ \/ _` | |/ _` |/    \ / _ \| '_ \| |/ / __|             " . PHP_EOL;
+                    echo "            / /\/\ \  __/ (_| | | (_| / /\/\ \ (_) | | | |   <\__ \\             " . PHP_EOL;
+                    echo "            \/    \/\___|\__,_|_|\__,_\/    \/\___/|_| |_|_|\_\___/             " . PHP_EOL;
+                    echo "                                                                                " . PHP_EOL;
+                    echo "                                                                                " . PHP_EOL;
+                    echo "                                                ...                             " . PHP_EOL;
+                    echo "                                            .+y+:+Nd:                           " . PHP_EOL;
+                    echo "                                           oNd.  /NN+                           " . PHP_EOL;
+                    echo "                                .:::-    .hMM-    ..                            " . PHP_EOL;
+                    echo "                              :hNy/:/o+- hMMy  .yy.                             " . PHP_EOL;
+                    echo "                             .NMM/    -+hMMM/  :Nd.                             " . PHP_EOL;
+                    echo "                             .mMMNs.   -NMMN+++/:                               " . PHP_EOL;
+                    echo "                           :: :dMMMm-  sMMMs                                    " . PHP_EOL;
+                    echo "                          oMN:  +MMM+  NMMM-                                    " . PHP_EOL;
+                    echo "                          -hm:../NNy. /MMMh                                     " . PHP_EOL;
+                    echo "                            -:/+o/-   hMMN-                                     " . PHP_EOL;
+                    echo "                                     :MMN+                                      " . PHP_EOL;
+                    echo "                              ./:    dMN+                                       " . PHP_EOL;
+                    echo "                             .mMMo .yNy-                                        " . PHP_EOL;
+                    echo "                              smd+oyo-                                          " . PHP_EOL;
+                    echo "                                ..                 symfony/framework-bundle 4.0 " . PHP_EOL;
+                    echo "                                                           symfony/skeleton 4.0 " . PHP_EOL;
+                    echo "                                                                                " . PHP_EOL;
+                    echo "================================================================================" . PHP_EOL;
+                    echo "=------------------------------------------------------------------------------=" . PHP_EOL;
+                    echo "================================================================================" . PHP_EOL . PHP_EOL;
 
                     $symfonyStyle = new SymfonyStyle($input, $output);
 
@@ -113,7 +114,7 @@ class Installer
                         ],
                     ];
 
-                    $settings['projectName'] = $symfonyStyle->ask('Project name', null, function($value) {
+                    $settings['projectName'] = $symfonyStyle->ask('Project name', null, function ($value) {
                         if (empty($value)) throw new Exception('Project name is mandatory!');
                         return $value;
                     });
@@ -160,8 +161,8 @@ class Installer
                     $output->writeln("================================================================================");
                     $output->writeln("                                                                                ");
                     $output->writeln(" <comment>Project Info</comment>                                                ");
-                    $output->writeln(" Hostname: <info>".$settings['hostname']."</info>                               ");
-                    $output->writeln(" IP Address: <info>".$settings['vagrantIp']."</info>                            ");
+                    $output->writeln(" Hostname: <info>" . $settings['hostname'] . "</info>                               ");
+                    $output->writeln(" IP Address: <info>" . $settings['vagrantIp'] . "</info>                            ");
                     $output->writeln("                                                                                ");
                     $output->writeln(" <comment>Local SSL</comment>                                                   ");
                     $output->writeln(" If you want to use SSL for this project, please install                        ");
@@ -188,6 +189,8 @@ class Installer
                     $filesystem->remove(sprintf('%s/composer.json', __DIR__));
                     $filesystem->remove(sprintf('%s/composer.lock', __DIR__));
                     $filesystem->remove(sprintf('%s/Installer.php', __DIR__));
+                    $filesystem->copy(sprintf('/%s/health.html', __DIR__), sprintf('/%s/source/symfony/public/health.html', __DIR__));
+                    $filesystem->remove(sprintf('/%s/health.html', __DIR__));
                 }
             )
             ->getApplication()
