@@ -11,7 +11,7 @@ RUN yum install -y amazon-linux-extras
 # PHP
 RUN amazon-linux-extras enable php${php_version}
 RUN yum clean metadata
-RUN yum install -y php-devel php-pecl php-cli php-fpm php-mbstring php-pdo php-mysqli php-gd php-pear
+RUN yum install -y php-mbstring php-gd php-pear php-devel php-fpm
 
 # X-Debug
 RUN pear config-set php_ini /etc/php.ini
