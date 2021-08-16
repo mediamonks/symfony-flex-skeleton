@@ -1,0 +1,29 @@
+version: "3"
+services:
+    web:
+        container_name: web
+        build:
+            context: ./web
+        image: web.skeleton
+        depends_on:
+            - php
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ../../:/var/www
+        working_dir: /var/www/source/symfony
+        command: bash -c "cd /var/www/tools/docker/web && ./generateSSL.sh && nginx -g 'daemon off;'"
+
+    php:
+        container_name: php
+        build:
+            args:
+                with_libsodium: 'false'
+                with_xdebug: 'true'
+            context: ./php
+        image: php.skeleon
+        volumes:
+            - ../../:/var/www
+        working_dir: /var/www/source/symfony
+        command: bash -c "cd /var/www/tools/docker && chmod +x -R *.sh **/*.sh && ./php/init.sh && php-fpm --nodaemonize"

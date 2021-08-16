@@ -1,0 +1,8 @@
+.idea
+.cache
+.config
+.local
+.symfony
+.vagrant
+_dist
+vendor
