@@ -1,4 +1,0 @@
-hostnames:
-    - __hostname__
-ip_address: __vagrant_ip__
-composer_cache_dir: ~
