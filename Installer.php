@@ -180,8 +180,6 @@ class Installer
                     $output->writeln(" PII: <info>composer req pii</info>                                             ");
                     $output->writeln("                                                                                ");
                     $output->writeln("                                                                                ");
-                    $output->writeln(" Run <info>vagrant up</info> now!                                               ");
-                    $output->writeln("                                                                                ");
                     $output->writeln("================================================================================");
                     $output->writeln("=------------------------------------------------------------------------------=");
                     $output->writeln("================================================================================");
