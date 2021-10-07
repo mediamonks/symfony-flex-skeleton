@@ -12,8 +12,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Installer
 {
-    private const SYMFONY_VERSION = '5.3.*';
-
     /**
      * @param $value
      * @return string
@@ -178,7 +176,6 @@ class Installer
                     $output->writeln(" Sonata Media Bundle: <info>composer req sonata-media</info>                    ");
                     $output->writeln(" API: <info>composer req api</info>                                             ");
                     $output->writeln(" PII: <info>composer req pii</info>                                             ");
-                    $output->writeln("                                                                                ");
                     $output->writeln("                                                                                ");
                     $output->writeln("================================================================================");
                     $output->writeln("=------------------------------------------------------------------------------=");
