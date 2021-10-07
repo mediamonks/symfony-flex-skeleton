@@ -4,7 +4,7 @@ services:
         container_name: web
         build:
             context: ./web
-        image: web.skeleton
+        image: web.__hostname__
         depends_on:
             - php
         ports:
@@ -21,8 +21,9 @@ services:
             args:
                 with_libsodium: 'false'
                 with_xdebug: 'true'
+                php_version: __php_version__
             context: ./php
-        image: php.skeleon
+        image: php.__hostname__
         volumes:
             - ../../:/var/www
         working_dir: /var/www/source/symfony

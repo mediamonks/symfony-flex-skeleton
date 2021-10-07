@@ -6,16 +6,16 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.3 || >=8.0.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "composer/package-versions-deprecated": "1.11.99.1",
-        "symfony/console": "*",
+        "symfony/console": "__symfony_version__",
         "symfony/flex": "^1.3.1",
-        "symfony/runtime": "*",
-        "symfony/framework-bundle": "*",
-        "symfony/proxy-manager-bridge": "*",
-        "symfony/yaml": "*"
+        "symfony/runtime": "__symfony_version__",
+        "symfony/framework-bundle": "__symfony_version__",
+        "symfony/proxy-manager-bridge": "__symfony_version__",
+        "symfony/yaml": "__symfony_version__"
     },
     "require-dev": {
         "phpstan/extension-installer": "^1.1",
@@ -71,8 +71,7 @@
         "symfony": {
             "id": "",
             "allow-contrib": false,
-            "require": "5.3.*",
-            "endpoint": "https://symfony.mediamonks.net"
+            "require": "__symfony_version__"
         }
     },
     "repositories": [

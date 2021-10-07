@@ -32,7 +32,7 @@ RUN if [ "$with_libsodium" = "true" ]; then \
     fi
 
 # X-Debug
-RUN if [" $with_xdebug" = "true" ]; then \
+RUN if [ "$with_xdebug" = "true" ]; then \
     pear config-set php_ini /etc/php.ini \
     && pecl install xdebug \
     && echo 'xdebug.max_nesting_level=250' >> /etc/php.ini \
@@ -51,6 +51,9 @@ RUN curl -s https://get.symfony.com/cli/installer | bash \
 
 # FPM
 COPY ./www.conf /etc/php-fpm.d/www.conf
+
+# Custom php config
+COPY ./custom/* /etc/php.d/
 
 USER www-data
 

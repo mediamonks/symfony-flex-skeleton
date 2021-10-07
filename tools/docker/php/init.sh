@@ -5,6 +5,11 @@
 cd /var/www/source/symfony; composer install
 
 #
+# Symfony CLI
+#============================================
+symfony self-update
+
+#
 # Setting folder permissions
 #============================================
 cd /var/www/source/symfony; chmod -R 777 var/log var/cache

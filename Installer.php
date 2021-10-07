@@ -12,6 +12,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Installer
 {
+    private const SYMFONY_VERSION = '5.3.*';
+
     /**
      * @param $value
      * @return string
@@ -72,8 +74,8 @@ class Installer
                     echo "                              ./:    dMN+                                       " . PHP_EOL;
                     echo "                             .mMMo .yNy-                                        " . PHP_EOL;
                     echo "                              smd+oyo-                                          " . PHP_EOL;
-                    echo "                                ..                 symfony/framework-bundle 5.3.* " . PHP_EOL;
-                    echo "                                                           symfony/skeleton 5.3.* " . PHP_EOL;
+                    echo "                                ..                                              " . PHP_EOL;
+                    echo "                                                                                " . PHP_EOL;
                     echo "                                                                                " . PHP_EOL;
                     echo "================================================================================" . PHP_EOL;
                     echo "=------------------------------------------------------------------------------=" . PHP_EOL;
@@ -107,7 +109,12 @@ class Installer
                         'phpVersion' => [
                             'q' => 'PHP Version (please check with your project manager for this project)',
                             'd' => '7.3',
-                            'choices' => ['7.3', '7.4', '8']
+                            'choices' => ['7.3', '7.4', '8.0']
+                        ],
+                        'symfonyVersion' => [
+                            'q' => 'Symfony Version (please check with your project manager for this project)',
+                            'd' => '5.3.*',
+                            'choices' => ['5.3.*', '5.4.*', '6.0.*']
                         ],
                     ];
 
@@ -128,33 +135,36 @@ class Installer
                         $settings[$setting] = $answer;
                     }
 
-                    $filesystem = new Filesystem();
-                    // Guus Meeuwis en Vagrant:
-                    self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
-                    $filesystem->copy(sprintf('%s/tools/vagrant/config.yml.dist', __DIR__), sprintf('%s/tools/vagrant/config.yml', __DIR__));
-                    self::replaceInFile(sprintf('%s/tools/vagrant/config.yml', __DIR__), '~', $settings['composerCacheDirectory']);
+                    if ($settings['symfonyVersion'] === '6.0.*') {
+                        $settings['phpVersion'] = '8.0';
+                        $output->writeln(sprintf('Symfony %d was selected, it requires php 8. Using php 8 instead', $settings['symfonyVersion']));
+                    }
 
-                    // Dockerinos:
+                    $filesystem = new Filesystem();
+
+                    // Docker:
                     $phpVersionShort = sprintf('php%s', str_replace('.', '', $settings['phpVersion']));
-                    self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php-fpm-7.1.d', sprintf('php-fpm-%s.d', $settings['phpVersion']));
-                    self::replaceInFile(sprintf('%s/tools/docker/php/Dockerfile', __DIR__), 'php71', $phpVersionShort);
                     self::replaceInFile(sprintf('%s/tools/docker/web/www.conf', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__php_version__', $settings['phpVersion']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
 
-                    // Readwin
-                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__project_name__', $settings['projectName']);
-                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
-                    self::replaceInFile(sprintf('%s/README.MD', __DIR__), '__php_version__', $phpVersionShort);
+                    // Symfony
+                    self::replaceInFile(sprintf('%s/source/symfony/composer.json', __DIR__), '__symfony_version__', $settings['symfonyVersion']);
+
+                    // Readme
+                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__project_name__', $settings['projectName']);
+                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
+                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__php_version__', $phpVersionShort);
 
                     $output->writeln("================================================================================");
                     $output->writeln("=------------------------------------------------------------------------------=");
                     $output->writeln("================================================================================");
                     $output->writeln("                                                                                ");
                     $output->writeln(" <comment>Project Info</comment>                                                ");
+                    $output->writeln(" Symfony: <info>" . $settings['symfonyVersion'] . "</info>                               ");
                     $output->writeln(" Hostname: <info>" . $settings['hostname'] . "</info>                               ");
                     $output->writeln(" IP Address: <info>" . $settings['vagrantIp'] . "</info>                            ");
                     $output->writeln("                                                                                ");
@@ -162,9 +172,6 @@ class Installer
                     $output->writeln(" If you want to use SSL for this project, please install                        ");
                     $output->writeln(" the generated SSL certificate in <info>tools/docker/</info> manually.          ");
                     $output->writeln("                                                                                ");
-                    $output->writeln(" <comment>Windows Users</comment>                                               ");
-                    $output->writeln(" If you want to speed up the Vagrant/Docker setup, please install               ");
-                    $output->writeln(" the <info>vagrant-winnfsd</info> plugin for faster IO performance.             ");
                     $output->writeln("                                                                                ");
                     $output->writeln(" <comment>Available Recipes</comment>                                           ");
                     $output->writeln(" Sonata Admin: <info>composer req admin</info>                                  ");
