@@ -123,7 +123,7 @@ class Installer
                     $questions['hostname']['d'] = self::normalizeString($settings['projectName']);
                     foreach ($questions as $setting => $question) {
                         if (isset($question['choices'])) {
-                            $answer = $symfonyStyle->choice($question['q'], $question['choices']);
+                            $answer = $symfonyStyle->choice($question['q'], $question['choices'], $question['d']);
                         } else {
                             $answer = $symfonyStyle->ask($question['q'], $question['d'], $question['val']);
                         }
