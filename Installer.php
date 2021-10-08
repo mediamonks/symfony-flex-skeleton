@@ -94,8 +94,8 @@ class Installer
                             'd' => '~',
                             'val' => null
                         ],
-                        'vagrantIp' => [
-                            'q' => 'Vagrant IP address ("192.168.33." will be prepended automatically)',
+                        'ip' => [
+                            'q' => 'IP address ("192.168.33." will be prepended automatically)',
                             'd' => rand(5, 240),
                             'pre' => '192.168.33.',
                             'val' => function ($value) {
@@ -110,8 +110,8 @@ class Installer
                         ],
                         'symfonyVersion' => [
                             'q' => 'Symfony Version (please check with your project manager for this project)',
-                            'd' => '5.3.*',
-                            'choices' => ['5.3.*', '5.4.*', '6.0.*']
+                            'd' => '5.4.*',
+                            'choices' => ['5.4.*', '6.0.*']
                         ],
                     ];
 
@@ -145,7 +145,7 @@ class Installer
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__php_version__', $settings['phpVersion']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
+                    self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__ip__', $settings['vagrantIp']);
 
                     // Symfony
                     self::replaceInFile(sprintf('%s/source/symfony/composer.json', __DIR__), '__symfony_version__', $settings['symfonyVersion']);
@@ -153,7 +153,7 @@ class Installer
                     // Readme
                     self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__project_name__', $settings['projectName']);
                     self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
+                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__ip__', $settings['ip']);
                     self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__php_version__', $phpVersionShort);
 
                     $output->writeln("===============================================================================");

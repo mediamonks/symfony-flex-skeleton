@@ -6,7 +6,7 @@ if [ -f ssl.crt ]; then
    echo SSL Configuration already exists.
 else
     HOST=__hostname__
-    IP=__vagrant_ip__
+    IP=__ip__
     COUNTRY=NL
     STATE=UT
     CITY=Hilversum

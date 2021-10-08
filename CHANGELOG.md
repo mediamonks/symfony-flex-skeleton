@@ -1,6 +1,6 @@
 ## 10.0.0 draft
 - Support: Symfony 5.3, 5.4 (upcoming lts) and 6.0  
-- Support: Docker, PHP 7.3, 7.4 and 8 as build argument (`php_version`, default 7.3)  
+- Support: Docker, PHP 7.4 and 8 as build argument (`php_version`, default 7.3)  
 - Support: Docker, Libsodium installation as build argument (`with_libsodium`, default false)  
 - Added: Symfony's updated security-checker (`composer security-check`)  
 - Added: PHPStan and defaults (`composer analyse`)
