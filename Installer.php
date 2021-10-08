@@ -82,7 +82,7 @@ class Installer
                     $settings = [];
                     $questions = [
                         'hostname' => [
-                            'q' => 'Vagrant hostname (".lcl" will be added automatically)',
+                            'q' => 'Hostname (".lcl" will be added automatically)',
                             'd' => 'symfony-skeleton',
                             'suf' => '.lcl',
                             'val' => function ($value) {
