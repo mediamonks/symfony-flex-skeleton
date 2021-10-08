@@ -1,6 +1,6 @@
 FROM amazonlinux:2
 
-ARG php_version=7.3
+ARG php_version=7.4
 ARG with_libsodium="false"
 ARG with_xdebug="true"
 

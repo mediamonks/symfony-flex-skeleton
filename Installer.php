@@ -46,38 +46,37 @@ class Installer
             ->register('installer')
             ->setCode(
                 function (InputInterface $input, OutputInterface $output) {
-                    echo "================================================================================" . PHP_EOL;
-                    echo "=------------------------------------------------------------------------------=" . PHP_EOL;
-                    echo "================================================================================" . PHP_EOL;
-                    echo "                                                                                " . PHP_EOL;
-                    echo "                             _ _                          _                     " . PHP_EOL;
-                    echo "              /\/\   ___  __| (_) __ _  /\/\   ___  _ __ | | _____              " . PHP_EOL;
-                    echo "             /    \ / _ \/ _` | |/ _` |/    \ / _ \| '_ \| |/ / __|             " . PHP_EOL;
-                    echo "            / /\/\ \  __/ (_| | | (_| / /\/\ \ (_) | | | |   <\__ \\             " . PHP_EOL;
-                    echo "            \/    \/\___|\__,_|_|\__,_\/    \/\___/|_| |_|_|\_\___/             " . PHP_EOL;
-                    echo "                                                                                " . PHP_EOL;
-                    echo "                                                                                " . PHP_EOL;
-                    echo "                                                ...                             " . PHP_EOL;
-                    echo "                                            .+y+:+Nd:                           " . PHP_EOL;
-                    echo "                                           oNd.  /NN+                           " . PHP_EOL;
-                    echo "                                .:::-    .hMM-    ..                            " . PHP_EOL;
-                    echo "                              :hNy/:/o+- hMMy  .yy.                             " . PHP_EOL;
-                    echo "                             .NMM/    -+hMMM/  :Nd.                             " . PHP_EOL;
-                    echo "                             .mMMNs.   -NMMN+++/:                               " . PHP_EOL;
-                    echo "                           :: :dMMMm-  sMMMs                                    " . PHP_EOL;
-                    echo "                          oMN:  +MMM+  NMMM-                                    " . PHP_EOL;
-                    echo "                          -hm:../NNy. /MMMh                                     " . PHP_EOL;
-                    echo "                            -:/+o/-   hMMN-                                     " . PHP_EOL;
-                    echo "                                     :MMN+                                      " . PHP_EOL;
-                    echo "                              ./:    dMN+                                       " . PHP_EOL;
-                    echo "                             .mMMo .yNy-                                        " . PHP_EOL;
-                    echo "                              smd+oyo-                                          " . PHP_EOL;
-                    echo "                                ..                                              " . PHP_EOL;
-                    echo "                                                                                " . PHP_EOL;
-                    echo "                                                                                " . PHP_EOL;
-                    echo "================================================================================" . PHP_EOL;
-                    echo "=------------------------------------------------------------------------------=" . PHP_EOL;
-                    echo "================================================================================" . PHP_EOL . PHP_EOL;
+                    echo "===============================================================================" . PHP_EOL;
+                    echo "=-----------------------------------------------------------------------------=" . PHP_EOL;
+                    echo "===============================================================================" . PHP_EOL;
+                    echo "                                                                               " . PHP_EOL;
+                    echo "      ____             _                  _   __  __             _             " . PHP_EOL;
+                    echo "     |  _ \           | |                | | |  \/  |           | |            " . PHP_EOL;
+                    echo "     | |_) | __ _  ___| | _____ _ __   __| | | \  / | ___  _ __ | | _____      " . PHP_EOL;
+                    echo "     |  _ < / _` |/ __| |/ / _ \ '_ \ / _` | | |\/| |/ _ \| '_ \| |/ / __|     " . PHP_EOL;
+                    echo "     | |_) | (_| | (__|   <  __/ | | | (_| |_| |  | | (_) | | | |   <\__ \     " . PHP_EOL;
+                    echo "     |____/ \__,_|\___|_|\_\___|_| |_|\__,_(_)_|  |_|\___/|_| |_|_|\_\___/     " . PHP_EOL;
+                    echo "                                                                               " . PHP_EOL;
+                    echo "                                            .+y+:+Nd:                          " . PHP_EOL;
+                    echo "                                           oNd.  /NN+                          " . PHP_EOL;
+                    echo "                                .:::-    .hMM-    ..                           " . PHP_EOL;
+                    echo "                              :hNy/:/o+- hMMy  .yy.                            " . PHP_EOL;
+                    echo "                             .NMM/    -+hMMM/  :Nd.                            " . PHP_EOL;
+                    echo "                             .mMMNs.   -NMMN+++/:                              " . PHP_EOL;
+                    echo "                           :: :dMMMm-  sMMMs                                   " . PHP_EOL;
+                    echo "                          oMN:  +MMM+  NMMM-                                   " . PHP_EOL;
+                    echo "                          -hm:../NNy. /MMMh                                    " . PHP_EOL;
+                    echo "                            -:/+o/-   hMMN-                                    " . PHP_EOL;
+                    echo "                                     :MMN+                                     " . PHP_EOL;
+                    echo "                              ./:    dMN+                                      " . PHP_EOL;
+                    echo "                             .mMMo .yNy-                                       " . PHP_EOL;
+                    echo "                              smd+oyo-                                         " . PHP_EOL;
+                    echo "                                ..                                             " . PHP_EOL;
+                    echo "                                                                               " . PHP_EOL;
+                    echo "                                                                               " . PHP_EOL;
+                    echo "===============================================================================" . PHP_EOL;
+                    echo "=-----------------------------------------------------------------------------=" . PHP_EOL;
+                    echo "===============================================================================" . PHP_EOL . PHP_EOL;
 
                     $symfonyStyle = new SymfonyStyle($input, $output);
                     $settings = [];
@@ -106,8 +105,8 @@ class Installer
                         ],
                         'phpVersion' => [
                             'q' => 'PHP Version (please check with your project manager for this project)',
-                            'd' => '7.3',
-                            'choices' => ['7.3', '7.4', '8.0']
+                            'd' => '7.4',
+                            'choices' => ['7.4', '8.0']
                         ],
                         'symfonyVersion' => [
                             'q' => 'Symfony Version (please check with your project manager for this project)',
@@ -157,29 +156,29 @@ class Installer
                     self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__vagrant_ip__', $settings['vagrantIp']);
                     self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__php_version__', $phpVersionShort);
 
-                    $output->writeln("================================================================================");
-                    $output->writeln("=------------------------------------------------------------------------------=");
-                    $output->writeln("================================================================================");
-                    $output->writeln("                                                                                ");
-                    $output->writeln(" <comment>Project Info</comment>                                                ");
-                    $output->writeln(" Symfony: <info>" . $settings['symfonyVersion'] . "</info>                               ");
-                    $output->writeln(" Hostname: <info>" . $settings['hostname'] . "</info>                               ");
-                    $output->writeln(" IP Address: <info>" . $settings['vagrantIp'] . "</info>                            ");
-                    $output->writeln("                                                                                ");
-                    $output->writeln(" <comment>Local SSL</comment>                                                   ");
-                    $output->writeln(" If you want to use SSL for this project, please install                        ");
-                    $output->writeln(" the generated SSL certificate in <info>tools/docker/</info> manually.          ");
-                    $output->writeln("                                                                                ");
-                    $output->writeln("                                                                                ");
-                    $output->writeln(" <comment>Available Recipes</comment>                                           ");
-                    $output->writeln(" Sonata Admin: <info>composer req admin</info>                                  ");
-                    $output->writeln(" Sonata Media Bundle: <info>composer req sonata-media</info>                    ");
-                    $output->writeln(" API: <info>composer req api</info>                                             ");
-                    $output->writeln(" PII: <info>composer req pii</info>                                             ");
-                    $output->writeln("                                                                                ");
-                    $output->writeln("================================================================================");
-                    $output->writeln("=------------------------------------------------------------------------------=");
-                    $output->writeln("================================================================================");
+                    $output->writeln("===============================================================================");
+                    $output->writeln("=-----------------------------------------------------------------------------=");
+                    $output->writeln("===============================================================================");
+                    $output->writeln("                                                                               ");
+                    $output->writeln(" <comment>Project Info</comment>                                               ");
+                    $output->writeln(" Symfony: <info>" . $settings['symfonyVersion'] . "</info>                              ");
+                    $output->writeln(" Hostname: <info>" . $settings['hostname'] . "</info>                              ");
+                    $output->writeln(" IP Address: <info>" . $settings['vagrantIp'] . "</info>                           ");
+                    $output->writeln("                                                                               ");
+                    $output->writeln(" <comment>Local SSL</comment>                                                  ");
+                    $output->writeln(" If you want to use SSL for this project, please install                       ");
+                    $output->writeln(" the generated SSL certificate in <info>tools/docker/</info> manually.         ");
+                    $output->writeln("                                                                               ");
+                    $output->writeln("                                                                               ");
+                    $output->writeln(" <comment>Available Recipes</comment>                                          ");
+                    $output->writeln(" Sonata Admin: <info>composer req admin</info>                                 ");
+                    $output->writeln(" Sonata Media Bundle: <info>composer req sonata-media</info>                   ");
+                    $output->writeln(" API: <info>composer req api</info>                                            ");
+                    $output->writeln(" PII: <info>composer req pii</info>                                            ");
+                    $output->writeln("                                                                               ");
+                    $output->writeln("===============================================================================");
+                    $output->writeln("=-----------------------------------------------------------------------------=");
+                    $output->writeln("===============================================================================");
 
                     $filesystem->remove(sprintf('%s/vendor', __DIR__));
                     $filesystem->remove(sprintf('%s/composer.json', __DIR__));

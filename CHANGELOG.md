@@ -1,12 +1,12 @@
 ## 10.0.0 draft
 - Support: Symfony 5.3, 5.4 (upcoming lts) and 6.0  
-- Support: Docker, PHP 7.3, 7.4 and 8 as build argument (`php_version`, default 7.3)  
+- Support: Docker, PHP 7.4 and 8 as build argument (`php_version`, default 7.3)  
 - Support: Docker, Libsodium installation as build argument (`with_libsodium`, default false)  
 - Added: Symfony's updated security-checker (`composer security-check`)  
 - Added: PHPStan and defaults (`composer analyse`)
 - Updated: Docker, images to amazonlinux:2  
 - Updated: Docker, control installation of php_version, Libsodium and Xdebug with build args:  
-  - `php_version`, default 7.3  
+  - `php_version`, default 7.4  
   - `with_libsodium`, default false  
   - `with_xdebug`, default true  
 - Fixed: Files created by docker are now also owned by the host user, chown -R is therefore not needed anymore.      
