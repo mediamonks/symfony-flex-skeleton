@@ -145,7 +145,7 @@ class Installer
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__php_version__', $settings['phpVersion']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__ip__', $settings['vagrantIp']);
+                    self::replaceInFile(sprintf('%s/tools/docker/web/generateSSL.sh', __DIR__), '__ip__', $settings['ip']);
 
                     // Symfony
                     self::replaceInFile(sprintf('%s/source/symfony/composer.json', __DIR__), '__symfony_version__', $settings['symfonyVersion']);
@@ -163,7 +163,7 @@ class Installer
                     $output->writeln(" <comment>Project Info</comment>                                               ");
                     $output->writeln(" Symfony: <info>" . $settings['symfonyVersion'] . "</info>                              ");
                     $output->writeln(" Hostname: <info>" . $settings['hostname'] . "</info>                              ");
-                    $output->writeln(" IP Address: <info>" . $settings['vagrantIp'] . "</info>                           ");
+                    $output->writeln(" IP Address: <info>" . $settings['ip'] . "</info>                           ");
                     $output->writeln("                                                                               ");
                     $output->writeln(" <comment>Local SSL</comment>                                                  ");
                     $output->writeln(" If you want to use SSL for this project, please install                       ");
