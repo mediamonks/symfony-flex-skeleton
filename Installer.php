@@ -20,6 +20,7 @@ class Installer
     {
         return strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9]+/', '-', $value)));
     }
+
     /**
      * @param $filename
      * @param $search
@@ -36,6 +37,7 @@ class Installer
             )
         );
     }
+
     /**
      * @throws Exception
      */
@@ -87,12 +89,12 @@ class Installer
                             'suf' => '.lcl',
                             'val' => function ($value) {
                                 return self::normalizeString($value);
-                            }
+                            },
                         ],
                         'composerCacheDirectory' => [
                             'q' => 'Composer Cache directory (for you personally)',
                             'd' => '~',
-                            'val' => null
+                            'val' => null,
                         ],
                         'ip' => [
                             'q' => 'IP address ("192.168.33." will be prepended automatically)',
@@ -101,17 +103,17 @@ class Installer
                             'val' => function ($value) {
                                 if ($value < 5 || $value > 240) throw new Exception('Please choose value between 5-240!');
                                 return $value;
-                            }
+                            },
                         ],
                         'phpVersion' => [
                             'q' => 'PHP Version (please check with your project manager for this project)',
                             'd' => '7.4',
-                            'choices' => ['7.4', '8.0']
+                            'choices' => ['7.4', '8.0'],
                         ],
                         'symfonyVersion' => [
                             'q' => 'Symfony Version (please check with your project manager for this project)',
                             'd' => '5.4.*',
-                            'choices' => ['5.4.*', '6.0.*']
+                            'choices' => ['5.4.*', '6.0.*'],
                         ],
                     ];
 
