@@ -1,3 +1,8 @@
 .idea
+.cache
+.config
+.local
+.symfony
 .vagrant
-tools/vagrant/config.yml
+_dist
+vendor

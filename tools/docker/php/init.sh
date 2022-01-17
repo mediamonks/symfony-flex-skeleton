@@ -5,6 +5,11 @@
 cd /var/www/source/symfony; composer install
 
 #
+# Symfony CLI
+#============================================
+symfony self-update
+
+#
 # Setting folder permissions
 #============================================
 cd /var/www/source/symfony; chmod -R 777 var/log var/cache
@@ -12,17 +17,22 @@ cd /var/www/source/symfony; chmod -R 777 var/log var/cache
 #
 # Configuring environments
 #============================================
+if grep -q APP_ENV=dev "/var/www/source/symfony/.env"; then
+  sed -i 's/APP_ENV=dev/APP_ENV=local/' /var/www/source/symfony/.env
+fi
+
 if [ -d /var/www/source/symfony/config/packages/local ]; then
    echo Environments are correct.
 else
     cd /var/www/source/symfony/config/packages
-    mv dev local
 
-    sed -i 's/APP_ENV=dev/APP_ENV=local/g' /var/www/source/symfony/.env
-    sed -i 's/dev/local/g' /var/www/source/symfony/config/bootstrap.php
-    sed -i 's/prod/production/g' /var/www/source/symfony/config/bootstrap.php
+    if [ -d /var/www/source/symfony/config/packages/dev ]; then
+      mv dev local
+    fi
 
-    echo Environment dev changed to local and renamed in bootstrap.php
+    if [ -d /var/www/source/symfony/config/packages/prod ]; then
+      mv prod production
+    fi
 fi
 
 #

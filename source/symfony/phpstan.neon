@@ -1,0 +1,8 @@
+parameters:
+    level: 4
+    paths:
+        - %rootDir%/../../../src
+    excludes_analyse:
+        - %rootDir%/../../../src/Migrations
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml

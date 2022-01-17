@@ -1,6 +1,0 @@
-parameters:
-    level: 4
-    paths:
-        - %rootDir%/../../../src
-    excludes_analyse:
-        - %rootDir%/../../../src/Migrations

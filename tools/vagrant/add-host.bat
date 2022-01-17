@@ -1,1 +1,0 @@
-echo %1 %2 >> %windir%\System32\drivers\etc\hosts

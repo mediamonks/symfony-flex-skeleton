@@ -1,31 +1,35 @@
 {
-    "name": "mediamonks/skeleton-symfony",
-    "description": "MediaMonks Symfony Skeleton Project",
-    "type": "project",
-    "license": "proprietary",
-    "homepage": "https://www.mediamonks.com/",
-    "authors": [
-        {
-            "name": "Robert Slootjes",
-            "email": "robert@mediamonks.com"
-        },
-        {
-            "name": "Eduan de Bruijne",
-            "email": "eduan.de.bruijne@mediamonks.com"
-        }
-    ],
-    "require": {
-        "symfony/console": "^4.0",
-        "symfony/filesystem": "^4.0"
+  "name": "mediamonks/skeleton-symfony",
+  "description": "MediaMonks Symfony Skeleton Project",
+  "type": "project",
+  "license": "proprietary",
+  "homepage": "https://www.mediamonks.com/",
+  "authors": [
+    {
+      "name": "Robert Slootjes",
+      "email": "robert@mediamonks.com"
     },
-    "autoload": {
-        "psr-4": {
-            "Skeleton\\": "./"
-        }
+    {
+      "name": "Eduan de Bruijne",
+      "email": "eduan.de.bruijne@mediamonks.com"
     },
-    "scripts": {
-        "post-create-project-cmd": [
-            "Skeleton\\Installer::install"
-        ]
+    {
+      "name": "Edwin Luijten",
+      "email": "edwin@mediamonks.com"
     }
+  ],
+  "require": {
+    "symfony/console": "5.3.*",
+    "symfony/filesystem": "5.3.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Skeleton\\": "./"
+    }
+  },
+  "scripts": {
+    "post-create-project-cmd": [
+      "Skeleton\\Installer::install"
+    ]
+  }
 }
