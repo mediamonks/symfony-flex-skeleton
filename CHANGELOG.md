@@ -1,4 +1,4 @@
-## 10.0.0 draft
+## 10.0.0
 - Support: Symfony 5.3, 5.4 (upcoming lts) and 6.0  
 - Support: Docker, PHP 7.4 and 8 as build argument (`php_version`, default 7.3)  
 - Support: Docker, Libsodium installation as build argument (`with_libsodium`, default false)  
