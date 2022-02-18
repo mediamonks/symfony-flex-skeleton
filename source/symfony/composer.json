@@ -77,7 +77,7 @@
     "repositories": [
         {
             "type": "composer",
-            "url": "https://toran.mediamonks.net/repo/private/"
+            "url": "https://satis.monks.tools"
         }
     ]
 }
