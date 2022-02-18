@@ -1,5 +1,8 @@
+## 10.0.2
+- Fix where symfony folders where not created
+
 ## 10.0.1
-- changed repository url in composer.json
+- Changed repository url in composer.json
 
 ## 10.0.0
 - Support: Symfony 5.3, 5.4 (upcoming lts) and 6.0  
