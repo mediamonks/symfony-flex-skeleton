@@ -1,3 +1,7 @@
+## 10.0.3
+- Added custom flex recipe repository
+- Removed support for symfony 5.3.
+
 ## 10.0.2
 - Fix where symfony folders where not created
 
