@@ -1,9 +1,14 @@
 # Symfony skeleton
 
 ## Features:
-- Symfony 5.3, 5.4(dev) and 6(dev)
-- Docker setup, supports php 7.3, 7.4 and 8
+- Symfony 5.4(LTS) and 6.*
+- Docker setup, supports php 7.4 and 8
 - [PHPStan](https://phpstan.org/)
+
+## Installation:
+```composer create-project mediamonks/skeleton-symfony:~10.0.0 . --repository-url=https://satis.monks.tools```  
+Via Docker:   
+```docker run --rm --interactive --tty --volume $PWD:/app --volume ~/.ssh:/root/.ssh composer create-project mediamonks/skeleton-symfony:~10.0.0 . --repository-url=https://satis.monks.tools```
 
 ## Available commands:
 - `composer analyse`, runs PHPStan

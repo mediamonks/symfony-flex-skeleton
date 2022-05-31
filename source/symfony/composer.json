@@ -70,9 +70,13 @@
     },
     "extra": {
         "symfony": {
-            "id": "",
-            "allow-contrib": false,
-            "require": "__symfony_version__"
+            "allow-contrib": true,
+            "docker": false,
+            "require": "__symfony_version__",
+            "endpoint": [
+                "https://raw.githubusercontent.com/mediamonks/symfony-flex-recipes/main/index.json",
+                "flex://defaults"
+            ]
         }
     },
     "repositories": [

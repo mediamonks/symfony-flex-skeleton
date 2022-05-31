@@ -113,7 +113,7 @@ class Installer
                         'symfonyVersion' => [
                             'q' => 'Symfony Version (please check with your project manager for this project)',
                             'd' => '5.4.*',
-                            'choices' => ['5.4.*', '6.0.*'],
+                            'choices' => ['5.4.*', '6.*'],
                         ],
                     ];
 
@@ -134,7 +134,7 @@ class Installer
                         $settings[$setting] = $answer;
                     }
 
-                    if ($settings['symfonyVersion'] === '6.0.*') {
+                    if ($settings['symfonyVersion'] === '6.*') {
                         $settings['phpVersion'] = '8.0';
                         $output->writeln(sprintf('Symfony %d was selected, it requires php 8. Using php 8 instead', $settings['symfonyVersion']));
                     }
@@ -142,7 +142,6 @@ class Installer
                     $filesystem = new Filesystem();
 
                     // Docker:
-                    $phpVersionShort = sprintf('php%s', str_replace('.', '', $settings['phpVersion']));
                     self::replaceInFile(sprintf('%s/tools/docker/web/www.conf', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__php_version__', $settings['phpVersion']);
@@ -151,12 +150,6 @@ class Installer
 
                     // Symfony
                     self::replaceInFile(sprintf('%s/source/symfony/composer.json', __DIR__), '__symfony_version__', $settings['symfonyVersion']);
-
-                    // Readme
-                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__project_name__', $settings['projectName']);
-                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__ip__', $settings['ip']);
-                    self::replaceInFile(sprintf('%s/SKELETON_README.md', __DIR__), '__php_version__', $phpVersionShort);
 
                     $output->writeln("===============================================================================");
                     $output->writeln("=-----------------------------------------------------------------------------=");
