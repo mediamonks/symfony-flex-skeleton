@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker exec php bash -c "PHP_IDE_CONFIG=\"serverName=__hostname__\" XDEBUG_SESSION=1 vendor/bin/phpunit $*"
+docker exec php bash -c "vendor/bin/phpunit $*"

@@ -147,8 +147,8 @@ class Installer
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__php_version__', $settings['phpVersion']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/generate-ssl', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/web/generate-ssl', __DIR__), '__ip__', $settings['ip']);
-                    self::replaceInFile(sprintf('%s/tools/docker/console', __DIR__), '__hostname__', $settings['hostname']);
-                    self::replaceInFile(sprintf('%s/tools/docker/phpunit', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/docker/console-debug', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/docker/phpunit-debug', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/init-environment', __DIR__), '__hostname__', $settings['hostname']);
 
                     // Symfony
@@ -180,14 +180,22 @@ class Installer
                     $output->writeln(" • <info>bash init-environment</info> - Local environment initialization.      ");
                     $output->writeln("       Useful alias to <info>docker compose up</info> with some extra spice.   ");
                     $output->writeln(" • <info>bash container</info> - Bash into the specified container.            ");
-                    $output->writeln(" • <info>bash console</info> - Run symfony console in the php container.       ");
-                    $output->writeln("       Xdebug support is also enabled.                                         ");
                     $output->writeln(" • <info>bash composer</info> - Run composer in the php container.             ");
+                    $output->writeln(" • <info>bash console</info> - Run symfony console in the php container.       ");
+                    $output->writeln(" • <info>bash console-debug</info> - Run symfony console in the php container  ");
+                    $output->writeln("       with Xdebug enabled.                                                    ");
                     $output->writeln(" • <info>bash phpunit</info> - Run phpunit in the php container.               ");
-                    $output->writeln("       Xdebug support is also enabled.                                         ");
+                    $output->writeln(" • <info>bash phpunit-debug</info> - Run phpunit in the php container          ");
+                    $output->writeln("       with Xdebug enabled.                                                    ");
                     $output->writeln(" • <info>bash cache-clear</info> - Clears cache.                               ");
                     $output->writeln(" • <info>bash logs-clear</info> - Clears logs.                                 ");
                     $output->writeln(" • <info>bash dump-server</info> - Run the var-dump server if available.       ");
+                    $output->writeln("                                                                               ");
+                    $output->writeln("                                                                               ");
+                    $output->writeln(" <comment>Initialize local development environment</comment>                   ");
+                    $output->writeln(" Navigate to <info>tools/docker/</info>                                        ");
+                    $output->writeln(" run <info>bash init-environment</info>                                        ");
+                    $output->writeln("                                                                               ");
                     $output->writeln("===============================================================================");
                     $output->writeln("=-----------------------------------------------------------------------------=");
                     $output->writeln("===============================================================================");
