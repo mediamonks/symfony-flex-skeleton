@@ -1,3 +1,10 @@
+## 10.0.4
+- Updated: Multiple adjustments/improvements to the scripts provided within `tools/docker`
+- Removed: all the `.sh` extensions from the file names
+- Added: new `init-environment` tool to assist with local environment initialization
+- Support: [Dump server](https://symfony.com/doc/current/components/var_dumper.html#the-dump-server) with new `dump-server` tool
+- Support: **Xdebug** for console and **PHPUnit** tests using `console-debug` and `phpunit-debug`
+
 ## 10.0.3
 - Added custom flex recipe repository
 - Removed support for symfony 5.3.
