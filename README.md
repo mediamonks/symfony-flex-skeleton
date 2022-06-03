@@ -30,3 +30,21 @@ You can customize php by adding ini files to `tools/docker/php/custom`.
   upload_max_filesize=10M
   ```
 - Run `docker-compose up --build --force-recreate`
+
+## Xdebug
+The `php` container is already prepared to run Xdebug.  
+However, to actually use it, a few manually configurations are required.
+
+### PhpStorm setup
+ - While in `PhpStorm` open the setting (Windows shortcut: `Ctrl` + `Alt` + `S`)
+ - Navigate to `PHP` -> `Servers`
+ - Click the `+` icon to add a new entry
+ - Fill the _Name_ and the _Host_ with hostname provided for the project (E.g. `example-project.lcl`)
+ - Choose `Xdebug` _Debugger_ 
+ - Check _Use path mappings_
+   - Map the project symfony folder to `/var/www/source/symfony`
+
+### Browser setup
+ - For `Chrome` install the [Xdebug helper extension](https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc)
+   - For other browsers, search for alternatives.
+ - Once the extension is installed, just simply enable it by setting it to `Debug`.
