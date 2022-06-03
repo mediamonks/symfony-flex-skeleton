@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+trap cleanup INT
+function cleanup() {
+    docker exec php bash -c 'kill $(ss -tulpn | sed -n "s/^.*:9912.*pid=\([0-9]\+\).*$/\1/p") 2>/dev/null'
+}
+cleanup
+docker exec -t php bash -c "php bin/console --ansi server:dump $*"

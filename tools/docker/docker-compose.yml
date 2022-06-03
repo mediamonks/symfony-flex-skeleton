@@ -13,7 +13,7 @@ services:
         volumes:
             - ../../:/var/www
         working_dir: /var/www/source/symfony
-        command: bash -c "cd /var/www/tools/docker/web && ./generateSSL.sh && nginx -g 'daemon off;'"
+        command: bash -c "cd /var/www/tools/docker/web && chmod +x ./generate-ssl && ./generate-ssl && nginx -g 'daemon off;'"
 
     php:
         container_name: php
@@ -27,4 +27,4 @@ services:
         volumes:
             - ../../:/var/www
         working_dir: /var/www/source/symfony
-        command: bash -c "cd /var/www/tools/docker && chmod +x -R *.sh **/*.sh && ./php/init.sh && php-fpm --nodaemonize"
+        command: bash -c "cd /var/www/tools/docker/php && chmod +x ./symfony-init && ./symfony-init && php-fpm --nodaemonize"

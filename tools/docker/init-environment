@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+source ../shell/style.sh
+
+section "For ease of use, please add the following entries to your hosts file:
+Windows 10 – 'C:\Windows\System32\drivers\etc\hosts'
+Linux      – '/etc/hosts'
+Mac OS X   – '/private/etc/hosts'"
+cecho "127.0.0.1       __hostname__
+" 36
+
+section "If you intend to use Xdebug please ensure you have your IDE properly configured,
+https://www.jetbrains.com/help/phpstorm/configuring-xdebug.html#integrationWithProduct
+namely, make sure to add a debug server in \"PHP/Servers\" with the following properties:"
+cecho "Name: __hostname__
+Host: __hostname__
+Port: 80
+Debugger: Xdebug
+Use path mappings: map \"source/symfony\" to \"/var/www/source/symfony\" within project files
+(You may also repeat the process for port 443)
+" 36
+
+cecho "Press any key to continue..." 33
+read -sr -n 1
+
+section "Environment initialization"
+CONTAINERS=$*
+docker compose stop ${CONTAINERS}
+docker compose rm -f ${CONTAINERS}
+docker compose up --force-recreate --build --remove-orphans ${CONTAINERS}
