@@ -6,9 +6,13 @@
 - [PHPStan](https://phpstan.org/)
 
 ## Installation:
-```composer create-project mediamonks/skeleton-symfony:~10.0.0 . --repository-url=https://satis.monks.tools```  
+```bash
+composer create-project mediamonks/skeleton-symfony:~10.0.0 . --repository-url=https://satis.monks.tools
+```  
 Via Docker:   
-```docker run --rm --interactive --tty --volume $PWD:/app --volume ~/.ssh:/root/.ssh composer create-project mediamonks/skeleton-symfony:~10.0.0 . --repository-url=https://satis.monks.tools```
+```bash
+docker run --rm --interactive --tty --user "$(id -u):$(id -g)" --volume $PWD:/app --volume ~/.ssh:/root/.ssh composer create-project mediamonks/skeleton-symfony:~10.0.0 .
+```
 
 ## Available commands:
 - `composer analyse`, runs PHPStan
