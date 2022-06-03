@@ -23,14 +23,21 @@ You can customize php by adding ini files to `tools/docker/php/custom`.
 
 ### Increasing php memory limit
 - Add `memory_limit.ini` to `tools/docker/php/custom`.  
-- Add the following content to `memory_limit.ini`: `memory_limit=256M`
+- Add the following content: 
+  ```ini
+  memory_limit=256M
+  ```
 - Run `docker-compose up --build --force-recreate`
 
 ### Increase file upload size
 - Add `file_uploads.ini` to `tools/docker/php/custom`.
-- Add the following content to `file_uploads.ini`:   
-  ```
+- Add the following content:   
+  ```ini
   file_uploads=On
   upload_max_filesize=10M
   ```
 - Run `docker-compose up --build --force-recreate`
+
+## Recommended packages
+- Working with filesystems: https://github.com/thephpleague/flysystem-bundle
+- Command bus pattern: https://github.com/thephpleague/tactician-bundle
