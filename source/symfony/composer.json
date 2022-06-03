@@ -28,6 +28,11 @@
         "preferred-install": {
             "*": "dist"
         },
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "phpstan/extension-installer": true
+        },
         "sort-packages": true
     },
     "autoload": {

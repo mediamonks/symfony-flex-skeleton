@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+source ../shell/style.sh
+
+ENV="$1"
+if [ -z "${ENV}" ]
+  then
+    ENV="local"
+fi
+
+docker exec php bash -c "rm -rf var/log/${ENV}*"
+
+cecho "Logs cleared for ${ENV} environment." 32

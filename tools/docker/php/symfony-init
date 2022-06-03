@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+source ../../shell/style.sh
+
+SYMFONY_DIR="/var/www/source/symfony"
+
+ensure_symfony() {
+  if [ ! -d "${SYMFONY_DIR}" ]; then
+    cecho "${SYMFONY_DIR} folder not found." 31
+    exit 1
+  fi
+  cd ${SYMFONY_DIR} || exit
+}
+
+#
+# Verify environment setup
+#============================================
+if [ -f "/var/www/source/symfony/.env" ]; then
+  section "Verifying environment setup"
+  ensure_symfony
+  if [ ! -f ".env.local" ]; then
+    cecho "Local environment not found." 33
+    cecho "Please copy the file \"source/symfony/.env\" to \"source/symfony/.env.local\" and set the appropriate environment values." 36
+    exit 1
+  fi
+  cecho "[OK]" 32
+fi
+
+#
+# Verify database connection
+#============================================
+if [ -n "${DB_HOST+x}" ] && [ -n "${DB_USER+x}" ] && [ -n "${DB_PASS+x}" ]; then
+  section "Verifying database connection"
+  is_db_ready() {
+    if [ -z "${DB_PASS}" ]; then
+      mysql --host="${DB_HOST}" --user="${DB_USER}" -e "SELECT 1" &>/dev/null
+    else
+      mysql --host="${DB_HOST}" --user="${DB_USER}" -p"${DB_PASS}" -e "SELECT 1" &>/dev/null
+    fi
+    return $?
+  }
+  echo -n "Waiting for database to be ready..."
+  COUNTER=0
+  while ! is_db_ready; do
+    echo -n "."
+    ((COUNTER++))
+    if ((COUNTER > 100)); then
+      echo "❌"
+      cecho "Failed..." 31
+      cecho "The php container was unable to reach the database." 31
+      cecho "Please ensure correct database access configuration on your local environment and try again." 36
+      exit 1
+    fi
+    sleep 1
+  done
+  echo "✔"
+  cecho "[OK]" 32
+fi
+
+#
+# Composer install
+#============================================
+section "Running composer install"
+ensure_symfony
+composer --ansi install
+
+#
+# Symfony CLI
+#============================================
+section "Symfony CLI self update"
+symfony self-update
+
+#
+# Setting folder permissions
+#============================================
+section "Setting log and cache folder permissions"
+ensure_symfony
+mkdir -p var/log var/cache && chmod -R 777 var/log var/cache
+cecho "[OK]" 32
+
+#
+# Doctrine migrations
+#============================================
+if { [ -d "/var/www/source/symfony/migrations" ] && [ "$(ls -A '/var/www/source/symfony/migrations')" ]; } || { [ -d "/var/www/source/symfony/src/Migrations" ] && [ "$(ls -A '/var/www/source/symfony/src/Migrations')" ]; }; then
+  section "Running doctrine migrations"
+  ensure_symfony
+  php bin/console --ansi doctrine:migrations:migrate -n
+  cecho "[OK]" 32
+fi
+
+#
+# Ready message
+#============================================
+cecho "✔ project is ready!" 32

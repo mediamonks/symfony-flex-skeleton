@@ -5,9 +5,8 @@ ARG with_libsodium="false"
 ARG with_xdebug="true"
 
 # Packages
-RUN yum install -y shadow-utils gcc make git zip unzip tar \
-    && yum -y update \
-    && yum install -y amazon-linux-extras \
+RUN yum -y update \
+    && yum install -y shadow-utils gcc make git zip unzip tar iproute mysql amazon-linux-extras \
     && amazon-linux-extras enable php${php_version} \
     && yum clean metadata \
     && yum install -y php-mbstring php-gd php-pear php-devel php-fpm php-pdo php-mysqlnd \
@@ -35,6 +34,8 @@ RUN if [ "$with_libsodium" = "true" ]; then \
 RUN if [ "$with_xdebug" = "true" ]; then \
     pear config-set php_ini /etc/php.ini \
     && pecl install xdebug \
+    && echo 'xdebug.mode=debug' >> /etc/php.ini \
+    && echo 'xdebug.client_host=host.docker.internal' >> /etc/php.ini \
     && echo 'xdebug.max_nesting_level=250' >> /etc/php.ini \
     && echo 'xdebug.remote_enable=1' >> /etc/php.ini \
     && echo 'xdebug.remote_connect_back=1' >> /etc/php.ini \

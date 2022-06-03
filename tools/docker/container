@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
+source ../shell/style.sh
+
 if [ -z "$1" ]
   then
-    echo "Please provide container_name!"
+    cecho "Please provide container_name!" 33
 else
     docker exec -it $1 bash
 fi
