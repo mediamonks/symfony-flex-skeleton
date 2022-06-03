@@ -7,7 +7,7 @@
 
 ## Installation:
 ```bash
-composer create-project mediamonks/skeleton-symfony:^10.0 . --repository-url=https://satis.monks.tools
+composer create-project mediamonks/skeleton-symfony:^10.0 .
 ```  
 Via Docker:   
 ```bash
