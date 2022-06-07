@@ -24,6 +24,6 @@ read -sr -n 1
 
 section "Environment initialization"
 CONTAINERS=$*
-docker compose stop ${CONTAINERS}
-docker compose rm -f ${CONTAINERS}
-docker compose up --force-recreate --build --remove-orphans ${CONTAINERS}
+docker-compose stop ${CONTAINERS}
+docker-compose rm -f ${CONTAINERS}
+docker-compose up --force-recreate --build --remove-orphans ${CONTAINERS}
