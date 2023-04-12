@@ -19,7 +19,6 @@ services:
         container_name: php
         build:
             args:
-                with_libsodium: 'false'
                 with_xdebug: 'true'
                 php_version: __php_version__
             context: ./php
