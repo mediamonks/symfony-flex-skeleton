@@ -12,7 +12,7 @@ services:
             - ./web/nginx.conf:/etc/nginx/nginx.conf:ro
             - ./web/www.conf:/etc/nginx/conf.d/www.conf:ro
         working_dir: /var/www/source/symfony
-        command: bash -c "cd /var/www/tools/docker/web && chmod +x ./generate-ssl && ./generate-ssl && nginx -g 'daemon off;'"
+        command: sh -c "cd /var/www/tools/docker/web && apk add openssl && chmod +x ./generate-ssl && ./generate-ssl && nginx -g 'daemon off;'"
 
     php:
         container_name: php
