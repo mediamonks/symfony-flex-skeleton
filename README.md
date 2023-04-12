@@ -2,7 +2,7 @@
 
 ## Features:
 - Symfony 5.4(LTS) and 6.*
-- Docker setup, supports php 7.4 and 8
+- Docker setup, supports php 8.1 and 8.2
 - [PHPStan](https://phpstan.org/)
 
 ## Installation:
