@@ -27,7 +27,7 @@ You can customize php by adding ini files to `tools/docker/php/custom`.
   ```ini
   memory_limit=256M
   ```
-- Run `docker-compose up --build --force-recreate`
+- Run `docker compose up --build --force-recreate`
 
 ### Increase file upload size
 - Add `file_uploads.ini` to `tools/docker/php/custom`.
