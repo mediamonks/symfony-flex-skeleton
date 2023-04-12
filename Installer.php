@@ -145,6 +145,9 @@ class Installer
                     self::replaceInFile(sprintf('%s/tools/docker/web/www.conf', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/docker-compose.yml', __DIR__), '__php_version__', $settings['phpVersion']);
+                    self::replaceInFile(sprintf('%s/tools/docker/web/generate-ssl', __DIR__), '__hostname__', $settings['hostname']);
+                    self::replaceInFile(sprintf('%s/tools/docker/web/generate-ssl', __DIR__), '__ip__', $settings['ip']);
+                    self::replaceInFile(sprintf('%s/tools/docker/console-debug', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/phpunit-debug', __DIR__), '__hostname__', $settings['hostname']);
                     self::replaceInFile(sprintf('%s/tools/docker/init-environment', __DIR__), '__hostname__', $settings['hostname']);
 
