@@ -107,8 +107,8 @@ class Installer
                         ],
                         'phpVersion' => [
                             'q' => 'PHP Version (please check with your project manager for this project)',
-                            'd' => '7.4',
-                            'choices' => ['7.4', '8.0'],
+                            'd' => '8.1',
+                            'choices' => ['8.1', '8.2'],
                         ],
                         'symfonyVersion' => [
                             'q' => 'Symfony Version (please check with your project manager for this project)',
