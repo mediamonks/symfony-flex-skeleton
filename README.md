@@ -11,7 +11,7 @@ composer create-project mediamonks/skeleton-symfony:^10.1 .
 ```  
 Via Docker:   
 ```bash
-docker run --rm --interactive --tty --user "$(id -u):$(id -g)" --volume $PWD:/app --volume ~/.ssh:/root/.ssh composer create-project mediamonks/skeleton-symfony:^10.0 .
+docker run --rm --interactive --tty --user "$(id -u):$(id -g)" --volume $PWD:/app --volume ~/.ssh:/root/.ssh composer create-project mediamonks/skeleton-symfony:^10.1 .
 ```
 
 ## Available commands:
