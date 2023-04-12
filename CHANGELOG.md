@@ -2,6 +2,7 @@
 
 - Removed PHP 7 support
 - Use alpine docker image for php
+- Use alpine docker image for nginx
 
 ## 10.0.5
 
