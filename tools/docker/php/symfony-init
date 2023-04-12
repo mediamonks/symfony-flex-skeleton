@@ -19,9 +19,7 @@ if [ -f "/var/www/source/symfony/.env" ]; then
   section "Verifying environment setup"
   ensure_symfony
   if [ ! -f ".env.local" ]; then
-    cecho "Local environment not found." 33
-    cecho "Please copy the file \"source/symfony/.env\" to \"source/symfony/.env.local\" and set the appropriate environment values." 36
-    exit 1
+    cp .env .env.local
   fi
   cecho "[OK]" 32
 fi

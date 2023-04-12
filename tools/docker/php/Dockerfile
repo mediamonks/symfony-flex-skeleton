@@ -5,7 +5,7 @@ FROM php:${PHP_VERSION}-fpm-alpine
 ARG with_xdebug="true"
 
 # Packages
-RUN apk add --update --no-cache git zip unzip bash build-base autoconf
+RUN apk add --update --no-cache git zip unzip bash build-base autoconf linux-headers
 
 RUN echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories
 RUN apk --no-cache add shadow && usermod -u 1000 www-data
