@@ -7,7 +7,7 @@
 
 ## Installation:
 ```bash
-composer create-project mediamonks/skeleton-symfony:^10.0 .
+composer create-project mediamonks/skeleton-symfony:^10.1 .
 ```  
 Via Docker:   
 ```bash
