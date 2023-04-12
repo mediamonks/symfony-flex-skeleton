@@ -36,7 +36,7 @@ You can customize php by adding ini files to `tools/docker/php/custom`.
   file_uploads=On
   upload_max_filesize=10M
   ```
-- Run `docker-compose up --build --force-recreate`
+- Run `docker compose up --build --force-recreate`
 
 ## Recommended packages
 - Working with filesystems: https://github.com/thephpleague/flysystem-bundle
