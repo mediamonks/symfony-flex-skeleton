@@ -32,7 +32,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 # Symfony cli
 RUN curl -s https://get.symfony.com/cli/installer | bash \
-    &&  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
+    &&  mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
 # FPM
 COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf

@@ -108,12 +108,12 @@ class Installer
                         'phpVersion' => [
                             'q' => 'PHP Version (please check with your project manager for this project)',
                             'd' => '8.1',
-                            'choices' => ['8.1', '8.2'],
+                            'choices' => ['8.1', '8.2', '8.3'],
                         ],
                         'symfonyVersion' => [
                             'q' => 'Symfony Version (please check with your project manager for this project)',
-                            'd' => '5.4.*',
-                            'choices' => ['5.4.*', '6.*'],
+                            'd' => '6.4.*',
+                            'choices' => ['6.4.*', '7.*'],
                         ],
                     ];
 
@@ -132,11 +132,6 @@ class Installer
                         if (isset($question['pre'])) $answer = $question['pre'] . $answer;
                         if (isset($question['suf'])) $answer .= $question['suf'];
                         $settings[$setting] = $answer;
-                    }
-
-                    if ($settings['symfonyVersion'] === '6.*') {
-                        $settings['phpVersion'] = '8.0';
-                        $output->writeln(sprintf('Symfony %d was selected, it requires php 8. Using php 8 instead', $settings['symfonyVersion']));
                     }
 
                     $filesystem = new Filesystem();
