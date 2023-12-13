@@ -2,7 +2,7 @@ ARG PHP_VERSION=8.1.6
 
 FROM php:${PHP_VERSION}-fpm-alpine
 
-ARG with_xdebug="true"
+ARG WITH_XDEBUG="true"
 
 # Packages
 RUN apk add --update --no-cache git zip unzip bash build-base autoconf linux-headers
@@ -15,7 +15,7 @@ RUN mkdir -p /var/log/php-fpm /run/php-fpm \
     && chown -R www-data:www-data /var/www /var/log/php-fpm/ /run/php-fpm/
 
 # X-Debug
-RUN if [ "$with_xdebug" = "true" ]; then \
+RUN if [ "$WITH_XDEBUG" = "true" ]; then \
     pear config-set php_ini /etc/php.ini \
     && pecl install xdebug \
     && echo 'xdebug.mode=debug' >> /etc/php.ini \
@@ -32,7 +32,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 # Symfony cli
 RUN curl -s https://get.symfony.com/cli/installer | bash \
-    &&  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
+    &&  mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
 # FPM
 COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
