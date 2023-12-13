@@ -18,8 +18,8 @@ services:
         container_name: php
         build:
             args:
-                with_xdebug: 'true'
-                php_version: __php_version__
+                WITH_XDEBUG: 'true'
+                PHP_VERSION: __php_version__
             context: ./php
         image: php.__hostname__
         volumes:

@@ -63,12 +63,6 @@ ensure_symfony
 composer --ansi install
 
 #
-# Symfony CLI
-#============================================
-section "Symfony CLI self update"
-symfony self-update
-
-#
 # Setting folder permissions
 #============================================
 section "Setting log and cache folder permissions"
